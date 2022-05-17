@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class BaseApiResponse<T> {
   T? _objectResult;
   List<T>? _listResult;
-  bool? _statusCode;
+  int? _statusCode;
   String? _message;
   Meta? _meta;
   Links? _links;
@@ -14,7 +14,7 @@ class BaseApiResponse<T> {
 
   dynamic get listResult => _listResult;
 
-  bool? get statusCode => _statusCode;
+  int? get statusCode => _statusCode;
 
   String? get message => _message;
 
@@ -25,7 +25,7 @@ class BaseApiResponse<T> {
   BaseApiResponse(
       {dynamic objectResult,
       dynamic listResult,
-      bool? statusCode,
+      int? statusCode,
       String? message,Meta? meta,
         Links? links}) {
     _objectResult = objectResult;
@@ -39,8 +39,8 @@ class BaseApiResponse<T> {
   factory BaseApiResponse.fromObjectJson(Map<String, dynamic> json,
       {@required Function(Map<String, dynamic>)? createObject}) {
     return BaseApiResponse<T>(
-      objectResult: createObject!(json["data"]),
-      statusCode: json["status"],
+      objectResult: createObject!(json["result"]),
+      statusCode: json["status_code"],
       message: json["message"],
     );
   }

@@ -33,12 +33,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     SizeConfig().init();
     return GetMaterialApp(
-      title: "HoHoDiDi Merchant",
+      title: "Blog Post",
       locale: Get.find<CacheManager>().getLocale(),
       fallbackLocale: const Locale('my', 'MM'),
-      initialRoute: Paths.HOME,
+      initialRoute: Paths.MAIN_HOME,
       initialBinding: InitialBinding(),
-      theme: lightTheme(),
+      //theme: lightTheme(),
       getPages: AppPages.routes,
       showSemanticsDebugger: false,
     );

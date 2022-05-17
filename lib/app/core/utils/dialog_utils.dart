@@ -41,7 +41,7 @@ class DialogUtils {
   static void requestInputDialog({
     required String title,
     required TextEditingController controller,
-    String text = Constant.textSave,
+    String text = "Save",
     int maxLine = 1,
     String textReason = "",
     required Function saveFunction,

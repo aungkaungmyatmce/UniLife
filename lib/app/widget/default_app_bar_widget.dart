@@ -19,7 +19,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       this.showBackArrow = true,
       this.isCenterTitle = false,
       this.context,
-      this.backgroundColor = AppColors.primaryDarkColor,
+      this.backgroundColor = AppColors.primaryColor,
       this.height = 50,
       this.trillingIcon,
       this.trillingIconOnClick,

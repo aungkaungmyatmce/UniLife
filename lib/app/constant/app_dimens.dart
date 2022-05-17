@@ -30,4 +30,5 @@ abstract class AppDimens {
   static const SHOP_ICON_SIZE = 60.0;
   static const DROPDOWN_HEIGHT = 48.0;
   static const SPINNER_ICON_SIZE = 30.0;
+  static const DEFAULT_IMAGE_VIEW_SIZE = 100.0;
 }
