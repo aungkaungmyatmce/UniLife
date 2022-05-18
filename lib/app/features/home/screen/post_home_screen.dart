@@ -14,9 +14,12 @@ class PostHomeScreen extends BaseView<PostHomeController> {
       actions: [
         Padding(
           padding: const EdgeInsets.all(7),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://static.bangkokpost.com/media/content/20211028/c1_2205267_211028062917.jpg'),
+          child: InkWell(
+            onTap: () => controller.navigateToLoginScreen(),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  'https://static.bangkokpost.com/media/content/20211028/c1_2205267_211028062917.jpg'),
+            ),
           ),
         ),
       ],

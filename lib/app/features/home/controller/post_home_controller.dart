@@ -1,3 +1,4 @@
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/constant/view_state.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
@@ -88,5 +89,16 @@ class PostHomeController extends BaseController {
       AppUtils.showToast(exception.message);
     }
     return;
+  }
+
+  @override
+  void clearAllData() {
+    // TODO: implement clearAllData
+    super.clearAllData();
+  }
+
+  void navigateToLoginScreen(){
+    clearAllData();
+    Get.offAllNamed(Paths.LOGIN);
   }
 }

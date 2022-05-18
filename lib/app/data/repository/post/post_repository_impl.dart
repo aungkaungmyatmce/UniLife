@@ -1,6 +1,7 @@
 import 'package:blog_post_flutter/app/core/base/base_remote_source.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_detail_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
+import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/network/services/dio_provider.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
@@ -44,5 +45,19 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
       Response response) {
     return BaseApiResponse<PostDetailOb>.fromObjectJson(response.data,
         createObject: (data) => PostDetailOb.fromJson(data));
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> createPost(
+      CreatePostRequestOb postRequestOb) {
+    try {
+      return callApiWithErrorParser(dioClient.post(endpoint + "/post/create/",
+          data: postRequestOb.toJson()))
+          .then((response) => BaseApiResponse<String?>.fromStringJson(
+        response.data,
+      ));
+    } catch (e) {
+      rethrow;
+    }
   }
 }

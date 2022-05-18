@@ -1,4 +1,6 @@
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
+import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
+import 'package:blog_post_flutter/app/features/authentication/screen/login_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_home_screen.dart';
@@ -20,7 +22,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   final _pageNumber = [
     PostHomeScreen(),
-    CreatePostScreen(),
+    GlobalVariable.token != null ? CreatePostScreen() : const LoginScreen() ,
     const FavouriteScreen(),
   ];
 

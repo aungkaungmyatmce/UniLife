@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
+import 'package:blog_post_flutter/app/data/model/authentication/login_response.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -52,14 +54,15 @@ class DioProvider {
         Get.find<CacheManager>().getString(CacheManagerKey.loginResponseData) ??
             "";
     if (prefData.isNotEmpty) {
-      // Map<String, dynamic> loginUserData = jsonDecode(prefData);
-      // var user = LoginResponse.fromJson(loginUserData);
-      // authToken = user.token;
+      Map<String, dynamic> loginUserData = jsonDecode(prefData);
+      var user = LoginResponse.fromJson(loginUserData);
+      GlobalVariable.token = user.token;
     }
     _instance?.options.headers = {
       "Content-Type": Headers.jsonContentType,
-      "Authorization": "Bearer " + (authToken ?? "")
+      "Authorization": "Token " + (GlobalVariable.token ?? "")
     };
+    print("Token is ${GlobalVariable.token}");
   }
 
   static _addInterceptors() {

@@ -33,7 +33,7 @@ class PostItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RoundedCornerImageWidget(
-                  post.image!,
+                  post.image ?? "https://pyaephyokyaw.pythonanywhere.com/media/default.jpg",
                   width: 80,
                   height: 80,
                   cornerRadius: 4,
