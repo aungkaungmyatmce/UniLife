@@ -2,6 +2,7 @@ import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/features/favourite/binding/favourite_binding.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
 import 'package:blog_post_flutter/app/features/home/binding/post_home_binding.dart';
+import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_detail_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_home_screen.dart';
 import 'package:blog_post_flutter/app/features/main_home/binding/main_home_binding.dart';
@@ -23,6 +24,10 @@ class AppPages {
     GetPage(
         name: Paths.POST_DETAIL,
         page: () => PostDetailScreen(),
+        binding: HomeBinding()),
+    GetPage(
+        name: Paths.POST_CREATE,
+        page: () => CreatePostScreen(),
         binding: HomeBinding()),
     GetPage(
         name: Paths.FAVOURITE,

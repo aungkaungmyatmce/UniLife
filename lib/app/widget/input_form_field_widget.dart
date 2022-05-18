@@ -11,6 +11,7 @@ class InputFormFieldWidget extends StatelessWidget {
   final Color cursorColor;
   final bool isReadOnly;
   final int maxLine;
+  final int minLine;
   final textInputType;
   final autoFocus;
   final obscureText;
@@ -32,6 +33,7 @@ class InputFormFieldWidget extends StatelessWidget {
       {this.parametersValidate = Constant.textParameterValidate,
       this.isReadOnly = false,
       this.textInputType = TextInputType.text,
+      this.minLine = 1,
       this.maxLine = 1,
       this.bgColor = AppColors.whiteColor,
       this.cursorColor = AppColors.primaryColor,
@@ -65,6 +67,7 @@ class InputFormFieldWidget extends StatelessWidget {
       textInputAction: textInputAction,
       toolbarOptions: const ToolbarOptions(
           paste: true, cut: true, selectAll: true, copy: true),
+      minLines: minLine,
       maxLines: maxLine,
       autofocus: autoFocus,
       onTap: () {
