@@ -1,12 +1,11 @@
-import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
 import 'package:blog_post_flutter/app/widget/rounded_corner_image_widget.dart';
-import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PostDetailScreen extends BaseView<PostDetailController> {
   @override
@@ -14,20 +13,47 @@ class PostDetailScreen extends BaseView<PostDetailController> {
     return AppBar(
       centerTitle: true,
       title: const Text('Post Detail'),
+      actions: [
+        Obx(() => GestureDetector(
+          onTap: () => controller.toggleSavePost(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Icon(
+              Icons.bookmark,
+              color: controller.postDetail.value.isSaved == true
+                  ? Colors.grey
+                  : Colors.white,
+              size: 28,
+            ),
+          ),
+        ))
+      ],
     );
   }
 
   @override
   Widget body(BuildContext context) {
     return Obx(() => controller.postDetail.value.id != null
-        ? Padding(
-            padding: const EdgeInsets.all(AppDimens.MARGIN_CARD_MEDIUM),
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        ? SafeArea(
+            minimum: const EdgeInsets.symmetric(horizontal: 16),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: ListView(
+                physics: const ClampingScrollPhysics(),
                 children: [
-                  Row(
+                  Text(
+                    controller.postDetail.value.title!,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: AppDimens.TEXT_REGULAR_2,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       RoundedCornerImageWidget(
                         "https://static.bangkokpost.com/media/content/20211028/c1_2205267_211028062917.jpg",
@@ -35,60 +61,94 @@ class PostDetailScreen extends BaseView<PostDetailController> {
                         height: 50,
                         cornerRadius: 25,
                       ),
-                      SizedBox(
-                        width: AppDimens.MARGIN_CARD_MEDIUM,
+                      const SizedBox(
+                        width: 8,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextViewWidget(
-                            controller.postDetail.value.postedBy!.username ??
-                                "",
-                            textSize: AppDimens.TEXT_REGULAR_2X,
-                            textColor: AppColors.titleTextColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          SizedBox(
-                            height: AppDimens.MARGIN_SMALL,
-                          ),
-                          TextViewWidget(
-                            "Post Created :  ${controller.postDetail.value.createdDate != null ? DateUtil.convertDateFormat(controller.postDetail.value.createdDate!, DAY_MONTH_YEAR_2) : ""}",
-                            textSize: AppDimens.TEXT_REGULAR,
-                            textColor: AppColors.secondaryTextColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ],
-                      )
+                      Text(
+                          '${controller.postDetail.value.postedBy!.username!}, '),
+                      controller.postDetail.value.createdDate != null
+                          ? Text(
+                              DateUtil.convertDateFormat(
+                                  controller.postDetail.value.createdDate!,
+                                  DAY_MONTH_YEAR_2),
+                              style: TextStyle(color: Colors.grey),
+                            )
+                          : SizedBox(),
                     ],
                   ),
-                  SizedBox(
-                    height: AppDimens.MARGIN_MEDIUM_3,
+                  const SizedBox(
+                    height: 16,
                   ),
-                  TextViewWidget(
-                    controller.postDetail.value.title ?? "",
-                    textSize: AppDimens.TEXT_REGULAR_2X,
-                    textColor: AppColors.titleTextColor,
-                    fontWeight: FontWeight.w700,
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 16,
+                    children: [
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 4,
+                        children: [
+                          Obx(
+                            () => GestureDetector(
+                              onTap: () => controller.toggleLikePost(),
+                              child: Icon(
+                                controller.postDetail.value.isLiked!
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: controller.postDetail.value.isLiked!
+                                    ? Colors.red
+                                    : Colors.grey,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '${controller.postDetail.value.likeCounts} ${controller.postDetail.value.likeCounts! > 1 ? "Likes" : "Like"}',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w100,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: AppDimens.MARGIN_MEDIUM_2X,
+                  controller.postDetail.value.image != null
+                      ? const SizedBox(
+                          height: 16,
+                        )
+                      : SizedBox(),
+                  controller.postDetail.value.image != null
+                      ? RoundedCornerImageWidget(
+                          controller.postDetail.value.image!,
+                          width: double.infinity,
+                          height: 250,
+                          cornerRadius: 10,
+                        )
+                      : SizedBox(),
+                  const SizedBox(
+                    height: 16,
                   ),
-                  RoundedCornerImageWidget(
-                    controller.postDetail.value.image!,
-                    width: double.infinity,
-                    height: 250,
-                    cornerRadius: 10,
-                  ),
-                  SizedBox(
-                    height: AppDimens.MARGIN_CARD_MEDIUM,
-                  ),
-                  TextViewWidget(
-                    controller.postDetail.value.content ?? "",
-                    textSize: AppDimens.TEXT_REGULAR_2X,
-                    textColor: AppColors.secondaryTextColor,
-                    fontWeight: FontWeight.w400,
-                    textAlign: TextAlign.justify,
-                    maxLine: 100,
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text: controller.postDetail.value.content![0],
+                            style: GoogleFonts.notoSerif(
+                                color: Colors.black, fontSize: 32)),
+                        TextSpan(
+                          text:
+                              ' ${controller.postDetail.value.content!.substring(1)}',
+                          style: GoogleFonts.notoSerif(
+                            color: Colors.black,
+                            fontSize: 18,
+                            height: 1.7,
+                            wordSpacing: 2,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

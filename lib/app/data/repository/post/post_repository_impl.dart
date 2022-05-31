@@ -1,5 +1,4 @@
 import 'package:blog_post_flutter/app/core/base/base_remote_source.dart';
-import 'package:blog_post_flutter/app/data/model/post/post_detail_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
@@ -12,24 +11,40 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
 
   @override
   Future<BaseApiResponse<PostListOb>> getPostList({int? page}) {
-    var dioCall = dioClient.get(
-        "$endpoint/post/list/?page=$page");
+    var dioCall = dioClient.get("$endpoint/post/list/?page=$page");
     try {
       return callApiWithErrorParser(dioCall).then(
-            (response) => _parsePostListResponse(response),
+        (response) => _parsePostListResponse(response),
       );
     } catch (e) {
       rethrow;
     }
   }
-  BaseApiResponse<PostListOb> _parsePostListResponse(
-      Response response) {
+
+  BaseApiResponse<PostListOb> _parsePostListResponse(Response response) {
     return BaseApiResponse<PostListOb>.fromObjectJson(response.data,
         createObject: (data) => PostListOb.fromJson(data));
   }
 
   @override
-  Future<BaseApiResponse<PostDetailOb>> getPostDetail(postId) {
+  Future<BaseApiResponse<PostListOb>> getSavePostList({int? page}) {
+    var dioCall = dioClient.get("$endpoint/saved_post/list/?page=$page");
+    try {
+      return callApiWithErrorParser(dioCall).then(
+            (response) => _parseSavePostListResponse(response),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  BaseApiResponse<PostListOb> _parseSavePostListResponse(Response response) {
+    return BaseApiResponse<PostListOb>.fromObjectJson(response.data,
+        createObject: (data) => PostListOb.fromJson(data));
+  }
+
+  @override
+  Future<BaseApiResponse<PostData>> getPostDetail(postId) {
     var endpoint = "${DioProvider.baseUrl}/post/$postId/";
 
     var dioCall = dioClient.get(endpoint);
@@ -41,10 +56,9 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
     }
   }
 
-  BaseApiResponse<PostDetailOb> _parsePostDetailResponse(
-      Response response) {
-    return BaseApiResponse<PostDetailOb>.fromObjectJson(response.data,
-        createObject: (data) => PostDetailOb.fromJson(data));
+  BaseApiResponse<PostData> _parsePostDetailResponse(Response response) {
+    return BaseApiResponse<PostData>.fromObjectJson(response.data,
+        createObject: (data) => PostData.fromJson(data));
   }
 
   @override
@@ -52,10 +66,36 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
       CreatePostRequestOb postRequestOb) {
     try {
       return callApiWithErrorParser(dioClient.post(endpoint + "/post/create/",
-          data: postRequestOb.toJson()))
+              data: postRequestOb.toJson()))
           .then((response) => BaseApiResponse<String?>.fromStringJson(
-        response.data,
-      ));
+                response.data,
+              ));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> toggleLikePost(postId) {
+    try {
+      return callApiWithErrorParser(dioClient.get(
+        endpoint + "/post/$postId/like/",
+      )).then((response) => BaseApiResponse<String?>.fromStringJson(
+            response.data,
+          ));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> toggleSavePost(postId) {
+    try {
+      return callApiWithErrorParser(dioClient.get(
+        endpoint + "/post/$postId/save/",
+      )).then((response) => BaseApiResponse<String?>.fromStringJson(
+            response.data,
+          ));
     } catch (e) {
       rethrow;
     }

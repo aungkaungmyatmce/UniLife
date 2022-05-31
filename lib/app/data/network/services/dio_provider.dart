@@ -58,10 +58,14 @@ class DioProvider {
       var user = LoginResponse.fromJson(loginUserData);
       GlobalVariable.token = user.token;
     }
-    _instance?.options.headers = {
-      "Content-Type": Headers.jsonContentType,
-      "Authorization": "Token " + (GlobalVariable.token ?? "")
-    };
+    GlobalVariable.token != null
+        ? _instance?.options.headers = {
+            "Content-Type": Headers.jsonContentType,
+            "Authorization": "Token " + (GlobalVariable.token ?? "")
+          }
+        : _instance?.options.headers = {
+            "Content-Type": Headers.jsonContentType,
+          };
     print("Token is ${GlobalVariable.token}");
   }
 

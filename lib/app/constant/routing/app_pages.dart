@@ -23,7 +23,7 @@ class AppPages {
         binding: AuthenticationBinding()),
     GetPage(
         name: Paths.MAIN_HOME,
-        page: () => const MainHomeScreen(),
+        page: () => MainHomeScreen(),
         binding: MainHomeBinding()),
     GetPage(
         name: Paths.HOME, page: () => PostHomeScreen(), binding: HomeBinding()),
@@ -37,7 +37,7 @@ class AppPages {
         binding: HomeBinding()),
     GetPage(
         name: Paths.FAVOURITE,
-        page: () => const FavouriteScreen(),
+        page: () => FavouriteScreen(),
         binding: FavouriteBinding()),
   ];
 }

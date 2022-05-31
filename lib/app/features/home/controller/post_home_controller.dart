@@ -50,14 +50,14 @@ class PostHomeController extends BaseController {
 
       await callAPIService(
         repoService,
-        onStart: _postList.isEmpty ? () => showLoading() : null,
-        onSuccess: _handlePendingListResponseSuccess,
+        //onStart: _postList.isEmpty ? showLoading : null,
+        onSuccess: _handlePostListResponseSuccess,
         onError: _handlePostListResponseError,
       );
     }
   }
 
-  void _handlePendingListResponseSuccess(response) async {
+  void _handlePostListResponseSuccess(response) async {
     resetRefreshController(_postList);
     if (response != null) {
       BaseApiResponse<PostListOb> _orderData = response;

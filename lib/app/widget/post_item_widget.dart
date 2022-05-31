@@ -19,39 +19,42 @@ class PostItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          left: AppDimens.MARGIN_MEDIUM,
-          right: AppDimens.MARGIN_MEDIUM,
-          top: AppDimens.MARGIN_MEDIUM_2X),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppDimens.MARGIN_MEDIUM,
+      ),
       child: InkWell(
         onTap: () => Get.toNamed(Paths.POST_DETAIL, arguments: post.id!),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                RoundedCornerImageWidget(
-                  post.image ?? "https://pyaephyokyaw.pythonanywhere.com/media/default.jpg",
-                  width: 80,
-                  height: 80,
-                  cornerRadius: 4,
-                ),
-                SizedBox(
-                  width: AppDimens.MARGIN_MEDIUM,
-                ),
+                post.image != null
+                    ? RoundedCornerImageWidget(
+                        post.image!,
+                        width: 50,
+                        height: 50,
+                        cornerRadius: 4,
+                      )
+                    : const SizedBox(),
+                post.image != null
+                    ? SizedBox(
+                        width: AppDimens.MARGIN_MEDIUM,
+                      )
+                    : SizedBox(),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           TextViewWidget(
                             post.title!,
-                            textSize: AppDimens.TEXT_REGULAR_2X,
+                            textSize: AppDimens.TEXT_REGULAR,
                             textColor: AppColors.titleTextColor,
                             fontWeight: FontWeight.w700,
                           ),
@@ -64,11 +67,11 @@ class PostItemWidget extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: AppDimens.MARGIN_MEDIUM_2X,
+                        height: AppDimens.MARGIN_EXTRA_SMALL,
                       ),
                       TextViewWidget(
-                        post.content!,
-                        textSize: AppDimens.TEXT_REGULAR,
+                        "by ${post.postedBy!.username!}",
+                        textSize: AppDimens.TEXT_SMALL,
                         textColor: AppColors.secondaryTextColor,
                         fontWeight: FontWeight.w400,
                         textAlign: TextAlign.justify,
@@ -80,12 +83,13 @@ class PostItemWidget extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: AppDimens.MARGIN_MEDIUM,
+              height: AppDimens.MARGIN_MEDIUM_2X,
             ),
             TextViewWidget(
-              "by ${post.postedBy!.username!}",
+              "${post.content}",
               textSize: 12,
-              fontWeight: FontWeight.w600,
+              maxLine: 2,
+              fontWeight: FontWeight.w400,
             ),
             Divider()
           ],

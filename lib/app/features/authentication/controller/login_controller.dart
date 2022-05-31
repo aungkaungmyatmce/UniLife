@@ -26,16 +26,26 @@ class LoginController extends BaseController {
   }
 
   void doLogin() async {
-    var requestOb = LoginRequestOb(
+    if (userNameController.text.isEmpty) {
+      AppUtils.showToast("Please Enter UserName");
+    }
+    if (passwordController.text.isEmpty) {
+      AppUtils.showToast("Please Enter Password");
+    }
+    if (userNameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      var requestOb = LoginRequestOb(
         username: userNameController.text.trim(),
-        password: passwordController.text,);
-    final repoService = _repository.loginUser(requestOb);
-    AppUtils.showLoaderDialog();
-    callAPIService(repoService, onSuccess: onSuccessLogin,
-        onError: (BaseException exception) {
-          Get.back();
-          AppUtils.showToast(exception.message);
-        });
+        password: passwordController.text,
+      );
+      final repoService = _repository.loginUser(requestOb);
+      AppUtils.showLoaderDialog();
+      callAPIService(repoService, onSuccess: onSuccessLogin,
+          onError: (BaseException exception) {
+        Get.back();
+        AppUtils.showToast(exception.message);
+      });
+    }
   }
 
   void onSuccessLogin(response) {

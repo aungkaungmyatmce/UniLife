@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CreatePostScreen extends BaseView<CreatePostController> {
+
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
@@ -102,14 +103,30 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                   controller.titleController,
                   hintText: "Enter Title",
                   commonValidation: Validator.commonValidation,
+                  onTextChange: (value) {
+                    controller.setTitleCount(value.length);
+                  },
+                  formBorderColor: controller.titleCount.value > 0
+                      ? AppColors.spaceGrayColor
+                      : AppColors.titleIndicatorColor,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: AppDimens.MARGIN_MEDIUM_2,
                 ),
-                TextViewWidget(
-                  "Description",
-                  textColor: AppColors.blackColor.withOpacity(0.5),
-                  fontWeight: FontWeight.w700,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextViewWidget(
+                      "Description",
+                      textColor: AppColors.blackColor.withOpacity(0.5),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    TextViewWidget(
+                      "${controller.descriptionCount.value}/80",
+                      textColor: AppColors.blackColor.withOpacity(0.5),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: AppDimens.MARGIN_SMALL,
@@ -119,9 +136,15 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                   hintText: "Enter Description",
                   minLine: 4,
                   maxLine: 100,
+                  onTextChange: (value) {
+                    controller.setDescriptionCount(value.length);
+                  },
                   textInputType: TextInputType.multiline,
                   textInputAction: TextInputAction.newline,
                   commonValidation: Validator.commonValidation,
+                  formBorderColor: controller.descriptionCount.value >= 80
+                      ? AppColors.spaceGrayColor
+                      : AppColors.titleIndicatorColor,
                 ),
                 SizedBox(
                   height: AppDimens.MARGIN_MEDIUM_2,

@@ -1,3 +1,4 @@
+import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_home_controller.dart';
 import 'package:blog_post_flutter/app/widget/parent_view_smart_refresher.dart';
@@ -29,29 +30,37 @@ class PostHomeScreen extends BaseView<PostHomeController> {
   @override
   Widget body(BuildContext context) {
     return Obx(
-      () => SmartRefresherParentView(
-        refreshController: controller.refreshController,
-        enablePullUp: true,
-        onRefresh: () => controller.resetAndGetPostList(
-            refreshController: controller.refreshController),
-        onLoading: () => controller.getPostList(
-            refreshController: controller.refreshController),
-        child: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
-          slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return PostItemWidget(
-                    post: controller.postList[index],
-                  );
-                },
-                childCount: controller.postList.length,
+      () => controller.postList.isNotEmpty
+          ? SmartRefresherParentView(
+              refreshController: controller.refreshController,
+              enablePullUp: true,
+              onRefresh: () => controller.resetAndGetPostList(
+                  refreshController: controller.refreshController),
+              onLoading: () => controller.getPostList(
+                  refreshController: controller.refreshController),
+              child: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: AppDimens.MARGIN_MEDIUM,),
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return PostItemWidget(
+                          post: controller.postList[index],
+                        );
+                      },
+                      childCount: controller.postList.length,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: AppDimens.MARGIN_MEDIUM_2,),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }

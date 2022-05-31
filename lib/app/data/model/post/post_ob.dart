@@ -1,119 +1,131 @@
-
-
-import 'package:blog_post_flutter/app/data/model/pagination/pagination_ob.dart';
-
-/// data : [{"id":17,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post7 Updated","content":"This is Post7 Updated","created_date":"2022-05-01T11:55:29.368856Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/default.jpg"},{"id":18,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post19","content":"This is Post19","created_date":"2022-05-01T11:55:44.208051Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/default.jpg"},{"id":19,"posted_by":{"id":2,"username":"minzinphyo","email":""},"title":"Post18","content":"This is Post18","created_date":"2022-05-01T11:56:18.396092Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/default.jpg"},{"id":20,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post19","content":"This is Post19","created_date":"2022-05-01T12:03:32.025300Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/30fda547-4443-40c3-8259-aae72a63e1ba.jpg"},{"id":22,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-01T14:23:28.865668Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/default.jpg"},{"id":23,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-03T16:11:48.321301Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/default.jpg"}]
-/// pagination : {"total_pages":2,"current_page":2,"next_page":null,"previous_page":1}
+/// data : [{"id":12,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post20","content":"This is Post18","created_date":"2022-05-31T11:30:27.076739Z","image":null,"like_counts":0,"is_liked":false,"is_saved":false,"is_owner":false},{"id":11,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post20","content":"This is Post18","created_date":"2022-05-31T11:30:14.605367Z","image":null,"like_counts":0,"is_liked":false,"is_saved":false,"is_owner":false},{"id":10,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post20","content":"This is Post18","created_date":"2022-05-30T11:36:57.442041Z","image":null,"like_counts":0,"is_liked":false,"is_saved":false,"is_owner":false},{"id":9,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post20","content":"This is Post18","created_date":"2022-05-30T11:27:27.929081Z","image":null,"like_counts":0,"is_liked":false,"is_saved":false,"is_owner":false},{"id":8,"posted_by":{"id":3,"username":"mzp@1234","email":"mzp@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-28T11:50:30.817798Z","image":null,"like_counts":1,"is_liked":false,"is_saved":false,"is_owner":false},{"id":6,"posted_by":{"id":3,"username":"mzp@1234","email":"mzp@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-28T11:35:32.317790Z","image":null,"like_counts":0,"is_liked":false,"is_saved":false,"is_owner":false},{"id":4,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-24T12:36:55.167212Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/d803b1ed-1965-47e0-a613-a431aaab0b94.jpg","like_counts":1,"is_liked":false,"is_saved":false,"is_owner":false},{"id":3,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-24T05:05:39.617366Z","image":"https://pyaephyokyaw.pythonanywhere.com/media/1808462e-3856-437a-9513-145f786d0e3a.jpg","like_counts":0,"is_liked":false,"is_saved":false,"is_owner":false},{"id":2,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-24T05:05:11.038353Z","image":null,"like_counts":0,"is_liked":false,"is_saved":false,"is_owner":false},{"id":1,"posted_by":{"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"},"title":"Post18","content":"This is Post18","created_date":"2022-05-24T05:04:34.473867Z","image":null,"like_counts":1,"is_liked":false,"is_saved":false,"is_owner":false}]
+/// pagination : {"total_pages":1,"current_page":1,"next_page":null,"previous_page":null}
 
 class PostListOb {
   PostListOb({
-      List<PostData>? data,
-      Pagination? pagination,}){
-    _data = data;
-    _pagination = pagination;
-}
+      this.data, 
+      this.pagination,});
 
   PostListOb.fromJson(dynamic json) {
     if (json['data'] != null) {
-      _data = [];
+      data = [];
       json['data'].forEach((v) {
-        _data?.add(PostData.fromJson(v));
+        data?.add(PostData.fromJson(v));
       });
     }
-    _pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
+    pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
   }
-  List<PostData>? _data;
-  Pagination? _pagination;
-PostListOb copyWith({  List<PostData>? data,
-  Pagination? pagination,
-}) => PostListOb(  data: data ?? _data,
-  pagination: pagination ?? _pagination,
-);
-  List<PostData>? get data => _data;
-  Pagination? get pagination => _pagination;
+  List<PostData>? data;
+  Pagination? pagination;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+    if (data != null) {
+      map['data'] = data?.map((v) => v.toJson()).toList();
     }
-    if (_pagination != null) {
-      map['pagination'] = _pagination?.toJson();
+    if (pagination != null) {
+      map['pagination'] = pagination?.toJson();
     }
     return map;
   }
 
 }
 
+/// total_pages : 1
+/// current_page : 1
+/// next_page : null
+/// previous_page : null
 
+class Pagination {
+  Pagination({
+      this.totalPages, 
+      this.currentPage, 
+      this.nextPage, 
+      this.previousPage,});
 
-/// id : 17
-/// posted_by : {"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"}
-/// title : "Post7 Updated"
-/// content : "This is Post7 Updated"
-/// created_date : "2022-05-01T11:55:29.368856Z"
-/// image : "https://pyaephyokyaw.pythonanywhere.com/media/default.jpg"
-
-class PostData {
-  PostData({
-      int? id, 
-      PostedBy? postedBy, 
-      String? title, 
-      String? content, 
-      String? createdDate, 
-      String? image,}){
-    _id = id;
-    _postedBy = postedBy;
-    _title = title;
-    _content = content;
-    _createdDate = createdDate;
-    _image = image;
-}
-
-  PostData.fromJson(dynamic json) {
-    _id = json['id'];
-    _postedBy = json['posted_by'] != null ? PostedBy.fromJson(json['posted_by']) : null;
-    _title = json['title'];
-    _content = json['content'];
-    _createdDate = json['created_date'];
-    _image = json['image'];
+  Pagination.fromJson(dynamic json) {
+    totalPages = json['total_pages'];
+    currentPage = json['current_page'];
+    nextPage = json['next_page'];
+    previousPage = json['previous_page'];
   }
-  int? _id;
-  PostedBy? _postedBy;
-  String? _title;
-  String? _content;
-  String? _createdDate;
-  String? _image;
-PostData copyWith({  int? id,
-  PostedBy? postedBy,
-  String? title,
-  String? content,
-  String? createdDate,
-  String? image,
-}) => PostData(  id: id ?? _id,
-  postedBy: postedBy ?? _postedBy,
-  title: title ?? _title,
-  content: content ?? _content,
-  createdDate: createdDate ?? _createdDate,
-  image: image ?? _image,
-);
-  int? get id => _id;
-  PostedBy? get postedBy => _postedBy;
-  String? get title => _title;
-  String? get content => _content;
-  String? get createdDate => _createdDate;
-  String? get image => _image;
+  int? totalPages;
+  int? currentPage;
+  dynamic nextPage;
+  dynamic previousPage;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = _id;
-    if (_postedBy != null) {
-      map['posted_by'] = _postedBy?.toJson();
+    map['total_pages'] = totalPages;
+    map['current_page'] = currentPage;
+    map['next_page'] = nextPage;
+    map['previous_page'] = previousPage;
+    return map;
+  }
+
+}
+
+/// id : 12
+/// posted_by : {"id":1,"username":"pyaephyokyaw","email":"pyaephyokyaw@gmail.com"}
+/// title : "Post20"
+/// content : "This is Post18"
+/// created_date : "2022-05-31T11:30:27.076739Z"
+/// image : null
+/// like_counts : 0
+/// is_liked : false
+/// is_saved : false
+/// is_owner : false
+
+class PostData {
+  PostData({
+      this.id, 
+      this.postedBy, 
+      this.title, 
+      this.content, 
+      this.createdDate, 
+      this.image, 
+      this.likeCounts, 
+      this.isLiked, 
+      this.isSaved, 
+      this.isOwner,});
+
+  PostData.fromJson(dynamic json) {
+    id = json['id'];
+    postedBy = json['posted_by'] != null ? PostedBy.fromJson(json['posted_by']) : null;
+    title = json['title'];
+    content = json['content'];
+    createdDate = json['created_date'];
+    image = json['image'];
+    likeCounts = json['like_counts'];
+    isLiked = json['is_liked'];
+    isSaved = json['is_saved'];
+    isOwner = json['is_owner'];
+  }
+  int? id;
+  PostedBy? postedBy;
+  String? title;
+  String? content;
+  String? createdDate;
+  String? image;
+  int? likeCounts;
+  bool? isLiked;
+  bool? isSaved;
+  bool? isOwner;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    if (postedBy != null) {
+      map['posted_by'] = postedBy?.toJson();
     }
-    map['title'] = _title;
-    map['content'] = _content;
-    map['created_date'] = _createdDate;
-    map['image'] = _image;
+    map['title'] = title;
+    map['content'] = content;
+    map['created_date'] = createdDate;
+    map['image'] = image;
+    map['like_counts'] = likeCounts;
+    map['is_liked'] = isLiked;
+    map['is_saved'] = isSaved;
+    map['is_owner'] = isOwner;
     return map;
   }
 
@@ -125,38 +137,24 @@ PostData copyWith({  int? id,
 
 class PostedBy {
   PostedBy({
-      int? id, 
-      String? username, 
-      String? email,}){
-    _id = id;
-    _username = username;
-    _email = email;
-}
+      this.id, 
+      this.username, 
+      this.email,});
 
   PostedBy.fromJson(dynamic json) {
-    _id = json['id'];
-    _username = json['username'];
-    _email = json['email'];
+    id = json['id'];
+    username = json['username'];
+    email = json['email'];
   }
-  int? _id;
-  String? _username;
-  String? _email;
-PostedBy copyWith({  int? id,
-  String? username,
-  String? email,
-}) => PostedBy(  id: id ?? _id,
-  username: username ?? _username,
-  email: email ?? _email,
-);
-  int? get id => _id;
-  String? get username => _username;
-  String? get email => _email;
+  int? id;
+  String? username;
+  String? email;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['username'] = _username;
-    map['email'] = _email;
+    map['id'] = id;
+    map['username'] = username;
+    map['email'] = email;
     return map;
   }
 

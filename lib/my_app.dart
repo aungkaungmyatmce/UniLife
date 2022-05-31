@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       title: "Blog Post",
       locale: Get.find<CacheManager>().getLocale(),
       fallbackLocale: const Locale('my', 'MM'),
-      initialRoute: Paths.MAIN_HOME,
+      initialRoute: isLogin ? Paths.MAIN_HOME : Paths.LOGIN,
       initialBinding: InitialBinding(),
       //theme: lightTheme(),
       getPages: AppPages.routes,

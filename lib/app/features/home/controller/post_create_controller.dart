@@ -8,20 +8,19 @@ import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
-import 'package:blog_post_flutter/app/features/main_home/controller/main_home_controller.dart';
 import 'package:blog_post_flutter/app/widget/post_file_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CreatePostController extends BaseController {
-  final PostRepository _repository =
-  Get.find(tag: (PostRepository).toString());
+  final PostRepository _repository = Get.find(tag: (PostRepository).toString());
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
   Rx<CustomImagePhaserOb?> postImage = CustomImagePhaserOb().obs;
-  CreatePostRequestOb createPostRequestOb =
-  CreatePostRequestOb();
+  CreatePostRequestOb createPostRequestOb = CreatePostRequestOb();
+  RxInt titleCount = 0.obs;
+  RxInt descriptionCount = 0.obs;
 
   @override
   void onInit() {
@@ -58,6 +57,14 @@ class CreatePostController extends BaseController {
     postImage.value = CustomImagePhaserOb();
   }
 
+  void setTitleCount(int i) {
+    titleCount.value = i;
+  }
+  void setDescriptionCount(int i) {
+    descriptionCount.value = i;
+  }
+
+
   void uploadPost() {
     String? base64Image = "";
     if (postImage.value?.image != null &&
@@ -75,28 +82,28 @@ class CreatePostController extends BaseController {
       AppUtils.showToast("Please Enter Description ");
       return;
     }
+    if (descriptionCount.value < 80) {
+      AppUtils.showToast("Description must be at least 80 letters");
+      return;
+    }
     createPostRequestOb.title = titleController.text;
     createPostRequestOb.content = descriptionController.text;
     createPostRequestOb.image = base64Image;
 
     late Future<BaseApiResponse<String?>> repoService;
     print("Create Post is ${createPostRequestOb.toJson()}");
-    //AppUtils.showLoaderDialog();
-    Get.offAllNamed(Paths.MAIN_HOME);
-    // repoService = _repository.createPost(createPostRequestOb);
-    // callAPIService(repoService, onSuccess: (dynamic response) {
-    //   if (response != null) {
-    //     Get.back();
-    //     BaseApiResponse<String?> _baseApiResponse = response;
-    //     if (_baseApiResponse.statusCode == 201) {
-    //       Get.back();
-    //     }
-    //     AppUtils.showToast(" ${_baseApiResponse.message}");
-    //     Get.offNamedUntil(Paths.MAIN_HOME, (route) => false);
-    //   }
-    // }, onError: (Exception exception) {
-    //   Get.back();
-    //   AppUtils.showToast(errorMessage);
-    // });
+    AppUtils.showLoaderDialog();
+    repoService = _repository.createPost(createPostRequestOb);
+    callAPIService(repoService, onSuccess: (dynamic response) {
+      if (response != null) {
+        Get.back();
+        BaseApiResponse<String?> _baseApiResponse = response;
+        Get.offAllNamed(Paths.MAIN_HOME);
+        AppUtils.showToast(" ${_baseApiResponse.message}");
+      }
+    }, onError: (Exception exception) {
+      Get.back();
+      AppUtils.showToast(errorMessage);
+    });
   }
 }
