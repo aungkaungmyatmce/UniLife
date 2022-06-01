@@ -24,7 +24,7 @@ class AppPages {
     GetPage(
         name: Paths.MAIN_HOME,
         page: () => MainHomeScreen(),
-        binding: MainHomeBinding()),
+        bindings: [MainHomeBinding(), HomeBinding(), FavouriteBinding()]),
     GetPage(
         name: Paths.HOME, page: () => PostHomeScreen(), binding: HomeBinding()),
     GetPage(

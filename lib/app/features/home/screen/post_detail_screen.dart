@@ -1,8 +1,11 @@
+import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
 import 'package:blog_post_flutter/app/widget/rounded_corner_image_widget.dart';
+import 'package:blog_post_flutter/app/widget/skeleton_widget.dart';
+import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,21 +15,25 @@ class PostDetailScreen extends BaseView<PostDetailController> {
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: const Text('Post Detail'),
+      title: const TextViewWidget(
+        'Post Detail',
+        textSize: AppDimens.TEXT_REGULAR_2X,
+        textColor: AppColors.whiteColor,
+      ),
       actions: [
         Obx(() => GestureDetector(
-          onTap: () => controller.toggleSavePost(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(
-              Icons.bookmark,
-              color: controller.postDetail.value.isSaved == true
-                  ? Colors.grey
-                  : Colors.white,
-              size: 28,
-            ),
-          ),
-        ))
+              onTap: () => controller.toggleSavePost(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Icon(
+                  Icons.bookmark,
+                  color: controller.postDetail.value.isSaved == true
+                      ? Colors.grey
+                      : Colors.white,
+                  size: 28,
+                ),
+              ),
+            ))
       ],
     );
   }
@@ -154,6 +161,80 @@ class PostDetailScreen extends BaseView<PostDetailController> {
               ),
             ),
           )
-        : const Center(child: CircularProgressIndicator()));
+        : Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SkeletonWidget(
+                  width: 80,
+                  height: 25,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    const SkeletonWidget(
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    SkeletonWidget(
+                      width: 80,
+                    ),
+                    const SizedBox(
+                      width: 2,
+                    ),
+                    SkeletonWidget(
+                      width: 80,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 16,
+                  children: [
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 4,
+                      children: const [
+                        SkeletonWidget(
+                          width: 30,
+                        ),
+                        SkeletonWidget(
+                          width: 30,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const SkeletonWidget(
+                  width: double.infinity,
+                  height: 250,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Expanded(
+                  child: const SkeletonWidget(
+                    width: double.infinity,
+                  ),
+                ),
+              ],
+            ),
+          ));
   }
 }

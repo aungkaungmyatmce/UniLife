@@ -14,12 +14,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CreatePostScreen extends BaseView<CreatePostController> {
-
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: const Text('Create Post'),
+      title: const TextViewWidget(
+        'Create Post',
+        textSize: AppDimens.TEXT_REGULAR_2X,
+        textColor: AppColors.whiteColor,
+      ),
     );
   }
 
