@@ -19,8 +19,8 @@ class PostItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimens.MARGIN_MEDIUM,
+      padding: EdgeInsets.only(
+        left: AppDimens.MARGIN_MEDIUM,right: AppDimens.MARGIN_MEDIUM,
       ),
       child: InkWell(
         onTap: () => Get.toNamed(Paths.POST_DETAIL, arguments: post.id!),
@@ -91,7 +91,8 @@ class PostItemWidget extends StatelessWidget {
               maxLine: 2,
               fontWeight: FontWeight.w400,
             ),
-            Divider()
+            SizedBox(height: AppDimens.MARGIN_SMALL,),
+            Divider(),
           ],
         ),
       ),

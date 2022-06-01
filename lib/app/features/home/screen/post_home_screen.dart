@@ -1,5 +1,6 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_home_controller.dart';
 import 'package:blog_post_flutter/app/widget/parent_view_smart_refresher.dart';
@@ -23,7 +24,7 @@ class PostHomeScreen extends BaseView<PostHomeController> {
         Padding(
           padding: const EdgeInsets.all(7),
           child: InkWell(
-            onTap: () => controller.navigateToLoginScreen(),
+            onTap: () => Get.toNamed(Paths.PROFILE),
             child: const CircleAvatar(
               backgroundImage: NetworkImage(
                   'https://static.bangkokpost.com/media/content/20211028/c1_2205267_211028062917.jpg'),

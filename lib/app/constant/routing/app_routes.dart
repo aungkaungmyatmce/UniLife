@@ -8,4 +8,5 @@ class Paths {
   static const POST_DETAIL = '/Post-Detail';
   static const POST_CREATE = '/Post-Create';
   static const FAVOURITE = '/favorite';
+  static const PROFILE = '/profile';
 }

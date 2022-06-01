@@ -63,6 +63,9 @@ class PostItemSkeleton extends StatelessWidget {
             SkeletonWidget(
               height: 30,
             ),
+            SizedBox(
+              height: AppDimens.MARGIN_SMALL,
+            ),
             Divider()
           ],
         ),
