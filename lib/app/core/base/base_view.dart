@@ -96,7 +96,7 @@ abstract class BaseView<Controller extends BaseController>
     return null;
   }
 
-  Widget _showLoading() {
+  Widget showLoading() {
     return const Loading();
   }
 
@@ -111,7 +111,7 @@ abstract class BaseView<Controller extends BaseController>
       case ViewState.DEFAULT:
         return const SizedBox();
       case ViewState.LOADING:
-        return _showLoading();
+        return showLoading();
       case ViewState.SUCCESS:
         return const SizedBox();
       case ViewState.FAILED:

@@ -4,7 +4,6 @@ import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
-import 'package:blog_post_flutter/app/data/network/exception/base_exception.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -77,16 +76,7 @@ class FavouriteController extends BaseController {
     }
   }
 
-  void _handleSavePostListResponseError(BaseException exception) {
-    resetRefreshController(_savePostList);
-    if (_savePostList.isEmpty) {
-      updatePageState(
-        ViewState.FAILED,
-        onClickTryAgain: () => resetAndGetSavePostList(),
-      );
-    } else {
-      AppUtils.showToast(exception.message);
-    }
-    return;
+  void _handleSavePostListResponseError(Exception exception) {
+    AppUtils.showToast(errorMessage);
   }
 }

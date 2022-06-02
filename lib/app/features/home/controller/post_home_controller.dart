@@ -5,7 +5,6 @@ import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
-import 'package:blog_post_flutter/app/data/network/exception/base_exception.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -78,17 +77,8 @@ class PostHomeController extends BaseController {
     }
   }
 
-  void _handlePostListResponseError(BaseException exception) {
-    resetRefreshController(_postList);
-    if (_postList.isEmpty) {
-      updatePageState(
-        ViewState.FAILED,
-        onClickTryAgain: () => resetAndGetPostList(),
-      );
-    } else {
-      AppUtils.showToast(exception.message);
-    }
-    return;
+  void _handlePostListResponseError(Exception exception) {
+    AppUtils.showToast(errorMessage);
   }
 
   @override
@@ -97,7 +87,7 @@ class PostHomeController extends BaseController {
     super.clearAllData();
   }
 
-  void navigateToLoginScreen(){
+  void navigateToLoginScreen() {
     clearAllData();
     Get.offAllNamed(Paths.LOGIN);
   }

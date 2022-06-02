@@ -61,8 +61,10 @@ class FavouriteScreen extends BaseView<FavouriteController> {
         : SmartRefresherParentView(
             refreshController: controller.refreshController,
             enablePullUp: true,
-            onRefresh: () => null,
-            onLoading: () => null,
+            onRefresh: () => controller.resetAndGetSavePostList(
+                refreshController: controller.refreshController),
+            onLoading: () => controller.getSavePostList(
+                refreshController: controller.refreshController),
             child: CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [

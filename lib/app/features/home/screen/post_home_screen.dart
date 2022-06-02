@@ -74,8 +74,10 @@ class PostHomeScreen extends BaseView<PostHomeController> {
         : SmartRefresherParentView(
             refreshController: controller.refreshController,
             enablePullUp: true,
-            onRefresh: () => null,
-            onLoading: () => null,
+            onRefresh: () => controller.resetAndGetPostList(
+                refreshController: controller.refreshController),
+            onLoading: () => controller.getPostList(
+                refreshController: controller.refreshController),
             child: CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
@@ -101,4 +103,31 @@ class PostHomeScreen extends BaseView<PostHomeController> {
             ),
           ));
   }
+
+// @override
+// Widget showLoading() {
+//   return CustomScrollView(
+//     physics: const ClampingScrollPhysics(),
+//     slivers: [
+//       const SliverToBoxAdapter(
+//         child: SizedBox(
+//           height: AppDimens.MARGIN_MEDIUM,
+//         ),
+//       ),
+//       SliverList(
+//         delegate: SliverChildBuilderDelegate(
+//           (BuildContext context, int index) {
+//             return PostItemSkeleton();
+//           },
+//           childCount: 15,
+//         ),
+//       ),
+//       const SliverToBoxAdapter(
+//         child: SizedBox(
+//           height: AppDimens.MARGIN_MEDIUM_2,
+//         ),
+//       ),
+//     ],
+//   );
+// }
 }

@@ -40,7 +40,7 @@ class PostDetailController extends BaseController {
   }
 
   void _handleResponseError(Exception exception) {
-    AppUtils.showToast("Error $errorMessage");
+    AppUtils.showToast(errorMessage);
   }
 
   //Toggle Like Post
@@ -54,7 +54,6 @@ class PostDetailController extends BaseController {
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }
     }, onError: (Exception exception) {
-      Get.back();
       AppUtils.showToast(errorMessage);
     });
   }
@@ -70,7 +69,6 @@ class PostDetailController extends BaseController {
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }
     }, onError: (Exception exception) {
-      Get.back();
       AppUtils.showToast(errorMessage);
     });
   }
