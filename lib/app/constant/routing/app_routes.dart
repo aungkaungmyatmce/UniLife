@@ -7,6 +7,7 @@ class Paths {
   static const HOME = '/Home';
   static const POST_DETAIL = '/Post-Detail';
   static const POST_CREATE = '/Post-Create';
+  static const POST_EDIT = '/Post-Edit';
   static const FAVOURITE = '/favorite';
   static const PROFILE = '/profile';
 }

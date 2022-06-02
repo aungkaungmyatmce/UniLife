@@ -1,5 +1,6 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
@@ -48,12 +49,36 @@ class PostDetailScreen extends BaseView<PostDetailController> {
               child: ListView(
                 physics: const ClampingScrollPhysics(),
                 children: [
-                  Text(
-                    controller.postDetail.value.title!,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: AppDimens.TEXT_REGULAR_2,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        controller.postDetail.value.title!,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: AppDimens.TEXT_REGULAR_2,
+                        ),
+                      ),
+                      const Spacer(),
+                      controller.postDetail.value.isOwner == true
+                          ? InkWell(
+                              onTap: () => Get.toNamed(Paths.POST_EDIT,
+                                  arguments: controller.postDetail.value),
+                              child: const Icon(
+                                Icons.edit,
+                                color: AppColors.primaryColor,
+                              ),
+                            )
+                          : SizedBox(),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      controller.postDetail.value.isOwner == true
+                          ? Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            )
+                          : SizedBox(),
+                    ],
                   ),
                   const SizedBox(
                     height: 16,

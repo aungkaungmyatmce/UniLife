@@ -31,7 +31,7 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
     var dioCall = dioClient.get("$endpoint/saved_post/list/?page=$page");
     try {
       return callApiWithErrorParser(dioCall).then(
-            (response) => _parseSavePostListResponse(response),
+        (response) => _parseSavePostListResponse(response),
       );
     } catch (e) {
       rethrow;
@@ -66,6 +66,21 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
       CreatePostRequestOb postRequestOb) {
     try {
       return callApiWithErrorParser(dioClient.post(endpoint + "/post/create/",
+              data: postRequestOb.toJson()))
+          .then((response) => BaseApiResponse<String?>.fromStringJson(
+                response.data,
+              ));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> updatePost(
+      CreatePostRequestOb postRequestOb, postId) {
+    try {
+      return callApiWithErrorParser(dioClient.put(
+              endpoint + "/post/$postId/update/",
               data: postRequestOb.toJson()))
           .then((response) => BaseApiResponse<String?>.fromStringJson(
                 response.data,

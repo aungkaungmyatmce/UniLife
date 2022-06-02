@@ -13,7 +13,12 @@ abstract class PostRepository {
   Future<BaseApiResponse<PostData>> getPostDetail(postId);
 
   //Create Post
-  Future<BaseApiResponse<String?>> createPost(CreatePostRequestOb createPostRequestOb);
+  Future<BaseApiResponse<String?>> createPost(
+      CreatePostRequestOb createPostRequestOb);
+
+  //Update Post
+  Future<BaseApiResponse<String?>> updatePost(
+      CreatePostRequestOb createPostRequestOb,postId);
 
   //Like Post
   Future<BaseApiResponse<String?>> toggleLikePost(postId);

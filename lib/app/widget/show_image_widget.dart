@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/constant/enum_image_type.dart';
@@ -36,7 +37,7 @@ class ShowImageWidget extends StatelessWidget {
           width: width,
           height: height,
           child: CachedNetworkImage(
-            imageUrl: DioProvider.baseUrl + imagePath,
+            imageUrl: imagePath,
             width: width,
             height: height,
             fit: fit,
@@ -95,7 +96,7 @@ class ShowRoundedImageWidget extends StatelessWidget {
       child: isLocalImage!
           ? Image.asset(imagePath, fit: fit)
           : CachedNetworkImageWidget(
-              imageUrl: DioProvider.baseUrl +imagePath,
+              imageUrl: DioProvider.baseUrl + imagePath,
               height: height,
               width: width,
             ),
