@@ -23,7 +23,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   final _pageNumber = [
     PostHomeScreen(),
     GlobalVariable.token != null ? CreatePostScreen() : const LoginScreen(),
-    FavouriteScreen(),
+    GlobalVariable.token != null ? FavouriteScreen() : const LoginScreen(),
   ];
 
   @override

@@ -1,3 +1,5 @@
+import 'package:blog_post_flutter/app/data/repository/authentication/authentication_repository.dart';
+import 'package:blog_post_flutter/app/data/repository/authentication/authentication_repository_impl.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository_impl.dart';
 import 'package:blog_post_flutter/app/features/authentication/controller/login_controller.dart';
@@ -13,7 +15,10 @@ class MainHomeBinding extends Bindings {
     Get.lazyPut(() => MainHomeController());
     Get.lazyPut(() => CreatePostController());
     Get.lazyPut(() => EditPostController());
-    Get.lazyPut(() => LoginController());
+    Get.lazyPut<AuthRepository>(
+      () => AuthRepositoryImpl(),
+      tag: (AuthRepository).toString(),
+    );
     Get.lazyPut(() => ProfileController());
     Get.lazyPut<PostRepository>(
       () => PostRepositoryImpl(),

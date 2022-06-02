@@ -1,5 +1,7 @@
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
+import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
@@ -45,31 +47,39 @@ class PostDetailController extends BaseController {
 
   //Toggle Like Post
   void toggleLikePost() {
-    late Future<BaseApiResponse<String?>> repoService;
-    repoService = _repository.toggleLikePost(postDetail.value.id);
-    callAPIService(repoService, onSuccess: (dynamic response) {
-      if (response != null) {
-        BaseApiResponse<String?> _baseApiResponse = response;
-        getPostDetail(postId!);
-        AppUtils.showToast(" ${_baseApiResponse.message}");
-      }
-    }, onError: (Exception exception) {
-      AppUtils.showToast(errorMessage);
-    });
+    if (GlobalVariable.token != null) {
+      late Future<BaseApiResponse<String?>> repoService;
+      repoService = _repository.toggleLikePost(postDetail.value.id);
+      callAPIService(repoService, onSuccess: (dynamic response) {
+        if (response != null) {
+          BaseApiResponse<String?> _baseApiResponse = response;
+          getPostDetail(postId!);
+          AppUtils.showToast(" ${_baseApiResponse.message}");
+        }
+      }, onError: (Exception exception) {
+        AppUtils.showToast(errorMessage);
+      });
+    } else {
+      Get.toNamed(Paths.LOGIN);
+    }
   }
 
   //Toggle Like Post
   void toggleSavePost() {
-    late Future<BaseApiResponse<String?>> repoService;
-    repoService = _repository.toggleSavePost(postDetail.value.id);
-    callAPIService(repoService, onSuccess: (dynamic response) {
-      if (response != null) {
-        BaseApiResponse<String?> _baseApiResponse = response;
-        getPostDetail(postId!);
-        AppUtils.showToast(" ${_baseApiResponse.message}");
-      }
-    }, onError: (Exception exception) {
-      AppUtils.showToast(errorMessage);
-    });
+    if (GlobalVariable.token != null) {
+      late Future<BaseApiResponse<String?>> repoService;
+      repoService = _repository.toggleSavePost(postDetail.value.id);
+      callAPIService(repoService, onSuccess: (dynamic response) {
+        if (response != null) {
+          BaseApiResponse<String?> _baseApiResponse = response;
+          getPostDetail(postId!);
+          AppUtils.showToast(" ${_baseApiResponse.message}");
+        }
+      }, onError: (Exception exception) {
+        AppUtils.showToast(errorMessage);
+      });
+    } else {
+      Get.toNamed(Paths.LOGIN);
+    }
   }
 }

@@ -20,16 +20,25 @@ class AppPages {
   static const INITIAL = Paths.LOGIN;
 
   static final routes = [
-    GetPage(
-        name: Paths.LOGIN,
-        page: () => const LoginScreen(),
-        binding: AuthenticationBinding()),
+    GetPage(name: Paths.LOGIN, page: () => const LoginScreen(), bindings: [
+      AuthenticationBinding(),
+      MainHomeBinding(),
+      HomeBinding(),
+      FavouriteBinding()
+    ]),
     GetPage(
         name: Paths.MAIN_HOME,
-        page: () => MainHomeScreen(),
-        bindings: [MainHomeBinding(), HomeBinding(), FavouriteBinding()]),
-    GetPage(
-        name: Paths.HOME, page: () => PostHomeScreen(), binding: HomeBinding()),
+        page: () => const MainHomeScreen(),
+        bindings: [
+          MainHomeBinding(),
+          AuthenticationBinding(),
+          HomeBinding(),
+          FavouriteBinding()
+        ]),
+    GetPage(name: Paths.HOME, page: () => PostHomeScreen(), bindings: [
+      HomeBinding(),
+      AuthenticationBinding(),
+    ]),
     GetPage(
         name: Paths.POST_DETAIL,
         page: () => PostDetailScreen(),
