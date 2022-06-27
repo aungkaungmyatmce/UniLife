@@ -5,5 +5,5 @@ import 'package:get/get.dart';
 
 void main() async {
   await Get.putAsync<CacheManager>(() async => CacheManager().init());
-  runApp(const MyApp());
+  runApp(MyApp());
 }
