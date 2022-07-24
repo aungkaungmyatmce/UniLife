@@ -34,7 +34,7 @@ class _CachedNetworkImageWidgetState extends State<CachedNetworkImageWidget> {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: widget.imageUrl??"",
+      imageUrl: widget.imageUrl ?? "",
       fit: widget.boxFit,
       width: getWidth,
       height: getHeight,
