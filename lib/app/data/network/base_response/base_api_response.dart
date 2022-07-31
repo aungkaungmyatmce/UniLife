@@ -39,7 +39,7 @@ class BaseApiResponse<T> {
   factory BaseApiResponse.fromObjectJson(Map<String, dynamic> json,
       {@required Function(Map<String, dynamic>)? createObject}) {
     return BaseApiResponse<T>(
-      objectResult: createObject!(json["result"]),
+      objectResult: json["result"] != null ? createObject!(json["result"]) : null,
       statusCode: json["status_code"],
       message: json["message"],
     );

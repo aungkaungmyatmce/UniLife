@@ -3,6 +3,7 @@
 class Paths {
   static const APP = '/App';
   static const LOGIN = '/Login';
+  static const SIGN_UP = '/SignUp';
   static const MAIN_HOME = '/MainHome';
   static const HOME = '/Home';
   static const POST_DETAIL = '/Post-Detail';

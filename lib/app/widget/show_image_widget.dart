@@ -18,6 +18,7 @@ class ShowImageWidget extends StatelessWidget {
   final double? height;
   final ImageType imageType;
   final File? imageFile;
+  final double? fileImageBorderRadius;
 
   const ShowImageWidget(
       {Key? key,
@@ -26,7 +27,7 @@ class ShowImageWidget extends StatelessWidget {
       this.width = 100,
       this.height = 100,
       this.fit = BoxFit.cover,
-      this.imageType = ImageType.networkImage})
+      this.imageType = ImageType.networkImage, this.fileImageBorderRadius = 0})
       : super(key: key);
 
   @override
@@ -55,11 +56,14 @@ class ShowImageWidget extends StatelessWidget {
         );
         break;
       case ImageType.fileImage:
-        return Image.file(
-          imageFile!,
-          width: width,
-          height: height,
-          fit: fit,
+        return ClipRRect(
+              borderRadius: BorderRadius.circular(fileImageBorderRadius!),
+          child: Image.file(
+            imageFile!,
+            width: width,
+            height: height,
+            fit: fit,
+          ),
         );
       default:
         return Image.asset(

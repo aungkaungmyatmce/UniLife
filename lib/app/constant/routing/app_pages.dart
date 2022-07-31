@@ -1,6 +1,6 @@
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/features/authentication/binding/authentication_binding.dart';
-import 'package:blog_post_flutter/app/features/authentication/screen/login_screen.dart';
+import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/binding/favourite_binding.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
 import 'package:blog_post_flutter/app/features/home/binding/post_home_binding.dart';
@@ -20,7 +20,7 @@ class AppPages {
   static const INITIAL = Paths.LOGIN;
 
   static final routes = [
-    GetPage(name: Paths.LOGIN, page: () => const LoginScreen(), bindings: [
+    GetPage(name: Paths.SIGN_UP, page: () =>  SignUpScreen(), bindings: [
       AuthenticationBinding(),
       MainHomeBinding(),
       HomeBinding(),

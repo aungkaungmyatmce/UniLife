@@ -1,6 +1,6 @@
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
-import 'package:blog_post_flutter/app/features/authentication/screen/login_screen.dart';
+import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_home_screen.dart';
@@ -22,8 +22,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   final _pageNumber = [
     PostHomeScreen(),
-    GlobalVariable.token != null ? CreatePostScreen() : const LoginScreen(),
-    GlobalVariable.token != null ? FavouriteScreen() : const LoginScreen(),
+    PostHomeScreen(),
+    GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
+    GlobalVariable.token != null ? FavouriteScreen() : SignUpScreen(),
+    SignUpScreen()
   ];
 
   @override
@@ -33,11 +35,13 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       bottomNavigationBar: Obx(() => ConvexAppBar(
             items: const [
               TabItem(icon: Icons.home, title: "Home"),
+              TabItem(icon: Icons.home, title: "Home"),
               TabItem(icon: Icons.add, title: "Add"),
               TabItem(icon: Icons.favorite, title: "Favourite"),
+              TabItem(icon: Icons.person, title: "Profile"),
             ],
             initialActiveIndex: mainHomeScreenController.selectedPage.value,
-            style: TabStyle.fixedCircle,
+            style: TabStyle.fixed,
             cornerRadius: AppDimens.MARGIN_MEDIUM_2X,
             onTap: (int index) {
               mainHomeScreenController.setSelectedIndex(index);

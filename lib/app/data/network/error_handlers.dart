@@ -73,10 +73,10 @@ Exception handleDioError(DioError dioError) {
   String? serverMessage;
   try {
     if (statusCode == -1 || statusCode == HttpStatus.ok) {
-      statusCode = dioError.response?.data["statusCode"];
-    } else if (dioError.response?.data["statusCode"] == 40101 ||
-        dioError.response?.data["statusCode"] == 40102 ||
-        dioError.response?.data["statusCode"] == 401) {
+      statusCode = dioError.response?.data["status_code"];
+    } else if (dioError.response?.data["status_code"] == 40101 ||
+        dioError.response?.data["status_code"] == 40102 ||
+        dioError.response?.data["status_code"] == 401) {
       Get.find<CacheManager>().clearAllData();
       AppUtils.showToast("Unauthorized: Please login again");
       Get.offAllNamed(
