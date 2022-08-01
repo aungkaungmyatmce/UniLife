@@ -1,179 +1,133 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
-import 'package:blog_post_flutter/app/core/config/size_config.dart';
-import 'package:blog_post_flutter/app/features/authentication/controller/login_controller.dart';
-import 'package:blog_post_flutter/app/widget/primary_button_widget.dart';
-import 'package:blog_post_flutter/app/widget/show_image_widget.dart';
+import 'package:blog_post_flutter/app/core/base/base_view.dart';
+import 'package:blog_post_flutter/app/features/authentication/controller/authentication_controller.dart';
+import 'package:blog_post_flutter/app/widget/signInUpLogoWidget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends GetView<LoginController> {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends BaseView<AuthenticationController> {
+  @override
+  PreferredSizeWidget? appBar(BuildContext context) {
+    return AppBar(
+      centerTitle: true,
+      title: const TextViewWidget(
+        'Login',
+        textSize: AppDimens.TEXT_REGULAR_2X,
+        textColor: AppColors.whiteColor,
+      ),
+    );
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Login'),
+  Widget body(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Stack(
+          children: [
+            SignInUpLogoWidget(width: MediaQuery.of(context).size.width),
+            Positioned(
+                top: 120,
+                left: MediaQuery.of(context).size.width * 0.3,
+                child: const TextViewWidget(
+                  "UniLife",
+                  textSize: 60,
+                )),
+          ],
         ),
-        body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              SizedBox(
-                height: SizeConfig.screenHeight,
-                width: SizeConfig.screenWidth,
-              ),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: AppDimens.MARGIN_MEDIUM,
-                    ),
-                    const TextViewWidget(
-                      "Login",
-                      textSize: 18,
-                      fontWeight: FontWeight.w700,
-                      textColor: AppColors.blackColor,
-                    ),
-                    const SizedBox(
-                      height: AppDimens.MARGIN_LARGE,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: Form(
+              key: controller.loginFormKey,
+              child: Obx(() => Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: TextFormField(
+                        controller: controller.loginUserNameController.value,
+                        decoration: InputDecoration(
+                          labelText: 'Username',
+                          suffixIcon: controller.loginUserName.value.isNotEmpty
+                              ? const Icon(
+                                  Icons.done,
+                                  color: Color(0xff4135F3),
+                                )
+                              : const SizedBox(),
+                        ),
+                        onChanged: (String value) {
+                          controller.loginUserName.value = value;
+                        },
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(
-                        AppDimens.MARGIN_MEDIUM_2,
-                      ),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppDimens.MARGIN_MEDIUM_2,
-                          ),
-                        ),
-                        elevation: 4.0,
-                        child: Container(
-                          padding: const EdgeInsets.all(
-                            AppDimens.MARGIN_MEDIUM_2,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  TextField(
-                                    controller: controller.userNameController,
-                                    autofocus: false,
-                                    decoration: InputDecoration(
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(AppDimens.MARGIN_MEDIUM),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: AppColors.spaceWhiteColor),
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(AppDimens.MARGIN_MEDIUM),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: AppColors.spaceWhiteColor),
-                                      ),
-                                      filled: true,
-                                      hintStyle: TextStyle(
-                                        color: AppColors.textColor.withOpacity(
-                                          0.5,
-                                        ),
-                                        height: 1,
-                                      ),
-                                      hintText: "Enter username or phone",
-                                      contentPadding: const EdgeInsets.all(
-                                        AppDimens.MARGIN_CARD_MEDIUM_2,
-                                      ),
-                                      fillColor: AppColors.spaceWhiteColor,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: AppDimens.MARGIN_CARD_MEDIUM_2,
-                                  ),
-                                  Obx(() => TextField(
-                                    autofocus: false,
-                                    obscureText: !controller.showPassword.value,
-                                    controller: controller.passwordController,
-                                    decoration: InputDecoration(
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              AppDimens.MARGIN_MEDIUM),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: AppColors.spaceWhiteColor),
-                                      ),
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              AppDimens.MARGIN_MEDIUM),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: AppColors.spaceWhiteColor),
-                                      ),
-                                      filled: true,
-                                      hintStyle: TextStyle(
-                                        color: AppColors.textColor
-                                            .withOpacity(
-                                          0.5,
-                                        ),
-                                        height: 1,
-                                      ),
-                                      hintText: "Password",
-                                      isDense: true,
-                                      contentPadding: const EdgeInsets.all(
-                                        AppDimens.MARGIN_CARD_MEDIUM_2,
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: controller.showPassword.value
-                                            ? Icon(
-                                          Icons.visibility,
-                                          color: AppColors.textColor
-                                              .withOpacity(
-                                            0.6,
-                                          ),
-                                        )
-                                            : Icon(
-                                          Icons.visibility_off,
-                                          color: AppColors.textColor
-                                              .withOpacity(
-                                            0.6,
-                                          ),
-                                        ),
-                                        onPressed: () =>
-                                            controller.showHidePassword(),
-                                      ),
-                                      fillColor: AppColors.spaceWhiteColor,
-                                    ),
-                                  )),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: AppDimens.MARGIN_XLARGE,
-                              ),
-                              PrimaryButton(
-                                "Login",
-                                    () => controller.doLogin(),
-                              )
-                            ],
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: TextFormField(
+                        controller: controller.loginPasswordController.value,
+                        obscureText: !controller.showLoginPassword.value,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          // enabledBorder: const UnderlineInputBorder(
+                          //   borderSide: BorderSide(color: Color(0xffF6B90A)),
+                          // ),
+                          suffixIcon: IconButton(
+                            onPressed: () => controller.showHideLoginPassword(),
+                            icon: Icon(
+                              controller.showLoginPassword.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ],
+                  ]))),
+        ),
+        // Center(
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(top: 25),
+        //     child: TextButton(
+        //       onPressed: () {},
+        //       child: const Text(
+        //         'Forgot Password?',
+        //         style: TextStyle(
+        //             fontFamily: 'Roboto',
+        //             fontSize: 14,
+        //             color: Color(0xffB9B9B9)),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: TextButton(
+                onPressed: () => Get.back(),
+                child: const TextViewWidget(
+                  "Create account",
+                  textSize: 14,
+                  textColor: Color(0xffB9B9B9),
+                )),
           ),
-        )
-      // bottomNavigationBar:
+        ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(const Color(0xffF2F2F2)),
+                  alignment: Alignment.center,
+                  fixedSize: MaterialStateProperty.all(const Size.square(60))),
+              onPressed: () => controller.doLogin(),
+              child: const Icon(
+                Icons.arrow_forward_sharp,
+                size: 40,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ),
+      ]),
     );
   }
 }

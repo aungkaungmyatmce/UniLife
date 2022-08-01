@@ -31,7 +31,7 @@ abstract class BaseRemoteSource  {
       Response<T> response = await api;
 
       if (response.statusCode != HttpStatus.ok ||
-          (response.data as Map<String, dynamic>)['statusCode'] !=
+          (response.data as Map<String, dynamic>)['status_code'] !=
               HttpStatus.ok) {
         // TODO
       }
