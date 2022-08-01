@@ -29,6 +29,16 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   ];
 
   @override
+  void initState() {
+    var index = Get.arguments;
+    if(index != null){
+      mainHomeScreenController.selectedPage.value = index;
+    }
+    print("Index is ${mainHomeScreenController.selectedPage.value} and Index is $index");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() => _pageNumber[mainHomeScreenController.selectedPage.value]),

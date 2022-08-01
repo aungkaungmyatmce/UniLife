@@ -8,6 +8,7 @@ import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
+import 'package:blog_post_flutter/app/data/model/authentication/login_request_ob.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_response.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/register_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
@@ -19,6 +20,7 @@ import 'package:get/get.dart';
 class AuthenticationController extends BaseController {
   final AuthRepository _repository = Get.find(tag: (AuthRepository).toString());
 
+  //SignUp
   final Rx<TextEditingController> userNameController =
       TextEditingController().obs;
   final Rx<TextEditingController> firstNameController =
@@ -43,6 +45,16 @@ class AuthenticationController extends BaseController {
   Rx<CustomImagePhaserOb> chooseProfileImage = CustomImagePhaserOb().obs;
   RxString base64ProfileImage = "".obs;
 
+  //Login
+  final Rx<TextEditingController> loginUserNameController =
+      TextEditingController().obs;
+  final Rx<TextEditingController> loginPasswordController =
+      TextEditingController().obs;
+  final GlobalKey loginFormKey = GlobalKey<FormState>();
+  RxString loginUserName = "".obs;
+  RxString loginPassword = "".obs;
+  var showLoginPassword = false.obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -58,6 +70,22 @@ class AuthenticationController extends BaseController {
     final bytes = Io.File(file.path).readAsBytesSync();
     base64ProfileImage.value = "data:image/jpeg;base64," + base64Encode(bytes);
     print("base64ProfileImage is $base64ProfileImage");
+  }
+
+  void savingData(LoginResponse loginResponse) {
+    setData(CacheManagerKey.loginResponseData, jsonEncode(loginResponse));
+  }
+
+  void showHidePassword() {
+    showPassword.value = !showPassword.value;
+  }
+
+  void showHideConfirmPassword() {
+    showConfirmPassword.value = !showConfirmPassword.value;
+  }
+
+  void showHideLoginPassword() {
+    showLoginPassword.value = !showLoginPassword.value;
   }
 
   void doRegister() {
@@ -111,28 +139,28 @@ class AuthenticationController extends BaseController {
     });
   }
 
-// void doLogin() async {
-//   if (userNameController.value.text.isEmpty) {
-//     AppUtils.showToast("Please Enter UserName");
-//   }
-//   if (passwordController.value.text.isEmpty) {
-//     AppUtils.showToast("Please Enter Password");
-//   }
-//   if (userNameController.value.text.isNotEmpty &&
-//       passwordController.value.text.isNotEmpty) {
-//     var requestOb = LoginRequestOb(
-//       username: userNameController.value.text.trim(),
-//       password: passwordController.value.text,
-//     );
-//     final repoService = _repository.loginUser(requestOb);
-//     AppUtils.showLoaderDialog();
-//     callAPIService(repoService, onSuccess: onSuccessLogin,
-//         onError: (BaseException exception) {
-//       Get.back();
-//       AppUtils.showToast(exception.message);
-//     });
-//   }
-// }
+  void doLogin() async {
+    if (loginUserNameController.value.text.isEmpty) {
+      AppUtils.showToast("Please Enter UserName");
+    }
+    if (loginPasswordController.value.text.isEmpty) {
+      AppUtils.showToast("Please Enter Password");
+    }
+    if (loginUserNameController.value.text.isNotEmpty &&
+        loginPasswordController.value.text.isNotEmpty) {
+      var requestOb = LoginRequestOb(
+        username: loginUserNameController.value.text.trim(),
+        password: loginPasswordController.value.text,
+      );
+      final repoService = _repository.loginUser(requestOb);
+      AppUtils.showLoaderDialog();
+      callAPIService(repoService, onSuccess: onSuccessLogin,
+          onError: (BaseException exception) {
+        Get.back();
+        AppUtils.showToast(exception.message);
+      });
+    }
+  }
 
   void onSuccessLogin(response) {
     if (response != null) {
@@ -143,9 +171,7 @@ class AuthenticationController extends BaseController {
           Get.back();
           savingData(_loginResponse);
           AppUtils.showToast("Successfully Registered");
-          Get.offAllNamed(
-            Paths.MAIN_HOME,
-          );
+          Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
         } else {
           AppUtils.showToast("Invalid Credentials");
         }
@@ -156,18 +182,6 @@ class AuthenticationController extends BaseController {
     } else {
       AppUtils.showToast("Something went wrong. Try again!");
     }
-  }
-
-  void savingData(LoginResponse loginResponse) {
-    setData(CacheManagerKey.loginResponseData, jsonEncode(loginResponse));
-  }
-
-  void showHidePassword() {
-    showPassword.value = !showPassword.value;
-  }
-
-  void showHideConfirmPassword() {
-    showConfirmPassword.value = !showConfirmPassword.value;
   }
 
   @override

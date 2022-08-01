@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/constant/enum_image_type.dart';
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/core/utils/image_picker.dart';
 import 'package:blog_post_flutter/app/features/authentication/controller/authentication_controller.dart';
@@ -221,7 +222,7 @@ class SignUpScreen extends BaseView<AuthenticationController> {
                   ])),
               Center(
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => Get.toNamed(Paths.LOGIN),
                     child: const TextViewWidget(
                       "Sign In",
                       textSize: 14,
