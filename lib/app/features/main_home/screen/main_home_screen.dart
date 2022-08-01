@@ -25,7 +25,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     PostHomeScreen(),
     GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
     GlobalVariable.token != null ? FavouriteScreen() : SignUpScreen(),
-    SignUpScreen()
+    GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
   ];
 
   @override

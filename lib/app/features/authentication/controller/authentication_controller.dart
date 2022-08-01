@@ -143,9 +143,9 @@ class AuthenticationController extends BaseController {
           Get.back();
           savingData(_loginResponse);
           AppUtils.showToast("Successfully Registered");
-          // Get.offAllNamed(
-          //   Paths.MAIN_HOME,
-          // );
+          Get.offAllNamed(
+            Paths.MAIN_HOME,
+          );
         } else {
           AppUtils.showToast("Invalid Credentials");
         }

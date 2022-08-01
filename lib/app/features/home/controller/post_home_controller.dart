@@ -10,9 +10,8 @@ import 'package:blog_post_flutter/app/data/network/base_response/base_api_respon
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:http/http.dart' as http;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class PostHomeController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
@@ -122,16 +121,16 @@ class PostHomeController extends BaseController {
 
   // This function will be called when the app launches (see the initState function)
   void firstLoad() async {
-      isFirstLoadRunning.value = true;
+    isFirstLoadRunning.value = true;
     try {
-      final res =
-      await http.get(Uri.parse("$_baseUrl?_page=${page.value}&_limit=${limit.value}"));
-        posts.value = json.decode(res.body);
-        print("Post is ${posts.length}");
+      final res = await http.get(
+          Uri.parse("$_baseUrl?_page=${page.value}&_limit=${limit.value}"));
+      posts.value = json.decode(res.body);
+      print("Post is ${posts.length}");
     } catch (err) {
       print('Something went wrong');
     }
-      isFirstLoadRunning.value = false;
+    isFirstLoadRunning.value = false;
   }
 
   void loadMore() async {
@@ -139,24 +138,25 @@ class PostHomeController extends BaseController {
         isFirstLoadRunning.value == false &&
         isLoadMoreRunning.value == false &&
         scrollController.value.position.extentAfter < 300) {
-        isLoadMoreRunning.value = true; // Display a progress indicator at the bottom
+      isLoadMoreRunning.value =
+          true; // Display a progress indicator at the bottom
       page.value += 1; // Increase _page by 1
       try {
-        final res =
-        await http.get(Uri.parse("$_baseUrl?_page=${page.value}&_limit=${limit.value}"));
+        final res = await http.get(
+            Uri.parse("$_baseUrl?_page=${page.value}&_limit=${limit.value}"));
 
         final List fetchedPosts = json.decode(res.body);
         if (fetchedPosts.isNotEmpty) {
-            posts.addAll(fetchedPosts);
+          posts.addAll(fetchedPosts);
         } else {
           // This means there is no more data
           // and therefore, we will not send another GET request
-            hasNextPage.value = false;
+          hasNextPage.value = false;
         }
       } catch (err) {
         print('Something went wrong!');
       }
-        isLoadMoreRunning.value = false;
+      isLoadMoreRunning.value = false;
     }
   }
 }

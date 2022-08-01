@@ -13,7 +13,7 @@ class ImagePickerHelper {
     try {
       final pickedFile =
           await _picker.pickImage(
-              source: source, imageQuality: 50);
+              source: source, imageQuality: 20);
 
       onImagePickCallBack(File(pickedFile!.path));
     } catch (e,s) {
