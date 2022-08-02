@@ -1,101 +1,115 @@
-import 'package:blog_post_flutter/app/constant/app_colors.dart';
-import 'package:blog_post_flutter/app/constant/app_dimens.dart';
-import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
-import 'package:blog_post_flutter/app/widget/rounded_corner_image_widget.dart';
+import 'package:blog_post_flutter/app/widget/cached_network_image_widget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class PostItemWidget extends StatelessWidget {
-  final PostData post;
+  final PostData postData;
 
   const PostItemWidget({
-    required this.post,
     Key? key,
+    required this.postData,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: AppDimens.MARGIN_MEDIUM,right: AppDimens.MARGIN_MEDIUM,
-      ),
-      child: InkWell(
-        onTap: () => Get.toNamed(Paths.POST_DETAIL, arguments: post.id!),
-        child: Column(
+    return (Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                post.image != null
-                    ? RoundedCornerImageWidget(
-                        post.image!,
-                        width: 50,
-                        height: 50,
-                        cornerRadius: 4,
-                      )
-                    : const SizedBox(),
-                post.image != null
-                    ? SizedBox(
-                        width: AppDimens.MARGIN_MEDIUM,
-                      )
-                    : SizedBox(),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          TextViewWidget(
-                            post.title!,
-                            textSize: AppDimens.TEXT_REGULAR,
-                            textColor: AppColors.titleTextColor,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          Spacer(),
-                          TextViewWidget(
-                            DateUtil.convertDateFormat(
-                                post.createdDate!, DAY_MONTH_YEAR),
-                            textSize: 12,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: AppDimens.MARGIN_EXTRA_SMALL,
-                      ),
-                      TextViewWidget(
-                        "by ${post.postedBy!.username!}",
-                        textSize: AppDimens.TEXT_SMALL,
-                        textColor: AppColors.secondaryTextColor,
-                        fontWeight: FontWeight.w400,
-                        textAlign: TextAlign.justify,
-                        maxLine: 3,
-                      )
-                    ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextViewWidget(
+                    postData.title ?? "",
+                    textSize: 18,
+                    textAlign: TextAlign.justify,
+                    fontWeight: FontWeight.w600,
                   ),
-                )
-              ],
+                  const SizedBox(height: 5),
+                  TextViewWidget(
+                    postData.content ?? "",
+                    textSize: 15,
+                    lineHeight: 1.3,
+                    textAlign: TextAlign.justify,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              height: AppDimens.MARGIN_MEDIUM_2X,
-            ),
-            TextViewWidget(
-              "${post.content}",
-              textSize: 12,
-              maxLine: 2,
-              fontWeight: FontWeight.w400,
-            ),
-            SizedBox(height: AppDimens.MARGIN_SMALL,),
-            Divider(),
+            const SizedBox(width: 20),
+            if (postData.image != null)
+              CachedNetworkImageWidget(
+                imageUrl: postData.image,
+                width: 72,
+                height: 72,
+              ),
           ],
         ),
-      ),
-    );
+        const SizedBox(height: 5),
+        Row(
+          children: [
+            postData.owner!.profilePicture != null
+                ? Container(
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(border: Border.all(width: 2)),
+                    child: CachedNetworkImageWidget(
+                      imageUrl: postData.owner!.profilePicture,
+                      width: 25,
+                      height: 25,
+                    ),
+                  )
+                : const SizedBox(),
+            postData.owner!.profilePicture != null
+                ? const SizedBox(width: 10)
+                : const SizedBox(),
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text:
+                            "${postData.owner!.firstName} ${postData.owner!.lastName}"),
+                    if (postData.owner!.university != null)
+                      const TextSpan(
+                          text: ' in ',
+                          style: TextStyle(color: Color(0XFFA9A9A9))),
+                    TextSpan(text: postData.owner!.university),
+                  ],
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.bookmark_border,
+                  size: 28,
+                  color: postData.isSaved == true
+                      ? Colors.red
+                      : Color(0xffA9A9A9)),
+              onPressed: () {
+                print("Toggle Save");
+              },
+            ),
+          ],
+        ),
+        if (postData.createdDate != null)
+          TextViewWidget(
+            DateUtil.convertDateFormat(postData.createdDate!, DAY_MONTH_YEAR),
+            textColor: Color(0xffA9A9A9),
+            textSize: 12,
+          )
+      ],
+    ));
   }
 }

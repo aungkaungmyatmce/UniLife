@@ -11,7 +11,7 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
 
   @override
   Future<BaseApiResponse<PostListOb>> getPostList({int? page}) {
-    var dioCall = dioClient.get("$endpoint/post/list/?page=$page");
+    var dioCall = dioClient.get("$endpoint/posts/?page=$page");
     try {
       return callApiWithErrorParser(dioCall).then(
         (response) => _parsePostListResponse(response),

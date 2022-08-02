@@ -1,6 +1,5 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
-import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_home_controller.dart';
 import 'package:blog_post_flutter/app/widget/parent_view_smart_refresher.dart';
@@ -15,22 +14,20 @@ class PostHomeScreen extends BaseView<PostHomeController> {
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
+      backgroundColor: AppColors.primaryColor,
       title: const TextViewWidget(
-        'Home',
-        textSize: AppDimens.TEXT_REGULAR_2X,
-        textColor: AppColors.whiteColor,
+        'UniLife',
+        textSize: AppDimens.TEXT_HEADING_2X,
+        textColor: Colors.black
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.all(7),
-          child: InkWell(
-            onTap: () => Get.toNamed(Paths.PROFILE),
-            child: const CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://static.bangkokpost.com/media/content/20211028/c1_2205267_211028062917.jpg'),
-            ),
-          ),
-        ),
+        IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              size: 28,
+              color: Colors.black,
+            ))
       ],
     );
   }
@@ -56,8 +53,16 @@ class PostHomeScreen extends BaseView<PostHomeController> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return PostItemWidget(
-                        post: controller.postList[index],
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 4),
+                        child: Column(
+                          children: [
+                            PostItemWidget(
+                              postData: controller.postList[index],
+                            ),
+                            Divider(color: Colors.black,)
+                          ],
+                        )
                       );
                     },
                     childCount: controller.postList.length,

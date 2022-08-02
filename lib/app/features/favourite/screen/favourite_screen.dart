@@ -24,70 +24,71 @@ class FavouriteScreen extends BaseView<FavouriteController> {
 
   @override
   Widget body(BuildContext context) {
-    return Obx(() => controller.savePostList.isNotEmpty
-        ? SmartRefresherParentView(
-            refreshController: controller.refreshController,
-            enablePullUp: true,
-            onRefresh: () => controller.resetAndGetSavePostList(
-                refreshController: controller.refreshController),
-            onLoading: () => controller.getSavePostList(
-                refreshController: controller.refreshController),
-            child: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: AppDimens.MARGIN_MEDIUM,
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return PostItemWidget(
-                        post: controller.savePostList[index],
-                      );
-                    },
-                    childCount: controller.savePostList.length,
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: AppDimens.MARGIN_MEDIUM_2,
-                  ),
-                ),
-              ],
-            ),
-          )
-        : SmartRefresherParentView(
-            refreshController: controller.refreshController,
-            enablePullUp: true,
-            onRefresh: () => controller.resetAndGetSavePostList(
-                refreshController: controller.refreshController),
-            onLoading: () => controller.getSavePostList(
-                refreshController: controller.refreshController),
-            child: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: AppDimens.MARGIN_MEDIUM,
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return PostItemSkeleton();
-                    },
-                    childCount: 15,
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: AppDimens.MARGIN_MEDIUM_2,
-                  ),
-                ),
-              ],
-            ),
-          ));
+    return TextViewWidget("Favourite");
+      // Obx(() => controller.savePostList.isNotEmpty
+      //   ? SmartRefresherParentView(
+      //       refreshController: controller.refreshController,
+      //       enablePullUp: true,
+      //       onRefresh: () => controller.resetAndGetSavePostList(
+      //           refreshController: controller.refreshController),
+      //       onLoading: () => controller.getSavePostList(
+      //           refreshController: controller.refreshController),
+      //       child: CustomScrollView(
+      //         physics: const ClampingScrollPhysics(),
+      //         slivers: [
+      //           const SliverToBoxAdapter(
+      //             child: SizedBox(
+      //               height: AppDimens.MARGIN_MEDIUM,
+      //             ),
+      //           ),
+      //           SliverList(
+      //             delegate: SliverChildBuilderDelegate(
+      //               (BuildContext context, int index) {
+      //                 return PostItemWidget(
+      //                   post: controller.savePostList[index],
+      //                 );
+      //               },
+      //               childCount: controller.savePostList.length,
+      //             ),
+      //           ),
+      //           const SliverToBoxAdapter(
+      //             child: SizedBox(
+      //               height: AppDimens.MARGIN_MEDIUM_2,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     )
+      //   : SmartRefresherParentView(
+      //       refreshController: controller.refreshController,
+      //       enablePullUp: true,
+      //       onRefresh: () => controller.resetAndGetSavePostList(
+      //           refreshController: controller.refreshController),
+      //       onLoading: () => controller.getSavePostList(
+      //           refreshController: controller.refreshController),
+      //       child: CustomScrollView(
+      //         physics: const ClampingScrollPhysics(),
+      //         slivers: [
+      //           const SliverToBoxAdapter(
+      //             child: SizedBox(
+      //               height: AppDimens.MARGIN_MEDIUM,
+      //             ),
+      //           ),
+      //           SliverList(
+      //             delegate: SliverChildBuilderDelegate(
+      //               (BuildContext context, int index) {
+      //                 return PostItemSkeleton();
+      //               },
+      //               childCount: 15,
+      //             ),
+      //           ),
+      //           const SliverToBoxAdapter(
+      //             child: SizedBox(
+      //               height: AppDimens.MARGIN_MEDIUM_2,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ));
   }
 }

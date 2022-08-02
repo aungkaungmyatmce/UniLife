@@ -89,10 +89,10 @@ class AuthenticationController extends BaseController {
   }
 
   void doRegister() {
-    if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
-      AppUtils.showToast("Please Choose Profile Image");
-      return;
-    }
+    // if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
+    //   AppUtils.showToast("Please Choose Profile Image");
+    //   return;
+    // }
     if (userNameController.value.text.trim().isEmpty) {
       AppUtils.showToast("Please Enter User Name");
       return;
@@ -128,7 +128,7 @@ class AuthenticationController extends BaseController {
         lastName: lastNameController.value.text.trim(),
         university: universityController.value.text.trim(),
         password: passwordController.value.text,
-        profilePicture: base64ProfileImage.value);
+        profilePicture: null);
     logger.i("Register Request Ob is ${requestOb.toJson()}");
     final repoService = _repository.registerUser(requestOb);
     AppUtils.showLoaderDialog();
@@ -170,7 +170,7 @@ class AuthenticationController extends BaseController {
         if (_loginData.statusCode! == 200) {
           Get.back();
           savingData(_loginResponse);
-          AppUtils.showToast("Successfully Registered");
+          AppUtils.showToast("Successfully Login");
           Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
         } else {
           AppUtils.showToast("Invalid Credentials");
