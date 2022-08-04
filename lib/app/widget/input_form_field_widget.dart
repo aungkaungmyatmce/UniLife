@@ -79,7 +79,7 @@ class InputFormFieldWidget extends StatelessWidget {
               parametersValidate,
             )
           : null,
-      onChanged: (text) => onTextChange == null ? {} : onTextChange!(text),
+      onChanged: (text) => onTextChange == null ? null : onTextChange!(),
       decoration: InputDecoration(
         fillColor: formColor,
         suffixIcon: showTrailingIcon ? trailingIconWidget : suffixIcon,

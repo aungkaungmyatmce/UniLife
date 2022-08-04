@@ -16,9 +16,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class PostHomeController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
 
-  final RefreshController refreshController =
-      RefreshController(initialRefresh: false);
   final RxList<PostData> _postList = RxList.empty();
+  Rx<TextEditingController> searchTextEditingController =
+      TextEditingController().obs;
+  RxBool isSearch = false.obs;
 
   List<PostData> get postList => _postList;
 
@@ -30,11 +31,24 @@ class PostHomeController extends BaseController {
     getPostList();
   }
 
+  void toggleSearch() {
+    isSearch.value = !isSearch.value;
+  }
+
+  //Search Post
+  void searchPostList({
+    RefreshController? refreshController,
+  }) {
+    resetAndGetPostList(
+      refreshController: refreshController,
+    );
+  }
+
   //Fetch Post List
 
-  Future<void> resetAndGetPostList({
+  void resetAndGetPostList({
     RefreshController? refreshController,
-  }) async {
+  }) {
     _postList.clear();
     postPagination = PaginationUtils();
     getPostList(
@@ -48,14 +62,14 @@ class PostHomeController extends BaseController {
     setRefreshController(refreshController);
     if (postPagination.isPageAvailable()) {
       final repoService = _repository.getPostList(
-        page: postPagination.currentPage,
-      );
+          page: postPagination.currentPage,
+          searchText: searchTextEditingController.value.text);
 
       await callAPIService(
         repoService,
-        //onStart: _postList.isEmpty ? showLoading : null,
+        onStart: _postList.isEmpty ? () => showLoading() : null,
         onSuccess: _handlePostListResponseSuccess,
-        onError: _handlePostListResponseError,
+        onError: _handleAllListResponseError,
       );
     }
   }
@@ -63,17 +77,17 @@ class PostHomeController extends BaseController {
   void _handlePostListResponseSuccess(response) async {
     resetRefreshController(_postList);
     if (response != null) {
-      BaseApiResponse<PostListOb> _orderData = response;
-      PostListOb data = _orderData.objectResult;
+      BaseApiResponse<PostListOb> _postData = response;
+      PostListOb data = _postData.objectResult;
       _postList.addAll(data.data!.toList());
       if (data.data!.isEmpty) {
-        Future.delayed(
-          const Duration(seconds: 1),
-          () => updatePageState(ViewState.EMPTYLIST,
-              onClickTryAgain: () => {
-                    resetAndGetPostList(),
-                  }),
-        );
+        Future.delayed(const Duration(microseconds: 500), () {
+          _postList.clear();
+          updatePageState(ViewState.EMPTYLIST, onClickTryAgain: () {
+            searchTextEditingController.value.clear();
+            resetAndGetPostList();
+          });
+        });
       }
       postPagination.setCurrentPage(
         totalPage: data.pagination?.totalPages,
@@ -81,8 +95,17 @@ class PostHomeController extends BaseController {
     }
   }
 
-  void _handlePostListResponseError(Exception exception) {
-    AppUtils.showToast(errorMessage);
+  void _handleAllListResponseError(Exception exception) {
+    resetRefreshController(_postList);
+    if (_postList.isEmpty) {
+      updatePageState(
+        ViewState.FAILED,
+        onClickTryAgain: () => resetAndGetPostList(),
+      );
+    } else {
+      AppUtils.showToast(errorMessage);
+    }
+    return;
   }
 
   @override

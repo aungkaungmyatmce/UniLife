@@ -4,7 +4,7 @@ import 'package:blog_post_flutter/app/data/network/base_response/base_api_respon
 
 abstract class PostRepository {
   //Get Post List
-  Future<BaseApiResponse<PostListOb>> getPostList({int? page});
+  Future<BaseApiResponse<PostListOb>> getPostList({int? page,String? searchText});
 
   //Get Save Post List
   Future<BaseApiResponse<PostListOb>> getSavePostList({int? page});

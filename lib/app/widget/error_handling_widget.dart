@@ -30,7 +30,7 @@ class ErrorHandlingWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              color: AppColors.secondaryColor,
+              color: AppColors.primaryColor,
               width: double.infinity,
               padding: const EdgeInsets.all(AppDimens.MARGIN_CARD_MEDIUM),
               child: TextViewWidget(
@@ -79,7 +79,7 @@ class ErrorHandlingWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       textColor: AppColors.whiteColor,
                     ),
-                    bgColor: AppColors.secondaryColor,
+                    bgColor: AppColors.primaryColor,
                   ),
                 ),
               ),
