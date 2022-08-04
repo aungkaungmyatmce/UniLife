@@ -25,7 +25,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   final _pageNumber = [
     PostHomeScreen(),
     FavouriteScreen(),
-    GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
+    CreatePostScreen(),
     GlobalVariable.token != null ? FavouriteScreen() : SignUpScreen(),
     GlobalVariable.token != null ? ProfileScreen() : SignUpScreen(),
   ];
