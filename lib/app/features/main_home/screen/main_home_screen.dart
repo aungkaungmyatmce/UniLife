@@ -1,6 +1,7 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
+import 'package:blog_post_flutter/app/features/authentication/screen/profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
@@ -26,7 +27,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     PostHomeScreen(),
     GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
     GlobalVariable.token != null ? FavouriteScreen() : SignUpScreen(),
-    GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
+    GlobalVariable.token != null ? ProfileScreen() : SignUpScreen(),
   ];
 
   @override
@@ -46,11 +47,26 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       body: Obx(() => _pageNumber[mainHomeScreenController.selectedPage.value]),
       bottomNavigationBar: Obx(() => ConvexAppBar(
             items: const [
-              TabItem(icon: Icons.home,),
-              TabItem(icon: Icons.bookmarks_outlined,),
-              TabItem(icon: Icons.add_circle_outline,),
-              TabItem(icon: Icons.favorite,),
-              TabItem(icon: Icons.person,),
+              TabItem(
+                title: "Home",
+                icon: Icons.home,
+              ),
+              TabItem(
+                title: "Favourite",
+                icon: Icons.bookmarks_outlined,
+              ),
+              TabItem(
+                title: "Add",
+                icon: Icons.add_circle_outline,
+              ),
+              TabItem(
+                title: "Noti",
+                icon: Icons.notification_important_rounded,
+              ),
+              TabItem(
+                title: "Profile",
+                icon: Icons.person,
+              ),
             ],
             backgroundColor: AppColors.primaryColor,
             activeColor: const Color(0xFF000000),

@@ -28,7 +28,6 @@ class PostItemWidget extends StatelessWidget {
                   TextViewWidget(
                     postData.title ?? "",
                     textSize: 18,
-                    textAlign: TextAlign.justify,
                     fontWeight: FontWeight.w600,
                   ),
                   const SizedBox(height: 5),

@@ -6,7 +6,6 @@ import 'package:blog_post_flutter/app/features/authentication/controller/authent
 import 'package:blog_post_flutter/app/features/home/controller/post_create_controller.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_edit_controller.dart';
 import 'package:blog_post_flutter/app/features/main_home/controller/main_home_controller.dart';
-import 'package:blog_post_flutter/app/features/profile/controller/profile_controller.dart';
 import 'package:get/get.dart';
 
 class MainHomeBinding extends Bindings {
@@ -19,7 +18,7 @@ class MainHomeBinding extends Bindings {
       () => AuthRepositoryImpl(),
       tag: (AuthRepository).toString(),
     );
-    Get.lazyPut(() => ProfileController());
+    Get.lazyPut(() => AuthenticationController());
     Get.lazyPut<PostRepository>(
       () => PostRepositoryImpl(),
       tag: (PostRepository).toString(),

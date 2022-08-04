@@ -10,6 +10,7 @@ import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_request_ob.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_response.dart';
+import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/register_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/network/exception/base_exception.dart';
@@ -55,10 +56,22 @@ class AuthenticationController extends BaseController {
   RxString loginPassword = "".obs;
   var showLoginPassword = false.obs;
 
+  //Profile
+  var profileDetail = ProfileOb().obs;
+  Rx<LoginResponse> loginResponse = LoginResponse().obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    if (getString(CacheManagerKey.loginResponseData) != null) {
+      Map<String, dynamic> authenticationResponse =
+          jsonDecode(getString(CacheManagerKey.loginResponseData)!);
+      loginResponse.value = LoginResponse.fromJson(authenticationResponse);
+      if (loginResponse.value.user!.id != null) {
+        fetchProfile(loginResponse.value.user!.id!);
+      }
+    }
   }
 
   void addProfileImage(File file) {
@@ -73,6 +86,7 @@ class AuthenticationController extends BaseController {
   }
 
   void savingData(LoginResponse loginResponse) {
+    fetchProfile(loginResponse.user!.id!);
     setData(CacheManagerKey.loginResponseData, jsonEncode(loginResponse));
   }
 
@@ -182,6 +196,28 @@ class AuthenticationController extends BaseController {
     } else {
       AppUtils.showToast("Something went wrong. Try again!");
     }
+  }
+
+  void fetchProfile(int profileId) async {
+    final repoService = _repository.getProfileDetail(profileId);
+
+    await callAPIService(
+      repoService,
+      onSuccess: _handleResponseSuccess,
+      onError: _handleResponseError,
+    );
+  }
+
+  void _handleResponseSuccess(response) async {
+    if (response != null) {
+      BaseApiResponse<ProfileOb?> _profileDetailData = response;
+      ProfileOb data = _profileDetailData.objectResult;
+      profileDetail.value = data;
+    }
+  }
+
+  void _handleResponseError(Exception exception) {
+    AppUtils.showToast(errorMessage);
   }
 
   @override
