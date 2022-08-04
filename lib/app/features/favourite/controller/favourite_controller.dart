@@ -3,7 +3,6 @@ import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
-import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:get/get.dart';
@@ -49,7 +48,7 @@ class FavouriteController extends BaseController {
 
       await callAPIService(
         repoService,
-        //onStart: _postList.isEmpty ? showLoading : null,
+        onStart: _savePostList.isEmpty ? () => showLoading() : null,
         onSuccess: _handleSavePostListResponseSuccess,
         onError: _handleSavePostListResponseError,
       );
@@ -64,7 +63,7 @@ class FavouriteController extends BaseController {
       _savePostList.addAll(data.data!.toList());
       if (data.data!.isEmpty) {
         Future.delayed(
-          const Duration(seconds: 1),
+          const Duration(milliseconds: 500),
           () => updatePageState(ViewState.EMPTYLIST,
               onClickTryAgain: () => {
                     resetAndGetSavePostList(),
