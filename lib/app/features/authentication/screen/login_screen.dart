@@ -12,6 +12,7 @@ class LoginScreen extends BaseView<AuthenticationController> {
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
+      backgroundColor: AppColors.primaryColor,
       title: const TextViewWidget(
         'Login',
         textSize: AppDimens.TEXT_REGULAR_2X,

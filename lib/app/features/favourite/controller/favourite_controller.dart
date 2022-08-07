@@ -48,7 +48,7 @@ class FavouriteController extends BaseController {
 
       await callAPIService(
         repoService,
-        //onStart: _postList.isEmpty ? showLoading : null,
+        onStart: _savePostList.isEmpty ? () => showLoading() : null,
         onSuccess: _handleSavePostListResponseSuccess,
         onError: _handleSavePostListResponseError,
       );
@@ -58,12 +58,12 @@ class FavouriteController extends BaseController {
   void _handleSavePostListResponseSuccess(response) async {
     resetRefreshController(_savePostList);
     if (response != null) {
-      BaseApiResponse<PostListOb> _orderData = response;
-      PostListOb data = _orderData.objectResult;
+      BaseApiResponse<PostListOb> _postData = response;
+      PostListOb data = _postData.objectResult;
       _savePostList.addAll(data.data!.toList());
       if (data.data!.isEmpty) {
         Future.delayed(
-          const Duration(seconds: 1),
+          const Duration(milliseconds: 500),
           () => updatePageState(ViewState.EMPTYLIST,
               onClickTryAgain: () => {
                     resetAndGetSavePostList(),

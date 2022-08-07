@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioProvider {
-  static const String baseUrl = "https://pyaephyokyaw.pythonanywhere.com/api";
+  static const String baseUrl = "https://pyaephyokyaw.pythonanywhere.com/api/v2";
   static Dio? _instance;
 
   static const int _maxLineWidth = 90;

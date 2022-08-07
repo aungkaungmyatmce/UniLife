@@ -10,8 +10,9 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   var endpoint = DioProvider.baseUrl;
 
   @override
-  Future<BaseApiResponse<PostListOb>> getPostList({int? page}) {
-    var dioCall = dioClient.get("$endpoint/post/list/?page=$page");
+  Future<BaseApiResponse<PostListOb>> getPostList(
+      {int? page, String? searchText = ""}) {
+    var dioCall = dioClient.get("$endpoint/posts/?q=$searchText&page=$page");
     try {
       return callApiWithErrorParser(dioCall).then(
         (response) => _parsePostListResponse(response),
@@ -28,7 +29,7 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
 
   @override
   Future<BaseApiResponse<PostListOb>> getSavePostList({int? page}) {
-    var dioCall = dioClient.get("$endpoint/saved_post/list/?page=$page");
+    var dioCall = dioClient.get("$endpoint/posts/?saved&page=$page");
     try {
       return callApiWithErrorParser(dioCall).then(
         (response) => _parseSavePostListResponse(response),

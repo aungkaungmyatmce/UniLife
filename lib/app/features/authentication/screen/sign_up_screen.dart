@@ -17,6 +17,7 @@ class SignUpScreen extends BaseView<AuthenticationController> {
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
+      backgroundColor: AppColors.primaryColor,
       title: const TextViewWidget(
         'Sign Up',
         textSize: AppDimens.TEXT_REGULAR_2X,

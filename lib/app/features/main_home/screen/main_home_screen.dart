@@ -1,5 +1,7 @@
+import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
+import 'package:blog_post_flutter/app/features/authentication/screen/profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
@@ -22,19 +24,20 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   final _pageNumber = [
     PostHomeScreen(),
-    PostHomeScreen(),
-    GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
+    FavouriteScreen(),
+    CreatePostScreen(),
     GlobalVariable.token != null ? FavouriteScreen() : SignUpScreen(),
-    GlobalVariable.token != null ? CreatePostScreen() : SignUpScreen(),
+    GlobalVariable.token != null ? ProfileScreen() : SignUpScreen(),
   ];
 
   @override
   void initState() {
     var index = Get.arguments;
-    if(index != null){
+    if (index != null) {
       mainHomeScreenController.selectedPage.value = index;
     }
-    print("Index is ${mainHomeScreenController.selectedPage.value} and Index is $index");
+    print(
+        "Index is ${mainHomeScreenController.selectedPage.value} and Index is $index");
     super.initState();
   }
 
@@ -44,12 +47,30 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       body: Obx(() => _pageNumber[mainHomeScreenController.selectedPage.value]),
       bottomNavigationBar: Obx(() => ConvexAppBar(
             items: const [
-              TabItem(icon: Icons.home, title: "Home"),
-              TabItem(icon: Icons.home, title: "Home"),
-              TabItem(icon: Icons.add, title: "Add"),
-              TabItem(icon: Icons.favorite, title: "Favourite"),
-              TabItem(icon: Icons.person, title: "Profile"),
+              TabItem(
+                title: "Home",
+                icon: Icons.home,
+              ),
+              TabItem(
+                title: "Favourite",
+                icon: Icons.bookmarks_outlined,
+              ),
+              TabItem(
+                title: "Add",
+                icon: Icons.add_circle_outline,
+              ),
+              TabItem(
+                title: "Noti",
+                icon: Icons.notification_important_rounded,
+              ),
+              TabItem(
+                title: "Profile",
+                icon: Icons.person,
+              ),
             ],
+            backgroundColor: AppColors.primaryColor,
+            activeColor: const Color(0xFF000000),
+            color: const Color(0xFF818181),
             initialActiveIndex: mainHomeScreenController.selectedPage.value,
             style: TabStyle.fixed,
             cornerRadius: AppDimens.MARGIN_MEDIUM_2X,
