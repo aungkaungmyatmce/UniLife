@@ -15,4 +15,7 @@ abstract class AuthRepository {
 
   //Get Profile
   Future<BaseApiResponse<ProfileOb>> getProfileDetail(profileId);
+
+  //Logout
+  Future<BaseApiResponse<String?>> logoutUser();
 }

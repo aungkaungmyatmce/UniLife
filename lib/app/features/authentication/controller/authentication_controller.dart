@@ -220,6 +220,26 @@ class AuthenticationController extends BaseController {
     AppUtils.showToast(errorMessage);
   }
 
+  //Logout
+  void doLogout() {
+    final repoService = _repository.logoutUser();
+    AppUtils.showLoaderDialog();
+    callAPIService(repoService, onSuccess: onSuccessLogout,
+        onError: (exception) {
+      AppUtils.showToast(errorMessage);
+      Get.back();
+    });
+  }
+
+  void onSuccessLogout(response) {
+    if (response != null) {
+      BaseApiResponse<String> baseApiResponse = response;
+      clearAllData();
+      Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
+      AppUtils.showToast(" ${baseApiResponse.message}");
+    }
+  }
+
   @override
   void onClose() {
     userNameController.value.dispose();

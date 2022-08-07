@@ -49,12 +49,12 @@ class BaseApiResponse<T> {
         required Function(Map<String, dynamic>) createMetaObject,
         required Function(Map<String, dynamic>) createLinkObject}) {
     List<T> data = [];
-    json['data'].forEach((v) {
+    json['result'].forEach((v) {
       data.add(create(v));
     });
 
     return BaseApiResponse<T>(
-        statusCode: json["statusCode"],
+        statusCode: json["status_code"],
         message: json["message"],
         listResult: data,
         links: createLinkObject(json["links"]),
@@ -65,8 +65,8 @@ class BaseApiResponse<T> {
     Map<String, dynamic> json,
   ) {
     return BaseApiResponse<T>(
-      objectResult: json["data"],
-      statusCode: json["status"],
+      objectResult: json["result"],
+      statusCode: json["status_code"],
       message: json["message"],
     );
   }
