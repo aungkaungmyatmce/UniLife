@@ -1,6 +1,7 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
+import 'package:blog_post_flutter/app/core/utils/dialog_utils.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
 import 'package:blog_post_flutter/app/features/authentication/controller/authentication_controller.dart';
 import 'package:blog_post_flutter/app/widget/post_item_widget.dart';
@@ -21,6 +22,21 @@ class ProfileScreen extends BaseView<AuthenticationController> {
         textSize: AppDimens.TEXT_REGULAR_2X,
         textColor: AppColors.whiteColor,
       ),
+      actions: [
+        IconButton(
+            onPressed: () {
+              DialogUtils.showPromptDialog(
+                  content: "Are you sure you want to Logout?",
+                  cancelBtnText: "Cancel",
+                  okBtnText: "Ok",
+                  okBtnFunction: () {
+                    Get.back();
+                    controller.doLogout();
+                  },
+                  backgroundColor: AppColors.primaryColor);
+            },
+            icon: const Icon(Icons.logout))
+      ],
     );
   }
 
@@ -28,6 +44,7 @@ class ProfileScreen extends BaseView<AuthenticationController> {
   Widget body(BuildContext context) {
     return Obx(() => controller.profileDetail.value.id != null
         ? SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
                 ProfileContainer(
@@ -106,7 +123,7 @@ class ProfileContainer extends StatelessWidget {
               )
             : null,
         title: Text(
-          "${profileOb.firstName} + ${profileOb.lastName}",
+          "${profileOb.firstName} ${profileOb.lastName}",
           style: const TextStyle(
               fontSize: 16,
               height: 1.3,

@@ -59,4 +59,20 @@ class AuthRepositoryImpl extends BaseRemoteSource implements AuthRepository {
     return BaseApiResponse<ProfileOb>.fromObjectJson(response.data,
         createObject: (data) => ProfileOb.fromJson(data));
   }
+
+  //Logout
+  @override
+  Future<BaseApiResponse<String?>> logoutUser() {
+    var endpoint = "${DioProvider.baseUrl}/auth/token/";
+
+    var dioCall = dioClient.delete(endpoint);
+    try {
+      return callApiWithErrorParser(dioCall)
+          .then((response) => BaseApiResponse<String?>.fromStringJson(
+        response.data,
+      ));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

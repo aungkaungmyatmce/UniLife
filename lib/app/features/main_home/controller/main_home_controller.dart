@@ -7,17 +7,17 @@ import 'package:blog_post_flutter/app/features/home/controller/post_home_control
 import 'package:get/get.dart';
 
 class MainHomeController extends GetxController {
+  final PostHomeController homeController = Get.put(PostHomeController());
+  final FavouriteController favouriteController =
+  Get.put(FavouriteController());
   RxInt selectedPage = 0.obs;
 
   void setSelectedIndex(int index) {
     selectedPage.value = index;
     print("Selected Index is ${selectedPage.value}");
     if (selectedPage.value == 0) {
-      final PostHomeController homeController = Get.put(PostHomeController());
       homeController.resetAndGetPostList();
     } else if (selectedPage.value == 1) {
-      final FavouriteController favouriteController =
-          Get.put(FavouriteController());
       favouriteController.resetAndGetSavePostList();
     } else if (selectedPage.value == 2) {
       if (GlobalVariable.token == null) {

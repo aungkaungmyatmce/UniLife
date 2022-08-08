@@ -184,7 +184,7 @@ class DialogUtils {
             alignment: Alignment.centerLeft,
             child: TextViewWidget(
               content,
-              textColor: AppColors.whiteColor,
+              textColor: AppColors.blackColor,
               textSize: 16.0,
               fontWeight: FontWeight.w400,
               textOverflow: null,
@@ -196,14 +196,14 @@ class DialogUtils {
               TextButton(
                   child: TextViewWidget(
                     cancelBtnText,
-                    textColor: AppColors.whiteColor,
+                    textColor: AppColors.blackColor,
                     textSize: 16.0,
                   ),
                   onPressed: () => Get.back()),
               TextButton(
                 child: TextViewWidget(
                   okBtnText,
-                  textColor: AppColors.whiteColor,
+                  textColor: AppColors.blackColor,
                   textSize: 16.0,
                 ),
                 onPressed: () => okBtnFunction(),
