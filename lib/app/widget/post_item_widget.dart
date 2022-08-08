@@ -1,8 +1,11 @@
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/widget/cached_network_image_widget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PostItemWidget extends StatelessWidget {
   final PostData postData;
@@ -37,6 +40,18 @@ class PostItemWidget extends StatelessWidget {
                     lineHeight: 1.3,
                     textAlign: TextAlign.justify,
                     fontWeight: FontWeight.w400,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(Paths.POST_DETAIL);
+                    },
+                    child: const TextViewWidget(
+                      "See More",
+                      textSize: 14,
+                      lineHeight: 1.3,
+                      textAlign: TextAlign.justify,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
