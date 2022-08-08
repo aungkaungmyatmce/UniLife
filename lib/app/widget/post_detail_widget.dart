@@ -1,14 +1,15 @@
+import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-class PostDetailContainer extends StatelessWidget {
-  const PostDetailContainer({
+class PostDetailWidget extends StatelessWidget {
+  const PostDetailWidget({
     Key? key,
     required this.statusTitle,
     required this.profilePhotoUrl,
     required this.accName,
-    this.university,
+    required this.university,
     required this.date,
     this.statusTitlePhotoUrl,
     required this.statusBody,
@@ -22,9 +23,9 @@ class PostDetailContainer extends StatelessWidget {
   }) : super(key: key);
 
   final String statusTitle;
-  final String profilePhotoUrl;
+  final String? profilePhotoUrl;
   final String accName;
-  final String? university;
+  final String university;
   final DateTime date;
   final String? statusTitlePhotoUrl;
   final String statusBody;
@@ -39,6 +40,7 @@ class PostDetailContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
       child: Column(
         children: [
           Padding(
@@ -61,12 +63,21 @@ class PostDetailContainer extends StatelessWidget {
             padding: const EdgeInsets.all(15.0),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage(
-                    profilePhotoUrl,
-                  ),
-                ),
+                profilePhotoUrl != null
+                    ? CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                          profilePhotoUrl!,
+                        ),
+                      )
+                    : CircleAvatar(
+                        radius: 25,
+                        backgroundColor: AppColors.primaryColor,
+                        child: Icon(
+                          Icons.person,
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
                 const SizedBox(width: 10),
                 SizedBox(
                   width: 180,
@@ -84,7 +95,7 @@ class PostDetailContainer extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        university!,
+                        university,
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -106,11 +117,13 @@ class PostDetailContainer extends StatelessWidget {
               ],
             ),
           ),
-          Image.network(
-            statusTitlePhotoUrl!,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.fitWidth,
-          ),
+          statusTitlePhotoUrl != null
+              ? Image.network(
+                  statusTitlePhotoUrl!,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fitWidth,
+                )
+              : const SizedBox(),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
@@ -122,11 +135,13 @@ class PostDetailContainer extends StatelessWidget {
               textAlign: TextAlign.justify,
             ),
           ),
-          Image.network(
-            statusBodyPhotoUrl!,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.fitWidth,
-          ),
+          statusBodyPhotoUrl != null
+              ? Image.network(
+                  statusBodyPhotoUrl!,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fitWidth,
+                )
+              : SizedBox(),
           Container(
             height: 40,
             margin: const EdgeInsets.all(20),

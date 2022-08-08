@@ -55,7 +55,7 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
             builder: (BuildContext context, int index) {
               return PhotoViewGalleryPageOptions.customChild(
                 child: CachedNetworkImageWidget(
-                  imageUrl: DioProvider.baseUrl + imageList[index].toString(),
+                  imageUrl: imageList[index].toString(),
                   boxFit: BoxFit.contain,
                 ),
                 initialScale: PhotoViewComputedScale.contained,
@@ -93,6 +93,7 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
             right: AppDimens.MARGIN_MEDIUM,
             child: RoundedIconWidget(
               onClickIcon: () => Get.back(),
+              backgroundColor: AppColors.primaryColor,
               contentPadding: 8,
               icon: const Icon(
                 Icons.close,

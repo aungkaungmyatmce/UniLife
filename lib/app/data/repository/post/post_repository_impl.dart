@@ -46,7 +46,7 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
 
   @override
   Future<BaseApiResponse<PostData>> getPostDetail(postId) {
-    var endpoint = "${DioProvider.baseUrl}/post/$postId/";
+    var endpoint = "${DioProvider.baseUrl}/posts/$postId/";
 
     var dioCall = dioClient.get(endpoint);
     try {

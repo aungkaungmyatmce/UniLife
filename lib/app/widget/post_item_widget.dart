@@ -1,5 +1,6 @@
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
+import 'package:blog_post_flutter/app/core/utils/dialog_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/widget/cached_network_image_widget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
@@ -43,7 +44,7 @@ class PostItemWidget extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.toNamed(Paths.POST_DETAIL);
+                      Get.toNamed(Paths.POST_DETAIL, arguments: postData.id);
                     },
                     child: const TextViewWidget(
                       "See More",
@@ -58,10 +59,16 @@ class PostItemWidget extends StatelessWidget {
             ),
             const SizedBox(width: 20),
             if (postData.image != null)
-              CachedNetworkImageWidget(
-                imageUrl: postData.image,
-                width: 72,
-                height: 72,
+              InkWell(
+                onTap: () => DialogUtils.showPreviewImageDialog(
+                  context,
+                  postData.image,
+                ),
+                child: CachedNetworkImageWidget(
+                  imageUrl: postData.image,
+                  width: 72,
+                  height: 72,
+                ),
               ),
           ],
         ),
@@ -69,14 +76,18 @@ class PostItemWidget extends StatelessWidget {
         Row(
           children: [
             postData.owner!.profilePicture != null
-                ? Container(
-                    width: 25,
-                    height: 25,
-                    decoration: BoxDecoration(border: Border.all(width: 2)),
-                    child: CachedNetworkImageWidget(
-                      imageUrl: postData.owner!.profilePicture,
+                ? InkWell(
+                    onTap: () => DialogUtils.showPreviewImageDialog(
+                        context, postData.owner!.profilePicture),
+                    child: Container(
                       width: 25,
                       height: 25,
+                      decoration: BoxDecoration(border: Border.all(width: 2)),
+                      child: CachedNetworkImageWidget(
+                        imageUrl: postData.owner!.profilePicture,
+                        width: 25,
+                        height: 25,
+                      ),
                     ),
                   )
                 : const SizedBox(),

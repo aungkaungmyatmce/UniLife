@@ -39,7 +39,7 @@ class _CachedNetworkImageWidgetState extends State<CachedNetworkImageWidget> {
       width: getWidth,
       height: getHeight,
       placeholder: (context, url) => Container(
-        color: AppColors.orderVerticalDividerColor,
+        color: AppColors.primaryColor,
         child: const LoadingCircleIndicatorWidget(
           sizeFactor: 0.1,
         ),
@@ -48,7 +48,7 @@ class _CachedNetworkImageWidgetState extends State<CachedNetworkImageWidget> {
         print("Image Error**** $url");
         return LayoutBuilder(
           builder: ((context, constraints) => Container(
-                color: AppColors.orderVerticalDividerColor,
+                color: AppColors.primaryColor,
                 child: Center(
                   child: SvgPicture.asset(
                     'assets/images/akone_ya_logo.svg',

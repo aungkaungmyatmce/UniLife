@@ -1,17 +1,10 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
-import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
-import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
-import 'package:blog_post_flutter/app/widget/rounded_corner_image_widget.dart';
-import 'package:blog_post_flutter/app/widget/skeleton_widget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-
 import '../../../widget/post_detail_widget.dart';
 
 class PostDetailScreen extends BaseView<PostDetailController> {
@@ -45,10 +38,12 @@ class PostDetailScreen extends BaseView<PostDetailController> {
   @override
   Widget body(BuildContext context) {
     return Obx(() => controller.postDetail.value.id != null
-        ? PostDetailContainer(
+        ? PostDetailWidget(
             statusTitle: controller.postDetail.value.title!,
             profilePhotoUrl: controller.postDetail.value.owner?.profilePicture,
-            accName: controller.postDetail.value.owner!.firstName!,
+            accName: controller.postDetail.value.owner!.firstName! +
+                " " +
+                controller.postDetail.value.owner!.lastName!,
             date: DateTime.now(),
             statusBody: controller.postDetail.value.content!,
             likeCount: controller.postDetail.value.likeCounts!,
@@ -57,6 +52,9 @@ class PostDetailScreen extends BaseView<PostDetailController> {
             isSaved: controller.postDetail.value.isSaved!,
             onTapLike: () {},
             onTapCmt: () {},
+            university: controller.postDetail.value.owner!.university!,
+            statusTitlePhotoUrl: controller.postDetail.value.image,
+            statusBodyPhotoUrl: null,
           )
         : const Center(
             child: CircularProgressIndicator(
