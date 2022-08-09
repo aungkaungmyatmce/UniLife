@@ -54,9 +54,11 @@ class DioProvider {
         Get.find<CacheManager>().getString(CacheManagerKey.loginResponseData) ??
             "";
     if (prefData.isNotEmpty) {
+      print("Cache is not empty");
       Map<String, dynamic> loginUserData = jsonDecode(prefData);
       var user = LoginResponse.fromJson(loginUserData);
       GlobalVariable.token = user.token;
+      print("Global Token is ${GlobalVariable.token}");
     }
     GlobalVariable.token != null
         ? _instance?.options.headers = {

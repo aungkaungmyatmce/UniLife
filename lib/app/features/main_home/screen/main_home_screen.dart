@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
+import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
+import 'package:blog_post_flutter/app/data/model/authentication/login_response.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
@@ -22,12 +26,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   final MainHomeController mainHomeScreenController =
       Get.put(MainHomeController(), permanent: false);
 
-  final _pageNumber = [
+  List<Widget> _pageNumber = [
     PostHomeScreen(),
     FavouriteScreen(),
     CreatePostScreen(),
-    GlobalVariable.token != null ? FavouriteScreen() : SignUpScreen(),
-    GlobalVariable.token != null ? ProfileScreen() : SignUpScreen(),
+    SignUpScreen(),
+    SignUpScreen(),
   ];
 
   @override
@@ -38,6 +42,22 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     }
     print(
         "Index is ${mainHomeScreenController.selectedPage.value} and Index is $index");
+    var prefData =
+        Get.find<CacheManager>().getString(CacheManagerKey.loginResponseData) ??
+            "";
+    if (prefData.isNotEmpty) {
+      Map<String, dynamic> loginUserData = jsonDecode(prefData);
+      var user = LoginResponse.fromJson(loginUserData);
+      GlobalVariable.token = user.token;
+      print("Global Main Home is ${GlobalVariable.token}");
+      _pageNumber = [
+        PostHomeScreen(),
+        FavouriteScreen(),
+        CreatePostScreen(),
+        SignUpScreen(),
+        ProfileScreen(),
+      ];
+    }
     super.initState();
   }
 

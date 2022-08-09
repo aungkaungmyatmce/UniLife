@@ -6,6 +6,7 @@ import 'package:blog_post_flutter/app/constant/enum_image_type.dart';
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
+import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_request_ob.dart';
@@ -86,7 +87,7 @@ class AuthenticationController extends BaseController {
   }
 
   void savingData(LoginResponse loginResponse) {
-    fetchProfile(loginResponse.user!.id!);
+    //fetchProfile(loginResponse.user!.id!);
     setData(CacheManagerKey.loginResponseData, jsonEncode(loginResponse));
   }
 
@@ -233,20 +234,12 @@ class AuthenticationController extends BaseController {
 
   void onSuccessLogout(response) {
     if (response != null) {
-      BaseApiResponse<String> baseApiResponse = response;
+      BaseApiResponse<String?> baseApiResponse = response;
+      print("Base API Rsponse Message is ${baseApiResponse.statusCode} and ${baseApiResponse.message}");
       clearAllData();
+      GlobalVariable.token = null;
       Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
       AppUtils.showToast(" ${baseApiResponse.message}");
     }
-  }
-
-  @override
-  void onClose() {
-    userNameController.value.dispose();
-    firstNameController.value.dispose();
-    lastNameController.value.dispose();
-    passwordController.value.dispose();
-    confirmPasswordController.value.dispose();
-    super.onClose();
   }
 }
