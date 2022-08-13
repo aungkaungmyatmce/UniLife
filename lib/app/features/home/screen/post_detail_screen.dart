@@ -61,6 +61,7 @@ class PostDetailScreen extends BaseView<PostDetailController> {
               color: AppColors.primaryColor,
             ),
           ));
+
     // Obx(() => controller.postDetail.value.id != null
     //   ? SafeArea(
     //       minimum: const EdgeInsets.symmetric(horizontal: 16),

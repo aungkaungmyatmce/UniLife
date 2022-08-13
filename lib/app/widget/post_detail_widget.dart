@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../core/utils/dialog_utils.dart';
+import 'cached_network_image_widget.dart';
+
 class PostDetailWidget extends StatelessWidget {
   const PostDetailWidget({
     Key? key,
@@ -117,13 +120,25 @@ class PostDetailWidget extends StatelessWidget {
               ],
             ),
           ),
-          statusTitlePhotoUrl != null
-              ? Image.network(
-                  statusTitlePhotoUrl!,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.fitWidth,
-                )
-              : const SizedBox(),
+          if (statusTitlePhotoUrl != null)
+            InkWell(
+              onTap: () => DialogUtils.showPreviewImageDialog(
+                context,
+                statusTitlePhotoUrl,
+              ),
+              child: CachedNetworkImageWidget(
+                imageUrl: statusTitlePhotoUrl,
+                width: double.infinity,
+                height: 200,
+              ),
+            ),
+          // statusTitlePhotoUrl != null
+          //     ? Image.network(
+          //         statusTitlePhotoUrl!,
+          //         width: MediaQuery.of(context).size.width,
+          //         fit: BoxFit.fitWidth,
+          //       )
+          //     : const SizedBox(),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(

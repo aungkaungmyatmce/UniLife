@@ -14,7 +14,7 @@ class PostFileImageWidget extends StatelessWidget {
   final Function onDeleteCallBack;
   final bool showRemoveIcon;
   final double width;
-  final double height;
+  final double? height;
 
   const PostFileImageWidget(
       {Key? key,
@@ -23,7 +23,7 @@ class PostFileImageWidget extends StatelessWidget {
       this.imagePath,
       this.showRemoveIcon = true,
       this.width = 80,
-      this.height = 80,
+      this.height,
       required this.imageType})
       : super(key: key);
 

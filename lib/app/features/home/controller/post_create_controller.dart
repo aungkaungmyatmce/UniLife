@@ -35,11 +35,11 @@ class CreatePostController extends BaseController {
         CustomImagePhaserOb(image: file, type: ImageType.fileImage);
   }
 
-  Widget getPostImage() {
+  Widget getPostImage({double? height}) {
     return Obx(() => PostFileImageWidget(
           showRemoveIcon: true,
           width: double.infinity,
-          height: 150,
+          height: height,
           imageType: postImage.value!.type!,
           onDeleteCallBack: () {
             removePostImage();
@@ -60,10 +60,10 @@ class CreatePostController extends BaseController {
   void setTitleCount(int i) {
     titleCount.value = i;
   }
+
   void setDescriptionCount(int i) {
     descriptionCount.value = i;
   }
-
 
   void uploadPost() {
     String? base64Image = "";
