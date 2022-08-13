@@ -60,13 +60,13 @@ class DioProvider {
       GlobalVariable.token = user.token;
       print("Global Token is ${GlobalVariable.token}");
     }
-    GlobalVariable.token != null
+    GlobalVariable.token == null
         ? _instance?.options.headers = {
             "Content-Type": Headers.jsonContentType,
-            "Authorization": "Token " + (GlobalVariable.token ?? "")
           }
         : _instance?.options.headers = {
             "Content-Type": Headers.jsonContentType,
+            "Authorization": "Token " + (GlobalVariable.token ?? "")
           };
     print("Token is ${GlobalVariable.token}");
   }

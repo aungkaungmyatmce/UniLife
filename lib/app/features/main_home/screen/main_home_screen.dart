@@ -49,7 +49,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       Map<String, dynamic> loginUserData = jsonDecode(prefData);
       var user = LoginResponse.fromJson(loginUserData);
       GlobalVariable.token = user.token;
-      print("Global Main Home is ${GlobalVariable.token}");
       _pageNumber = [
         PostHomeScreen(),
         FavouriteScreen(),
@@ -58,6 +57,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         ProfileScreen(),
       ];
     }
+    print("Global Main Home is ${GlobalVariable.token}");
     super.initState();
   }
 
