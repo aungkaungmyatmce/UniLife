@@ -35,7 +35,7 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                   children: [
                     SizedBox(),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: controller.uploadPost,
                       child: Text(
                         'Publish',
                         style: TextStyle(
@@ -59,11 +59,11 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                   controller: controller.titleController,
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(
                     hintText: 'Title :',
                     prefixIcon: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         radius: 20,
                         backgroundImage: NetworkImage(
@@ -73,6 +73,9 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                     ),
                     border: InputBorder.none,
                   ),
+                  onChanged: (value) {
+                    controller.titleCount(value.length);
+                  },
                 ),
               ),
               controller.postImage.value?.image != null
@@ -115,6 +118,9 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                     isDense: true, // Added this
                     contentPadding: EdgeInsets.all(10),
                   ),
+                  onChanged: (value) {
+                    controller.setDescriptionCount(value.length);
+                  },
                 ),
               ),
             ],

@@ -66,7 +66,7 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   Future<BaseApiResponse<String?>> createPost(
       CreatePostRequestOb postRequestOb) {
     try {
-      return callApiWithErrorParser(dioClient.post(endpoint + "/post/create/",
+      return callApiWithErrorParser(dioClient.post(endpoint + "/posts/",
               data: postRequestOb.toJson()))
           .then((response) => BaseApiResponse<String?>.fromStringJson(
                 response.data,

@@ -78,12 +78,17 @@ class CreatePostController extends BaseController {
       AppUtils.showToast("Please Enter title");
       return;
     }
+    if (titleCount.value < 5) {
+      AppUtils.showToast("Title must be at least 20 letters");
+      return;
+    }
     if (descriptionController.text.isEmpty) {
       AppUtils.showToast("Please Enter Description ");
       return;
     }
-    if (descriptionCount.value < 80) {
-      AppUtils.showToast("Description must be at least 80 letters");
+
+    if (descriptionCount.value < 10) {
+      AppUtils.showToast("Description must be at least 20 letters");
       return;
     }
     createPostRequestOb.title = titleController.text;
@@ -96,6 +101,8 @@ class CreatePostController extends BaseController {
     repoService = _repository.createPost(createPostRequestOb);
     callAPIService(repoService, onSuccess: (dynamic response) {
       if (response != null) {
+        print('response>>>>>');
+        print(response);
         Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
         Get.offAllNamed(Paths.MAIN_HOME);
