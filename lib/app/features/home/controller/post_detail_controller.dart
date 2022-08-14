@@ -6,6 +6,7 @@ import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
+import 'package:blog_post_flutter/app/features/favourite/controller/favourite_controller.dart';
 import 'package:get/get.dart';
 
 class PostDetailController extends BaseController {

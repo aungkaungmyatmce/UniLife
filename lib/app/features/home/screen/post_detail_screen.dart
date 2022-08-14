@@ -1,6 +1,8 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
+import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class PostDetailScreen extends BaseView<PostDetailController> {
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
+      backgroundColor: AppColors.primaryColor,
       title: const TextViewWidget(
         'Post Detail',
         textSize: AppDimens.TEXT_REGULAR_2X,
@@ -19,7 +22,10 @@ class PostDetailScreen extends BaseView<PostDetailController> {
       ),
       actions: [
         Obx(() => GestureDetector(
-              onTap: () => controller.toggleSavePost(),
+              onTap: () =>
+                  GlobalVariable.token == null || GlobalVariable.token == ""
+                      ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
+                      : controller.toggleSavePost(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Icon(
@@ -55,6 +61,7 @@ class PostDetailScreen extends BaseView<PostDetailController> {
             university: controller.postDetail.value.owner!.university!,
             statusTitlePhotoUrl: controller.postDetail.value.image,
             statusBodyPhotoUrl: null,
+            controller: controller,
           )
         : const Center(
             child: CircularProgressIndicator(

@@ -1,5 +1,9 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
+import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
+import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -23,6 +27,7 @@ class PostDetailWidget extends StatelessWidget {
     required this.isSaved,
     required this.onTapLike,
     required this.onTapCmt,
+    required this.controller,
   }) : super(key: key);
 
   final String statusTitle;
@@ -39,12 +44,14 @@ class PostDetailWidget extends StatelessWidget {
   final bool isSaved;
   final Function onTapLike;
   final Function onTapCmt;
+  final PostDetailController controller;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -57,11 +64,6 @@ class PostDetailWidget extends StatelessWidget {
               textAlign: TextAlign.justify,
             ),
           ),
-          // const Divider(
-          //   thickness: 1,
-          //   indent: 20.0,
-          //   endIndent: 20.0,
-          // ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Row(
@@ -73,7 +75,7 @@ class PostDetailWidget extends StatelessWidget {
                           profilePhotoUrl!,
                         ),
                       )
-                    : CircleAvatar(
+                    : const CircleAvatar(
                         radius: 25,
                         backgroundColor: AppColors.primaryColor,
                         child: Icon(
@@ -157,57 +159,69 @@ class PostDetailWidget extends StatelessWidget {
                   fit: BoxFit.fitWidth,
                 )
               : SizedBox(),
-          Container(
-            height: 40,
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-                color: const Color(0xff505050),
-                borderRadius: BorderRadius.circular(20)),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: onTapLike(),
-                  child: Row(
-                    children: [
-                      Icon(
-                        isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 3),
-                      Text(
-                        NumberFormat.compact().format(likeCount),
-                        style: const TextStyle(
-                          fontSize: 15,
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 40,
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                  color: const Color(0xff505050),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: onTapLike(),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => GlobalVariable.token == null ||
+                              GlobalVariable.token == ""
+                              ? Get.offAllNamed(Paths.MAIN_HOME,
+                              arguments: 4)
+                              : controller.toggleSavePost(),
+                          child: Icon(
+                            isLiked
+                                ? Icons.thumb_up
+                                : Icons.thumb_up_alt_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 3),
+                        Text(
+                          NumberFormat.compact().format(likeCount),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  InkWell(
+                    onTap: onTapCmt(),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.mode_comment_outlined,
                           color: Colors.white,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 15),
-                InkWell(
-                  onTap: onTapCmt(),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.mode_comment_outlined,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 3),
-                      Text(
-                        NumberFormat.compact().format(cmtCount),
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
+                        const SizedBox(width: 3),
+                        Text(
+                          NumberFormat.compact().format(cmtCount),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
         ],

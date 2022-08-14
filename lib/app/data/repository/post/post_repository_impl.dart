@@ -94,8 +94,8 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   @override
   Future<BaseApiResponse<String?>> toggleLikePost(postId) {
     try {
-      return callApiWithErrorParser(dioClient.get(
-        endpoint + "/post/$postId/like/",
+      return callApiWithErrorParser(dioClient.post(
+        endpoint + "/posts/$postId/like/",
       )).then((response) => BaseApiResponse<String?>.fromStringJson(
             response.data,
           ));
@@ -107,8 +107,8 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   @override
   Future<BaseApiResponse<String?>> toggleSavePost(postId) {
     try {
-      return callApiWithErrorParser(dioClient.get(
-        endpoint + "/post/$postId/save/",
+      return callApiWithErrorParser(dioClient.post(
+        endpoint + "/posts/$postId/save/",
       )).then((response) => BaseApiResponse<String?>.fromStringJson(
             response.data,
           ));
