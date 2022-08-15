@@ -172,18 +172,28 @@ class PostDetailWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                    onTap: onTapLike(),
-                    child: Row(
+                  Obx(
+                    () => Row(
                       children: [
                         GestureDetector(
-                          onTap: () => GlobalVariable.token == null ||
-                              GlobalVariable.token == ""
-                              ? Get.offAllNamed(Paths.MAIN_HOME,
-                              arguments: 4)
-                              : controller.toggleSavePost(),
+                          onTap: () {
+                            if (GlobalVariable.token == null ||
+                                GlobalVariable.token == "") {
+                              Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
+                            } else {
+                              if (controller.isLikeAdded.value) {
+                                print("Remove");
+                                controller.removeLikeCount();
+                              } else {
+                                print("Added");
+                                controller.addLikeCount(
+                                    controller.likeCount.value,
+                                    controller.isLikeAdded.value);
+                              }
+                            }
+                          },
                           child: Icon(
-                            isLiked
+                            controller.isLikeAdded.value
                                 ? Icons.thumb_up
                                 : Icons.thumb_up_alt_outlined,
                             color: Colors.white,
@@ -191,12 +201,12 @@ class PostDetailWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 3),
                         Text(
-                          NumberFormat.compact().format(likeCount),
+                          "${controller.likeCount.value}",
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.white,
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),

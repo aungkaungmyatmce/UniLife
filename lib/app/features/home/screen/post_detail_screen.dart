@@ -20,6 +20,18 @@ class PostDetailScreen extends BaseView<PostDetailController> {
         textSize: AppDimens.TEXT_REGULAR_2X,
         textColor: AppColors.whiteColor,
       ),
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios,
+        ),
+        onPressed: () {
+          if (controller.postDetail.value.likeCounts !=
+              controller.likeCount.value) {
+            controller.toggleLikePost();
+          }
+          Get.back();
+        },
+      ),
       actions: [
         Obx(() => GestureDetector(
               onTap: () =>

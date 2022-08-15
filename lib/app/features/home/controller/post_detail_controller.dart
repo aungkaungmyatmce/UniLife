@@ -13,6 +13,8 @@ class PostDetailController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
   var postDetail = PostData().obs;
   late PaginationUtils postPagination = PaginationUtils();
+  RxInt likeCount = 0.obs;
+  RxBool isLikeAdded = false.obs;
   int? postId;
 
   @override
@@ -39,6 +41,12 @@ class PostDetailController extends BaseController {
       BaseApiResponse<PostData?> _orderDetailData = response;
       PostData data = _orderDetailData.objectResult;
       postDetail.value = data;
+      likeCount.value = postDetail.value.likeCounts!;
+      if (postDetail.value.isLiked == true) {
+        isLikeAdded.value = true;
+      } else {
+        isLikeAdded.value = false;
+      }
     }
   }
 
@@ -54,8 +62,7 @@ class PostDetailController extends BaseController {
       callAPIService(repoService, onSuccess: (dynamic response) {
         if (response != null) {
           BaseApiResponse<String?> _baseApiResponse = response;
-          getPostDetail(postId!);
-          AppUtils.showToast(" ${_baseApiResponse.message}");
+          //AppUtils.showToast(" ${_baseApiResponse.message}");
         }
       }, onError: (Exception exception) {
         AppUtils.showToast(errorMessage);
@@ -63,6 +70,21 @@ class PostDetailController extends BaseController {
     } else {
       Get.toNamed(Paths.LOGIN);
     }
+  }
+
+  void addLikeCount(int i, bool isLike) {
+    if (isLike) {
+      likeCount.value = i - 1;
+      isLikeAdded.value = false;
+    } else {
+      likeCount.value = i + 1;
+      isLikeAdded.value = true;
+    }
+  }
+
+  void removeLikeCount() {
+    likeCount.value = likeCount.value - 1;
+    isLikeAdded.value = false;
   }
 
   //Toggle Like Post
@@ -73,8 +95,7 @@ class PostDetailController extends BaseController {
       callAPIService(repoService, onSuccess: (dynamic response) {
         if (response != null) {
           BaseApiResponse<String?> _baseApiResponse = response;
-          getPostDetail(postId!);
-          AppUtils.showToast(" ${_baseApiResponse.message}");
+          //AppUtils.showToast(" ${_baseApiResponse.message}");
         }
       }, onError: (Exception exception) {
         AppUtils.showToast(errorMessage);
