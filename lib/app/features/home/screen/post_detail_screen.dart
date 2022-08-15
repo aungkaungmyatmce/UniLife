@@ -29,20 +29,36 @@ class PostDetailScreen extends BaseView<PostDetailController> {
               controller.likeCount.value) {
             controller.toggleLikePost();
           }
+          if (controller.postDetail.value.isSaved != controller.isSaved.value) {
+            controller.toggleSavePost();
+          }
           Get.back();
         },
       ),
       actions: [
         Obx(() => GestureDetector(
-              onTap: () =>
-                  GlobalVariable.token == null || GlobalVariable.token == ""
-                      ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
-                      : controller.toggleSavePost(),
+              onTap: () {
+                if (GlobalVariable.token == null ||
+                    GlobalVariable.token == "") {
+                  Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
+                } else {
+                  if (controller.isSaved.value) {
+                    print("Removed Save");
+                    controller.isSaved.value = false;
+                  } else {
+                    print("Added Save");
+                    controller.isSaved.value = true;
+                  }
+                }
+              },
+              // GlobalVariable.token == null || GlobalVariable.token == ""
+              //     ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
+              //     : controller.toggleSavePost(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Icon(
                   Icons.bookmark,
-                  color: controller.postDetail.value.isSaved == true
+                  color: controller.isSaved.value == true
                       ? Colors.grey
                       : Colors.white,
                   size: 28,

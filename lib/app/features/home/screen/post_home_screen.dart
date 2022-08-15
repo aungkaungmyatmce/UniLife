@@ -21,7 +21,7 @@ class PostHomeScreen extends BaseView<PostHomeController> {
     return AppBar(
       centerTitle: true,
       backgroundColor: AppColors.primaryColor,
-      title: const TextViewWidget('Something',
+      title: const TextViewWidget('UniLife',
           textSize: AppDimens.TEXT_HEADING_2X, textColor: Colors.black),
       actions: [
         IconButton(

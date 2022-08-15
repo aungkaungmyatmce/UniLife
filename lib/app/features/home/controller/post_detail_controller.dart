@@ -15,6 +15,7 @@ class PostDetailController extends BaseController {
   late PaginationUtils postPagination = PaginationUtils();
   RxInt likeCount = 0.obs;
   RxBool isLikeAdded = false.obs;
+  RxBool isSaved = false.obs;
   int? postId;
 
   @override
@@ -46,6 +47,11 @@ class PostDetailController extends BaseController {
         isLikeAdded.value = true;
       } else {
         isLikeAdded.value = false;
+      }
+      if (postDetail.value.isSaved == true) {
+        isSaved.value = true;
+      } else {
+        isSaved.value = false;
       }
     }
   }
@@ -87,7 +93,7 @@ class PostDetailController extends BaseController {
     isLikeAdded.value = false;
   }
 
-  //Toggle Like Post
+  //Toggle Save Post
   void toggleSavePost() {
     if (GlobalVariable.token != null) {
       late Future<BaseApiResponse<String?>> repoService;
@@ -95,7 +101,7 @@ class PostDetailController extends BaseController {
       callAPIService(repoService, onSuccess: (dynamic response) {
         if (response != null) {
           BaseApiResponse<String?> _baseApiResponse = response;
-          //AppUtils.showToast(" ${_baseApiResponse.message}");
+          AppUtils.showToast(" ${_baseApiResponse.message}");
         }
       }, onError: (Exception exception) {
         AppUtils.showToast(errorMessage);
