@@ -3,6 +3,7 @@ import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
+import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
@@ -17,6 +18,7 @@ class PostDetailController extends BaseController {
   RxBool isLikeAdded = false.obs;
   RxBool isSaved = false.obs;
   int? postId;
+  var profileDetail = ProfileOb().obs;
 
   @override
   void onInit() {
@@ -109,5 +111,30 @@ class PostDetailController extends BaseController {
     } else {
       Get.toNamed(Paths.LOGIN);
     }
+  }
+
+  //Fetch Profile
+
+  void fetchProfile(int profileId) async {
+    Get.toNamed(Paths.OTHER_PROFILE);
+    final repoService = _repository.getProfileDetail(profileId);
+
+    await callAPIService(
+      repoService,
+      onSuccess: _handleProfileResponseSuccess,
+      onError: _handleProfileResponseError,
+    );
+  }
+
+  void _handleProfileResponseSuccess(response) async {
+    if (response != null) {
+      BaseApiResponse<ProfileOb?> _profileDetailData = response;
+      ProfileOb data = _profileDetailData.objectResult;
+      profileDetail.value = data;
+    }
+  }
+
+  void _handleProfileResponseError(Exception exception) {
+    AppUtils.showToast(errorMessage);
   }
 }

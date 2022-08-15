@@ -1,10 +1,12 @@
+import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 
 abstract class PostRepository {
   //Get Post List
-  Future<BaseApiResponse<PostListOb>> getPostList({int? page,String? searchText});
+  Future<BaseApiResponse<PostListOb>> getPostList(
+      {int? page, String? searchText});
 
   //Get Save Post List
   Future<BaseApiResponse<PostListOb>> getSavePostList({int? page});
@@ -18,11 +20,14 @@ abstract class PostRepository {
 
   //Update Post
   Future<BaseApiResponse<String?>> updatePost(
-      CreatePostRequestOb createPostRequestOb,postId);
+      CreatePostRequestOb createPostRequestOb, postId);
 
   //Like Post
   Future<BaseApiResponse<String?>> toggleLikePost(postId);
 
   //Save Post
   Future<BaseApiResponse<String?>> toggleSavePost(postId);
+
+  //Get Profile
+  Future<BaseApiResponse<ProfileOb>> getProfileDetail(profileId);
 }

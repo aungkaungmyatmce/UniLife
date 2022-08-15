@@ -13,6 +13,7 @@ import 'cached_network_image_widget.dart';
 class PostDetailWidget extends StatelessWidget {
   const PostDetailWidget({
     Key? key,
+    required this.profileId,
     required this.statusTitle,
     required this.profilePhotoUrl,
     required this.accName,
@@ -29,7 +30,7 @@ class PostDetailWidget extends StatelessWidget {
     required this.onTapCmt,
     required this.controller,
   }) : super(key: key);
-
+  final int profileId;
   final String statusTitle;
   final String? profilePhotoUrl;
   final String accName;
@@ -69,10 +70,14 @@ class PostDetailWidget extends StatelessWidget {
             child: Row(
               children: [
                 profilePhotoUrl != null
-                    ? CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                          profilePhotoUrl!,
+                    ? InkWell(
+                        onTap: () => Get.toNamed(Paths.OTHER_PROFILE,
+                            arguments: profileId),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: NetworkImage(
+                            profilePhotoUrl!,
+                          ),
                         ),
                       )
                     : const CircleAvatar(

@@ -73,6 +73,7 @@ class PostDetailScreen extends BaseView<PostDetailController> {
   Widget body(BuildContext context) {
     return Obx(() => controller.postDetail.value.id != null
         ? PostDetailWidget(
+            profileId: controller.postDetail.value.owner!.id!,
             statusTitle: controller.postDetail.value.title!,
             profilePhotoUrl: controller.postDetail.value.owner?.profilePicture,
             accName: controller.postDetail.value.owner!.firstName! +

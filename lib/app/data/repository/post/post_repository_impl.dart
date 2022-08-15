@@ -1,4 +1,5 @@
 import 'package:blog_post_flutter/app/core/base/base_remote_source.dart';
+import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
@@ -115,5 +116,23 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<BaseApiResponse<ProfileOb>> getProfileDetail(profileId) {
+    var endpoint = "${DioProvider.baseUrl}/accounts/$profileId/";
+
+    var dioCall = dioClient.get(endpoint);
+    try {
+      return callApiWithErrorParser(dioCall)
+          .then((response) => _parseProfileDetailResponse(response));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  BaseApiResponse<ProfileOb> _parseProfileDetailResponse(Response response) {
+    return BaseApiResponse<ProfileOb>.fromObjectJson(response.data,
+        createObject: (data) => ProfileOb.fromJson(data));
   }
 }
