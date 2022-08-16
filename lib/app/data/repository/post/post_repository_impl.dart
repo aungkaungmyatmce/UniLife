@@ -126,20 +126,9 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
     try {
       return callApiWithErrorParser(dioClient.delete(
         endpoint + "/posts/$postId/",
-      )).then((response) {
-        print('Response Dataaaaaaaaa');
-        print(response.data);
-        if (response.data == Map<String, dynamic>) {
-          return BaseApiResponse<String?>.fromStringJson(
+      )).then((response) => BaseApiResponse<String?>.fromStringJson(
             response.data,
-          );
-        }
-        return BaseApiResponse<String?>(
-          objectResult: null,
-          statusCode: 200,
-          message: 'Successfully deleted!',
-        );
-      });
+          ));
     } catch (e) {
       rethrow;
     }

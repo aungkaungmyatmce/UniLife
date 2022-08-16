@@ -29,6 +29,7 @@ class PostHomeController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    print('Init');
     getPostList();
   }
 
@@ -120,7 +121,7 @@ class PostHomeController extends BaseController {
     Get.offAllNamed(Paths.LOGIN);
   }
 
-  void savePost(bool isSave){
+  void savePost(bool isSave) {
     isFavourite.value = !isSave;
   }
 }
