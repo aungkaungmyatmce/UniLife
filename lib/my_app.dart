@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:blog_post_flutter/app/constant/routing/app_pages.dart';
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/binding/initial_binding.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
-import 'package:blog_post_flutter/app/features/home/controller/post_home_controller.dart';
-import 'package:blog_post_flutter/app/resources/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 import 'app/core/config/size_config.dart';

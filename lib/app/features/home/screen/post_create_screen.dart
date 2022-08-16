@@ -1,21 +1,10 @@
 import 'dart:io';
 
-import 'package:blog_post_flutter/app/constant/app_colors.dart';
-import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/core/utils/image_picker.dart';
-import 'package:blog_post_flutter/app/core/utils/validator.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_create_controller.dart';
-import 'package:blog_post_flutter/app/widget/input_form_field_widget.dart';
-import 'package:blog_post_flutter/app/widget/secondary_button_widget.dart';
-import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../core/utils/dialog_utils.dart';
-import '../../../widget/cached_network_image_widget.dart';
-import '../../../widget/rounded_icon_widget.dart';
 
 class CreatePostScreen extends BaseView<CreatePostController> {
   @override

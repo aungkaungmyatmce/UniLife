@@ -5,14 +5,13 @@ import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
-import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
+import 'package:blog_post_flutter/app/features/home/controller/post_home_controller.dart';
 import 'package:blog_post_flutter/app/widget/post_file_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class CreatePostController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
@@ -124,7 +123,9 @@ class CreatePostController extends BaseController {
       if (response != null) {
         Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
-        Get.offAllNamed(Paths.MAIN_HOME);
+        PostHomeController controller = Get.put(PostHomeController());
+        controller.resetAndGetPostList();
+        Get.offNamed(Paths.MAIN_HOME,arguments: 0);
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }
     }, onError: (Exception exception) {
