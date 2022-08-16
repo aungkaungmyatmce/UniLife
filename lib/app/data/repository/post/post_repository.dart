@@ -29,4 +29,7 @@ abstract class PostRepository {
 
   //Delete Post
   Future<BaseApiResponse<String?>> deletePost(postId);
+
+  //Get Profile
+  Future<BaseApiResponse<ProfileOb>> getProfileDetail(profileId);
 }

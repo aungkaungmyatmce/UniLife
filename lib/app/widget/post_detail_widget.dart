@@ -13,6 +13,7 @@ import 'cached_network_image_widget.dart';
 class PostDetailWidget extends StatelessWidget {
   const PostDetailWidget({
     Key? key,
+    required this.profileId,
     required this.statusTitle,
     required this.profilePhotoUrl,
     required this.accName,
@@ -29,7 +30,7 @@ class PostDetailWidget extends StatelessWidget {
     required this.onTapCmt,
     required this.controller,
   }) : super(key: key);
-
+  final int profileId;
   final String statusTitle;
   final String? profilePhotoUrl;
   final String accName;
@@ -69,10 +70,14 @@ class PostDetailWidget extends StatelessWidget {
             child: Row(
               children: [
                 profilePhotoUrl != null
-                    ? CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                          profilePhotoUrl!,
+                    ? InkWell(
+                        onTap: () => Get.toNamed(Paths.OTHER_PROFILE,
+                            arguments: profileId),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: NetworkImage(
+                            profilePhotoUrl!,
+                          ),
                         ),
                       )
                     : const CircleAvatar(
@@ -172,15 +177,26 @@ class PostDetailWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                    onTap: onTapLike(),
-                    child: Row(
+                  Obx(
+                    () => Row(
                       children: [
                         GestureDetector(
-                          onTap: () => GlobalVariable.token == null ||
-                                  GlobalVariable.token == ""
-                              ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
-                              : controller.toggleLikePost(),
+                          onTap: () {
+                            if (GlobalVariable.token == null ||
+                                GlobalVariable.token == "") {
+                              Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
+                            } else {
+                              if (controller.isLikeAdded.value) {
+                                print("Remove");
+                                controller.removeLikeCount();
+                              } else {
+                                print("Added");
+                                controller.addLikeCount(
+                                    controller.likeCount.value,
+                                    controller.isLikeAdded.value);
+                              }
+                            }
+                          },
                           child: Icon(
                             isLiked
                                 ? Icons.thumb_up
@@ -190,12 +206,12 @@ class PostDetailWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 3),
                         Text(
-                          NumberFormat.compact().format(likeCount),
+                          "${controller.likeCount.value}",
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.white,
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),

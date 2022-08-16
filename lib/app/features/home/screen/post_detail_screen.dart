@@ -16,58 +16,56 @@ class PostDetailScreen extends BaseView<PostDetailController> {
     return AppBar(
       centerTitle: true,
       backgroundColor: AppColors.primaryColor,
-      // leading: IconButton(
-      //     onPressed: controller.goToBack,
-      //     icon: Icon(
-      //       Icons.arrow_back,
-      //       color: Colors.green,
-      //     )),
       title: const TextViewWidget(
         'Post Detail',
         textSize: AppDimens.TEXT_REGULAR_2X,
         textColor: AppColors.whiteColor,
       ),
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios,
+        ),
+        onPressed: () {
+          if (controller.postDetail.value.likeCounts !=
+              controller.likeCount.value) {
+            controller.toggleLikePost();
+          }
+          if (controller.postDetail.value.isSaved != controller.isSaved.value) {
+            controller.toggleSavePost();
+          }
+          Get.back();
+        },
+      ),
       actions: [
-        Obx(
-          () => Row(
-            children: [
-              GestureDetector(
-                onTap: () =>
-                    GlobalVariable.token == null || GlobalVariable.token == ""
-                        ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
-                        : controller.toggleSavePost(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(
-                    Icons.bookmark,
-                    color: controller.postDetail.value.isSaved == true
-                        ? Colors.grey
-                        : Colors.white,
-                    size: 28,
-                  ),
+        Obx(() => GestureDetector(
+              onTap: () {
+                if (GlobalVariable.token == null ||
+                    GlobalVariable.token == "") {
+                  Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
+                } else {
+                  if (controller.isSaved.value) {
+                    print("Removed Save");
+                    controller.isSaved.value = false;
+                  } else {
+                    print("Added Save");
+                    controller.isSaved.value = true;
+                  }
+                }
+              },
+              // GlobalVariable.token == null || GlobalVariable.token == ""
+              //     ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
+              //     : controller.toggleSavePost(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Icon(
+                  Icons.bookmark,
+                  color: controller.isSaved.value == true
+                      ? Colors.grey
+                      : Colors.white,
+                  size: 28,
                 ),
               ),
-              if (controller.postDetail.value.isOwner == true)
-                GestureDetector(
-                  onTap: () {
-                    DialogUtils.showOptionDialog(editButtonOnClick: () {
-                      controller.editPost();
-                    }, deleteButtonOnclick: () {
-                      controller.confirmDelete();
-                    });
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Icon(
-                      Icons.more_vert,
-                      color: Colors.grey,
-                      size: 28,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        )
+            ))
       ],
     );
   }
@@ -76,6 +74,7 @@ class PostDetailScreen extends BaseView<PostDetailController> {
   Widget body(BuildContext context) {
     return Obx(() => controller.postDetail.value.id != null
         ? PostDetailWidget(
+            profileId: controller.postDetail.value.owner!.id!,
             statusTitle: controller.postDetail.value.title!,
             profilePhotoUrl: controller.postDetail.value.owner?.profilePicture,
             accName: controller.postDetail.value.owner!.firstName! +

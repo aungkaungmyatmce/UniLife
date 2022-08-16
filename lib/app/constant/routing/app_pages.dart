@@ -1,6 +1,7 @@
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/features/authentication/binding/authentication_binding.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/login_screen.dart';
+import 'package:blog_post_flutter/app/features/home/screen/other_profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/binding/favourite_binding.dart';
@@ -38,6 +39,12 @@ class AppPages {
     GetPage(name: Paths.PROFILE, page: () => ProfileScreen(), bindings: [
       AuthenticationBinding(),
     ]),
+    GetPage(
+        name: Paths.OTHER_PROFILE,
+        page: () => OtherProfileScreen(),
+        bindings: [
+          HomeBinding(),
+        ]),
     GetPage(name: Paths.HOME, page: () => PostHomeScreen(), bindings: [
       HomeBinding(),
       AuthenticationBinding(),

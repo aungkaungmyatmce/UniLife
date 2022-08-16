@@ -3,6 +3,7 @@ import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
+import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
@@ -20,7 +21,11 @@ class PostDetailController extends BaseController {
       Get.find<CreatePostController>();
   var postDetail = PostData().obs;
   late PaginationUtils postPagination = PaginationUtils();
+  RxInt likeCount = 0.obs;
+  RxBool isLikeAdded = false.obs;
+  RxBool isSaved = false.obs;
   int? postId;
+  var profileDetail = ProfileOb().obs;
 
   @override
   void onInit() {
@@ -46,6 +51,17 @@ class PostDetailController extends BaseController {
       BaseApiResponse<PostData?> _orderDetailData = response;
       PostData data = _orderDetailData.objectResult;
       postDetail.value = data;
+      likeCount.value = postDetail.value.likeCounts!;
+      if (postDetail.value.isLiked == true) {
+        isLikeAdded.value = true;
+      } else {
+        isLikeAdded.value = false;
+      }
+      if (postDetail.value.isSaved == true) {
+        isSaved.value = true;
+      } else {
+        isSaved.value = false;
+      }
     }
   }
 
@@ -61,7 +77,39 @@ class PostDetailController extends BaseController {
       callAPIService(repoService, onSuccess: (dynamic response) {
         if (response != null) {
           BaseApiResponse<String?> _baseApiResponse = response;
-          getPostDetail(postId!);
+          //AppUtils.showToast(" ${_baseApiResponse.message}");
+        }
+      }, onError: (Exception exception) {
+        AppUtils.showToast(errorMessage);
+      });
+    } else {
+      Get.toNamed(Paths.LOGIN);
+    }
+  }
+
+  void addLikeCount(int i, bool isLike) {
+    if (isLike) {
+      likeCount.value = i - 1;
+      isLikeAdded.value = false;
+    } else {
+      likeCount.value = i + 1;
+      isLikeAdded.value = true;
+    }
+  }
+
+  void removeLikeCount() {
+    likeCount.value = likeCount.value - 1;
+    isLikeAdded.value = false;
+  }
+
+  //Toggle Save Post
+  void toggleSavePost() {
+    if (GlobalVariable.token != null) {
+      late Future<BaseApiResponse<String?>> repoService;
+      repoService = _repository.toggleSavePost(postDetail.value.id);
+      callAPIService(repoService, onSuccess: (dynamic response) {
+        if (response != null) {
+          BaseApiResponse<String?> _baseApiResponse = response;
           AppUtils.showToast(" ${_baseApiResponse.message}");
         }
       }, onError: (Exception exception) {
@@ -72,23 +120,29 @@ class PostDetailController extends BaseController {
     }
   }
 
-  //Toggle Like Post
-  void toggleSavePost() {
-    if (GlobalVariable.token != null) {
-      late Future<BaseApiResponse<String?>> repoService;
-      repoService = _repository.toggleSavePost(postDetail.value.id);
-      callAPIService(repoService, onSuccess: (dynamic response) {
-        if (response != null) {
-          BaseApiResponse<String?> _baseApiResponse = response;
-          getPostDetail(postId!);
-          AppUtils.showToast(" ${_baseApiResponse.message}");
-        }
-      }, onError: (Exception exception) {
-        AppUtils.showToast(errorMessage);
-      });
-    } else {
-      Get.toNamed(Paths.LOGIN);
+  //Fetch Profile
+
+  void fetchProfile(int profileId) async {
+    Get.toNamed(Paths.OTHER_PROFILE);
+    final repoService = _repository.getProfileDetail(profileId);
+
+    await callAPIService(
+      repoService,
+      onSuccess: _handleProfileResponseSuccess,
+      onError: _handleProfileResponseError,
+    );
+  }
+
+  void _handleProfileResponseSuccess(response) async {
+    if (response != null) {
+      BaseApiResponse<ProfileOb?> _profileDetailData = response;
+      ProfileOb data = _profileDetailData.objectResult;
+      profileDetail.value = data;
     }
+  }
+
+  void _handleProfileResponseError(Exception exception) {
+    AppUtils.showToast(errorMessage);
   }
 
   void editPost() {
