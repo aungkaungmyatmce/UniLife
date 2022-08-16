@@ -5,12 +5,14 @@ import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
+import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:blog_post_flutter/app/widget/post_file_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CreatePostController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
@@ -21,6 +23,7 @@ class CreatePostController extends BaseController {
   CreatePostRequestOb createPostRequestOb = CreatePostRequestOb();
   RxInt titleCount = 0.obs;
   RxInt descriptionCount = 0.obs;
+  int? postId;
 
   @override
   void onInit() {
@@ -72,37 +75,53 @@ class CreatePostController extends BaseController {
       File? file = postImage.value?.image;
       base64Image = AppUtils.doEncoding(file?.path);
       logger.i("Base64 String is ${AppUtils.doEncoding(file?.path)}");
+      createPostRequestOb.isImageRemoved = false;
+    }
+
+    if (postImage.value?.image != null &&
+        postImage.value?.type == ImageType.networkImage) {
+      base64Image = null;
+      createPostRequestOb.isImageRemoved = false;
+    }
+
+    if (postImage.value?.image == null) {
+      base64Image = null;
+      createPostRequestOb.isImageRemoved = true;
     }
 
     if (titleController.text.isEmpty) {
       AppUtils.showToast("Please Enter title");
       return;
     }
-    if (titleCount.value < 5) {
-      AppUtils.showToast("Title must be at least 20 letters");
-      return;
-    }
+    // if (titleCount.value < 5) {
+    //   AppUtils.showToast("Title must be at least 5 letters");
+    //   return;
+    // }
     if (descriptionController.text.isEmpty) {
       AppUtils.showToast("Please Enter Description ");
       return;
     }
 
-    if (descriptionCount.value < 10) {
-      AppUtils.showToast("Description must be at least 20 letters");
-      return;
-    }
+    // if (descriptionCount.value < 10) {
+    //   AppUtils.showToast("Description must be at least 10 letters");
+    //   return;
+    // }
     createPostRequestOb.title = titleController.text;
     createPostRequestOb.content = descriptionController.text;
     createPostRequestOb.image = base64Image;
 
     late Future<BaseApiResponse<String?>> repoService;
     print("Create Post is ${createPostRequestOb.toJson()}");
+    print(postId);
     AppUtils.showLoaderDialog();
-    repoService = _repository.createPost(createPostRequestOb);
+    if (postId != null) {
+      repoService = _repository.updatePost(createPostRequestOb, postId);
+    } else {
+      repoService = _repository.createPost(createPostRequestOb);
+    }
+
     callAPIService(repoService, onSuccess: (dynamic response) {
       if (response != null) {
-        print('response>>>>>');
-        print(response);
         Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
         Get.offAllNamed(Paths.MAIN_HOME);

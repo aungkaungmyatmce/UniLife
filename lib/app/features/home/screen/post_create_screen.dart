@@ -13,10 +13,25 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/utils/dialog_utils.dart';
+import '../../../widget/cached_network_image_widget.dart';
+import '../../../widget/rounded_icon_widget.dart';
+
 class CreatePostScreen extends BaseView<CreatePostController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
+  }
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  void validate() {
+    final FormState? form = formKey.currentState;
+    if (form!.validate()) {
+      controller.uploadPost();
+    } else {
+      print('Form is invalid');
+    }
   }
 
   @override
@@ -24,106 +39,139 @@ class CreatePostScreen extends BaseView<CreatePostController> {
     return Obx(
       () => SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(),
-                    ElevatedButton(
-                      onPressed: controller.uploadPost,
-                      child: Text(
-                        'Publish',
-                        style: TextStyle(
-                          color: Colors.white,
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (controller.postId == null) SizedBox(),
+                      if (controller.postId != null)
+                        TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
-                      ),
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18))),
-                          backgroundColor:
-                              MaterialStateProperty.all(Color(0xff818181))),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                child: TextFormField(
-                  controller: controller.titleController,
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  style: const TextStyle(fontSize: 20),
-                  decoration: const InputDecoration(
-                    hintText: 'Title :',
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(
-                          'https://picsum.photos/200',
+                      ElevatedButton(
+                        onPressed: validate,
+                        child: const Text(
+                          'Publish',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ),
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (value) {
-                    controller.titleCount(value.length);
-                  },
-                ),
-              ),
-              controller.postImage.value?.image != null
-                  ? controller.getPostImage()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      child: OutlinedButton(
-                        onPressed: () {
-                          ImagePickerHelper.pickMenuImage(
-                              onImagePickCallBack: (File? file) {
-                            controller.addPostImage(file!);
-                          });
-                        },
                         style: ButtonStyle(
-                          padding:
-                              MaterialStateProperty.all(EdgeInsets.all(20)),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0))),
-                        ),
-                        child: const Icon(
-                          Icons.camera_alt_outlined,
-                          size: 30,
-                          color: Colors.black54,
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18))),
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xff818181))),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: TextFormField(
+                    controller: controller.titleController,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(fontSize: 20),
+                    decoration: const InputDecoration(
+                      hintText: 'Title :',
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundImage: NetworkImage(
+                            'https://picsum.photos/200',
+                          ),
                         ),
                       ),
+                      border: InputBorder.none,
                     ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: TextFormField(
-                  controller: controller.descriptionController,
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  style: const TextStyle(fontSize: 16),
-                  decoration: const InputDecoration(
-                    hintText: 'Share your stories.....',
-                    border: InputBorder.none,
-                    isDense: true, // Added this
-                    contentPadding: EdgeInsets.all(10),
+                    onChanged: (value) {
+                      controller.titleCount(value.length);
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return '                  Title cannot be empty ';
+                      }
+                      if (value.length < 5) {
+                        return 'Title must be at least 5 characters long';
+                      }
+                      return null;
+                    },
                   ),
-                  onChanged: (value) {
-                    controller.setDescriptionCount(value.length);
-                  },
                 ),
-              ),
-            ],
+                (controller.postImage.value?.image != null)
+                    ? controller.getPostImage()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: OutlinedButton(
+                          onPressed: () {
+                            ImagePickerHelper.pickMenuImage(
+                                onImagePickCallBack: (File? file) {
+                              controller.addPostImage(file!);
+                            });
+                          },
+                          style: ButtonStyle(
+                            padding:
+                                MaterialStateProperty.all(EdgeInsets.all(20)),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0))),
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt_outlined,
+                            size: 30,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: TextFormField(
+                    controller: controller.descriptionController,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(fontSize: 16),
+                    decoration: const InputDecoration(
+                      hintText: 'Share your stories.....',
+                      border: InputBorder.none,
+                      isDense: true, // Added this
+                      contentPadding: EdgeInsets.all(10),
+                    ),
+                    onChanged: (value) {
+                      controller.setDescriptionCount(value.length);
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Your story cannot be empty ';
+                      }
+                      if (value.length < 5) {
+                        return 'Your story must be at least 20 words long';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

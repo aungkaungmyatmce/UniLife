@@ -178,10 +178,9 @@ class PostDetailWidget extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () => GlobalVariable.token == null ||
-                              GlobalVariable.token == ""
-                              ? Get.offAllNamed(Paths.MAIN_HOME,
-                              arguments: 4)
-                              : controller.toggleSavePost(),
+                                  GlobalVariable.token == ""
+                              ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
+                              : controller.toggleLikePost(),
                           child: Icon(
                             isLiked
                                 ? Icons.thumb_up

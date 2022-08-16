@@ -2,8 +2,10 @@ class CreatePostRequestOb {
   String? title;
   String? content;
   String? image;
+  bool? isImageRemoved;
 
-  CreatePostRequestOb({this.title, this.content, this.image});
+  CreatePostRequestOb(
+      {this.title, this.content, this.image, this.isImageRemoved});
 
   CreatePostRequestOb.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -16,6 +18,10 @@ class CreatePostRequestOb {
     data['title'] = this.title;
     data['content'] = this.content;
     data['image'] = this.image;
+    if (this.isImageRemoved != null) {
+      data['image_removed'] = this.isImageRemoved;
+    }
+
     return data;
   }
 }

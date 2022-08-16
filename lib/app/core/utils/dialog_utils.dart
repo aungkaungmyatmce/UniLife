@@ -35,7 +35,9 @@ class DialogUtils {
       ],
     );
 
-    Get.dialog(dialog);
+    Get.dialog(
+      dialog,
+    );
   }
 
   static void requestInputDialog({

@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 
 import '../../data/network/exception/base_exception.dart';
 
-abstract class BaseRemoteSource  {
+abstract class BaseRemoteSource {
   Dio get dioClient => DioProvider.dioWithHeaderToken;
 
   final Logger logger = Logger(
@@ -23,7 +23,7 @@ abstract class BaseRemoteSource  {
         printEmojis: true,
         // Print an emoji for each log message
         printTime: false // Should each log print contain a timestamp
-    ),
+        ),
   );
 
   Future<Response<T>> callApiWithErrorParser<T>(Future<Response<T>> api) async {
@@ -41,7 +41,7 @@ abstract class BaseRemoteSource  {
       Exception exception = handleDioError(dioError);
       if (kDebugMode) {
         print(
-          "Throwing error from repository: >>>>>>> $exception : ${(exception as BaseException).message}");
+            "Throwing error from repository: >>>>>>> $exception : ${(exception as BaseException).message}");
       }
       throw exception;
     } catch (error) {

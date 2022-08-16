@@ -7,6 +7,7 @@ import 'package:blog_post_flutter/app/features/home/controller/post_detail_contr
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/utils/dialog_utils.dart';
 import '../../../widget/post_detail_widget.dart';
 
 class PostDetailScreen extends BaseView<PostDetailController> {
@@ -15,28 +16,58 @@ class PostDetailScreen extends BaseView<PostDetailController> {
     return AppBar(
       centerTitle: true,
       backgroundColor: AppColors.primaryColor,
+      // leading: IconButton(
+      //     onPressed: controller.goToBack,
+      //     icon: Icon(
+      //       Icons.arrow_back,
+      //       color: Colors.green,
+      //     )),
       title: const TextViewWidget(
         'Post Detail',
         textSize: AppDimens.TEXT_REGULAR_2X,
         textColor: AppColors.whiteColor,
       ),
       actions: [
-        Obx(() => GestureDetector(
-              onTap: () =>
-                  GlobalVariable.token == null || GlobalVariable.token == ""
-                      ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
-                      : controller.toggleSavePost(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(
-                  Icons.bookmark,
-                  color: controller.postDetail.value.isSaved == true
-                      ? Colors.grey
-                      : Colors.white,
-                  size: 28,
+        Obx(
+          () => Row(
+            children: [
+              GestureDetector(
+                onTap: () =>
+                    GlobalVariable.token == null || GlobalVariable.token == ""
+                        ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
+                        : controller.toggleSavePost(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Icon(
+                    Icons.bookmark,
+                    color: controller.postDetail.value.isSaved == true
+                        ? Colors.grey
+                        : Colors.white,
+                    size: 28,
+                  ),
                 ),
               ),
-            ))
+              if (controller.postDetail.value.isOwner == true)
+                GestureDetector(
+                  onTap: () {
+                    DialogUtils.showOptionDialog(editButtonOnClick: () {
+                      controller.editPost();
+                    }, deleteButtonOnclick: () {
+                      controller.confirmDelete();
+                    });
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(
+                      Icons.more_vert,
+                      color: Colors.grey,
+                      size: 28,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        )
       ],
     );
   }

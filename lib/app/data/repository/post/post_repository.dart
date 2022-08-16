@@ -4,7 +4,8 @@ import 'package:blog_post_flutter/app/data/network/base_response/base_api_respon
 
 abstract class PostRepository {
   //Get Post List
-  Future<BaseApiResponse<PostListOb>> getPostList({int? page,String? searchText});
+  Future<BaseApiResponse<PostListOb>> getPostList(
+      {int? page, String? searchText});
 
   //Get Save Post List
   Future<BaseApiResponse<PostListOb>> getSavePostList({int? page});
@@ -18,11 +19,14 @@ abstract class PostRepository {
 
   //Update Post
   Future<BaseApiResponse<String?>> updatePost(
-      CreatePostRequestOb createPostRequestOb,postId);
+      CreatePostRequestOb createPostRequestOb, postId);
 
   //Like Post
   Future<BaseApiResponse<String?>> toggleLikePost(postId);
 
   //Save Post
   Future<BaseApiResponse<String?>> toggleSavePost(postId);
+
+  //Delete Post
+  Future<BaseApiResponse<String?>> deletePost(postId);
 }

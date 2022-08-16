@@ -68,9 +68,13 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
     try {
       return callApiWithErrorParser(dioClient.post(endpoint + "/posts/",
               data: postRequestOb.toJson()))
-          .then((response) => BaseApiResponse<String?>.fromStringJson(
-                response.data,
-              ));
+          .then((response) {
+        print('Response Dataaaaaaaaa');
+        print(response.data);
+        return BaseApiResponse<String?>.fromStringJson(
+          response.data,
+        );
+      });
     } catch (e) {
       rethrow;
     }
@@ -80,8 +84,7 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   Future<BaseApiResponse<String?>> updatePost(
       CreatePostRequestOb postRequestOb, postId) {
     try {
-      return callApiWithErrorParser(dioClient.put(
-              endpoint + "/post/$postId/update/",
+      return callApiWithErrorParser(dioClient.put(endpoint + "/posts/$postId/",
               data: postRequestOb.toJson()))
           .then((response) => BaseApiResponse<String?>.fromStringJson(
                 response.data,
@@ -112,6 +115,30 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
       )).then((response) => BaseApiResponse<String?>.fromStringJson(
             response.data,
           ));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> deletePost(postId) {
+    try {
+      return callApiWithErrorParser(dioClient.delete(
+        endpoint + "/posts/$postId/",
+      )).then((response) {
+        print('Response Dataaaaaaaaa');
+        print(response.data);
+        if (response.data == Map<String, dynamic>) {
+          return BaseApiResponse<String?>.fromStringJson(
+            response.data,
+          );
+        }
+        return BaseApiResponse<String?>(
+          objectResult: null,
+          statusCode: 200,
+          message: 'Successfully deleted!',
+        );
+      });
     } catch (e) {
       rethrow;
     }
