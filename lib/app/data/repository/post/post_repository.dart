@@ -2,6 +2,8 @@ import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 
+import '../../model/authentication/profile_ob.dart';
+
 abstract class PostRepository {
   //Get Post List
   Future<BaseApiResponse<PostListOb>> getPostList(

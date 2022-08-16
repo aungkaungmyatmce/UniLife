@@ -198,7 +198,7 @@ class PostDetailWidget extends StatelessWidget {
                             }
                           },
                           child: Icon(
-                            isLiked
+                            controller.isLikeAdded.value
                                 ? Icons.thumb_up
                                 : Icons.thumb_up_alt_outlined,
                             color: Colors.white,
