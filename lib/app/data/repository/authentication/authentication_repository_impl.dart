@@ -7,6 +7,7 @@ import 'package:blog_post_flutter/app/data/network/base_response/base_api_respon
 import 'package:blog_post_flutter/app/data/network/services/dio_provider.dart';
 import 'package:blog_post_flutter/app/data/repository/authentication/authentication_repository.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 
 class AuthRepositoryImpl extends BaseRemoteSource implements AuthRepository {
   @override
@@ -46,7 +47,9 @@ class AuthRepositoryImpl extends BaseRemoteSource implements AuthRepository {
   Future<BaseApiResponse<ProfileOb>> getProfileDetail(profileId) {
     var endpoint = "${DioProvider.baseUrl}/accounts/$profileId/";
 
-    var dioCall = dioClient.get(endpoint);
+    var dioCall = dioClient.get(endpoint,
+        options:
+            buildCacheOptions(const Duration(days: 7), forceRefresh: true));
     try {
       return callApiWithErrorParser(dioCall)
           .then((response) => _parseProfileDetailResponse(response));
@@ -69,8 +72,8 @@ class AuthRepositoryImpl extends BaseRemoteSource implements AuthRepository {
     try {
       return callApiWithErrorParser(dioCall)
           .then((response) => BaseApiResponse<String?>.fromStringJson(
-        response.data,
-      ));
+                response.data,
+              ));
     } catch (e) {
       rethrow;
     }

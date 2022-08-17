@@ -3,6 +3,7 @@ import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_response.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -31,11 +32,13 @@ class DioProvider {
       _instance = Dio(_options);
       _addHeader();
       _instance!.interceptors.add(_prettyDioLogger);
+      _instance!.interceptors.add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
       return _instance!;
     } else {
       _addHeader();
       _instance!.interceptors.clear();
       _instance!.interceptors.add(_prettyDioLogger);
+      _instance!.interceptors.add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
       return _instance!;
     }
   }
@@ -75,5 +78,6 @@ class DioProvider {
     _instance ??= httpDio;
     _instance!.interceptors.clear();
     _instance!.interceptors.add(_prettyDioLogger);
+    _instance!.interceptors.add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
   }
 }

@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:io' as Io;
 
+import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'dart:io' as Io;
-
 
 class AppUtils {
   static void showSnackBar({required String message, required String title}) {
@@ -26,8 +26,8 @@ class AppUtils {
     _fileName = filePath != null
         ? filePath.split('/').last
         : filePath != null
-        ? _paths.keys.toString()
-        : '...';
+            ? _paths.keys.toString()
+            : '...';
 
     print("FILE PATH" + _fileName);
     List<String> fileType;
@@ -44,7 +44,9 @@ class AppUtils {
     AlertDialog alert = AlertDialog(
       content: Row(
         children: [
-          const CircularProgressIndicator(),
+          const CircularProgressIndicator(
+            color: AppColors.primaryColor,
+          ),
           Container(
             margin: const EdgeInsets.only(left: 7),
             child: Text(title ?? "Loading"),
@@ -56,6 +58,6 @@ class AppUtils {
   }
 
   static hideAlertDialog() {
-   Get.back();
+    Get.back();
   }
 }
