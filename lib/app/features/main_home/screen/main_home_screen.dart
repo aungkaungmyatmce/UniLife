@@ -11,6 +11,7 @@ import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen
 import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_home_screen.dart';
 import 'package:blog_post_flutter/app/features/main_home/controller/main_home_controller.dart';
+import 'package:blog_post_flutter/app/widget/cached_network_image_widget.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,9 +85,11 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                 icon: Icons.notification_important_rounded,
               ),
               TabItem(
-                title: "Profile",
-                icon: Icons.person,
-              ),
+                  title: "Profile",
+                  icon:  CachedNetworkImageWidget(
+                    imageUrl:
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5vR6BJh8C2vIXHYM9rviQzBiIZh1L6aZbAGPnDAWPP_OapDn1",
+                  )),
             ],
             backgroundColor: AppColors.primaryColor,
             activeColor: const Color(0xFF000000),
