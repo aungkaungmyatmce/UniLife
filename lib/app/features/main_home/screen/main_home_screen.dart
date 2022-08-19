@@ -11,7 +11,6 @@ import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen
 import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_home_screen.dart';
 import 'package:blog_post_flutter/app/features/main_home/controller/main_home_controller.dart';
-import 'package:blog_post_flutter/app/widget/cached_network_image_widget.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -67,29 +66,38 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return Scaffold(
       body: Obx(() => _pageNumber[mainHomeScreenController.selectedPage.value]),
       bottomNavigationBar: Obx(() => ConvexAppBar(
-            items: const [
-              TabItem(
+            items: [
+              const TabItem(
                 title: "Home",
                 icon: Icons.home,
               ),
-              TabItem(
+              const TabItem(
                 title: "Favourite",
                 icon: Icons.bookmarks_outlined,
               ),
-              TabItem(
+              const TabItem(
                 title: "Add",
                 icon: Icons.add_circle_outline,
               ),
-              TabItem(
+              const TabItem(
                 title: "Noti",
                 icon: Icons.notification_important_rounded,
               ),
-              TabItem(
-                  title: "Profile",
-                  icon:  CachedNetworkImageWidget(
-                    imageUrl:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5vR6BJh8C2vIXHYM9rviQzBiIZh1L6aZbAGPnDAWPP_OapDn1",
-                  )),
+              mainHomeScreenController.loginResponse.value.user != null
+                  ? mainHomeScreenController
+                              .loginResponse.value.user!.profileImage !=
+                          null
+                      ? TabItem(
+                          title: "You",
+                          icon: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: AppColors.secondaryTextColor,
+                            backgroundImage: NetworkImage(
+                                "https://pyaephyokyaw.pythonanywhere.com${mainHomeScreenController.loginResponse.value.user!.profileImage}"),
+                          ))
+                      : const TabItem(
+                          title: "You", icon: Icons.account_circle)
+                  : const TabItem(title: "Profile", icon: Icons.account_circle),
             ],
             backgroundColor: AppColors.primaryColor,
             activeColor: const Color(0xFF000000),

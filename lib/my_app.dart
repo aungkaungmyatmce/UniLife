@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
       //theme: lightTheme(),
       getPages: AppPages.routes,
       showSemanticsDebugger: false,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
