@@ -12,8 +12,8 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => PostHomeController());
-    Get.lazyPut(() => AuthenticationController(), fenix: true);
     Get.lazyPut(() => CreatePostController(), fenix: true);
+    Get.lazyPut(() => AuthenticationController(), fenix: true);
     Get.lazyPut(() => PostDetailController(), fenix: true);
     Get.lazyPut(() => EditPostController(), fenix: true);
     Get.lazyPut(() => OtherProfileController(), fenix: true);

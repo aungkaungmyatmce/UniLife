@@ -111,21 +111,22 @@ class CreatePostController extends BaseController {
 
     late Future<BaseApiResponse<String?>> repoService;
     print("Create Post is ${createPostRequestOb.toJson()}");
-    print(postId);
+    print("Post Id is ***** $postId");
     AppUtils.showLoaderDialog();
     if (postId != null) {
       repoService = _repository.updatePost(createPostRequestOb, postId);
     } else {
       repoService = _repository.createPost(createPostRequestOb);
     }
-
     callAPIService(repoService, onSuccess: (dynamic response) {
       if (response != null) {
+        print("It is create or update");
         Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
-        PostHomeController controller = Get.put(PostHomeController());
-        controller.resetAndGetPostList();
-        Get.offNamed(Paths.MAIN_HOME,arguments: 0);
+        final PostHomeController postHomeController =
+            Get.put(PostHomeController());
+        postHomeController.resetAndGetPostList();
+        Get.offAllNamed(Paths.MAIN_HOME,);
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }
     }, onError: (Exception exception) {

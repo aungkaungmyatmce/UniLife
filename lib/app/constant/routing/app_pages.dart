@@ -26,9 +26,9 @@ class AppPages {
         page: () => const MainHomeScreen(),
         bindings: [
           MainHomeBinding(),
-          AuthenticationBinding(),
+          // AuthenticationBinding(),
           HomeBinding(),
-          FavouriteBinding()
+          // FavouriteBinding()
         ]),
     GetPage(name: Paths.SIGN_UP, page: () => SignUpScreen(), bindings: [
       AuthenticationBinding(),

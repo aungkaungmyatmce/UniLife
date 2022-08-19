@@ -14,14 +14,14 @@ class MainHomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => MainHomeController());
-    Get.put(() => CreatePostController());
+    Get.lazyPut(() => CreatePostController());
     Get.lazyPut(() => EditPostController());
     Get.lazyPut<AuthRepository>(
       () => AuthRepositoryImpl(),
       tag: (AuthRepository).toString(),
     );
     Get.lazyPut(() => AuthenticationController());
-    Get.lazyPut(() => PostHomeController());
+    //Get.lazyPut(() => PostHomeController());
     Get.lazyPut(() => FavouriteController());
     Get.lazyPut<PostRepository>(
       () => PostRepositoryImpl(),

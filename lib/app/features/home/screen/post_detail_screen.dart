@@ -2,13 +2,13 @@ import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
+import 'package:blog_post_flutter/app/core/utils/dialog_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
+import 'package:blog_post_flutter/app/widget/post_detail_widget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/utils/dialog_utils.dart';
-import '../../../widget/post_detail_widget.dart';
 
 class PostDetailScreen extends BaseView<PostDetailController> {
   @override
@@ -54,9 +54,6 @@ class PostDetailScreen extends BaseView<PostDetailController> {
                       }
                     }
                   },
-                  // GlobalVariable.token == null || GlobalVariable.token == ""
-                  //     ? Get.offAllNamed(Paths.MAIN_HOME, arguments: 4)
-                  //     : controller.toggleSavePost(),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Icon(
@@ -95,25 +92,39 @@ class PostDetailScreen extends BaseView<PostDetailController> {
   @override
   Widget body(BuildContext context) {
     return Obx(() => controller.postDetail.value.id != null
-        ? PostDetailWidget(
-            profileId: controller.postDetail.value.owner!.id!,
-            statusTitle: controller.postDetail.value.title!,
-            profilePhotoUrl: controller.postDetail.value.owner?.profilePicture,
-            accName: controller.postDetail.value.owner!.firstName! +
-                " " +
-                controller.postDetail.value.owner!.lastName!,
-            date: DateTime.now(),
-            statusBody: controller.postDetail.value.content!,
-            likeCount: controller.postDetail.value.likeCounts!,
-            cmtCount: controller.postDetail.value.commentCounts!,
-            isLiked: controller.postDetail.value.isLiked!,
-            isSaved: controller.postDetail.value.isSaved!,
-            onTapLike: () {},
-            onTapCmt: () {},
-            university: controller.postDetail.value.owner!.university!,
-            statusTitlePhotoUrl: controller.postDetail.value.image,
-            statusBodyPhotoUrl: null,
-            controller: controller,
+        ? WillPopScope(
+            onWillPop: () async {
+              if (controller.postDetail.value.likeCounts !=
+                  controller.likeCount.value) {
+                controller.toggleLikePost();
+              }
+              if (controller.postDetail.value.isSaved !=
+                  controller.isSaved.value) {
+                controller.toggleSavePost();
+              }
+              return true;
+            },
+            child: PostDetailWidget(
+              profileId: controller.postDetail.value.owner!.id!,
+              statusTitle: controller.postDetail.value.title!,
+              profilePhotoUrl:
+                  controller.postDetail.value.owner?.profilePicture,
+              accName: controller.postDetail.value.owner!.firstName! +
+                  " " +
+                  controller.postDetail.value.owner!.lastName!,
+              date: DateTime.now(),
+              statusBody: controller.postDetail.value.content!,
+              likeCount: controller.postDetail.value.likeCounts!,
+              cmtCount: controller.postDetail.value.commentCounts!,
+              isLiked: controller.postDetail.value.isLiked!,
+              isSaved: controller.postDetail.value.isSaved!,
+              onTapLike: () {},
+              onTapCmt: () {},
+              university: controller.postDetail.value.owner!.university!,
+              statusTitlePhotoUrl: controller.postDetail.value.image,
+              statusBodyPhotoUrl: null,
+              controller: controller,
+            ),
           )
         : const Center(
             child: CircularProgressIndicator(

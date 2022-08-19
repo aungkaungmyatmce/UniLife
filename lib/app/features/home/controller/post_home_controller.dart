@@ -10,7 +10,6 @@ import 'package:blog_post_flutter/app/data/network/base_response/base_api_respon
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class PostHomeController extends BaseController {
@@ -69,7 +68,7 @@ class PostHomeController extends BaseController {
 
       await callAPIService(
         repoService,
-        onStart: _postList.isEmpty ? () => showLoading() : null,
+        //onStart: _postList.isEmpty ? () => showLoading() : null,
         onSuccess: _handlePostListResponseSuccess,
         onError: _handleAllListResponseError,
       );

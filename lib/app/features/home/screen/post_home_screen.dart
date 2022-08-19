@@ -37,66 +37,72 @@ class PostHomeScreen extends BaseView<PostHomeController> {
 
   @override
   Widget body(BuildContext context) {
-    return Obx(() => Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.only(
-                  top: AppDimens.MARGIN_MEDIUM_2,
-                  bottom: AppDimens.MARGIN_MEDIUM,
-                  left: AppDimens.MARGIN_MEDIUM_2,
-                  right: AppDimens.MARGIN_MEDIUM_2,
+    return Obx(() => controller.postList.isNotEmpty
+        ? Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppDimens.MARGIN_MEDIUM_2,
+                    bottom: AppDimens.MARGIN_MEDIUM,
+                    left: AppDimens.MARGIN_MEDIUM_2,
+                    right: AppDimens.MARGIN_MEDIUM_2,
+                  ),
+                  child: controller.isSearch.value
+                      ? InputFormFieldWidget(
+                          controller.searchTextEditingController.value,
+                          hintText: "Search",
+                          onTextChange: () => controller.searchPostList(
+                              refreshController: _refreshController),
+                          formBorderColor: AppColors.primaryColor,
+                          formBorderWidth: 2,
+                        )
+                      : const SizedBox()),
+              Expanded(
+                  child: SmartRefresherParentView(
+                refreshController: _refreshController,
+                enablePullUp: true,
+                onRefresh: () => controller.resetAndGetPostList(
+                    refreshController: _refreshController),
+                onLoading: () => controller.getPostList(
+                    refreshController: _refreshController),
+                child: CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 4),
+                              child: Column(
+                                children: [
+                                  PostItemWidget(
+                                    postData: controller.postList[index],
+                                  ),
+                                  const Divider(
+                                    color: Colors.black,
+                                  )
+                                ],
+                              ));
+                        },
+                        childCount: controller.postList.length,
+                      ),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: AppDimens.MARGIN_MEDIUM_2,
+                      ),
+                    ),
+                  ],
                 ),
-                child: controller.isSearch.value
-                    ? InputFormFieldWidget(
-                        controller.searchTextEditingController.value,
-                        hintText: "Search",
-                        onTextChange: () => controller.searchPostList(
-                            refreshController: _refreshController),
-                        formBorderColor: AppColors.primaryColor,
-                        formBorderWidth: 2,
-                      )
-                    : SizedBox()),
-            Expanded(
-                child: SmartRefresherParentView(
-              refreshController: _refreshController,
-              enablePullUp: true,
-              onRefresh: () => controller.resetAndGetPostList(
-                  refreshController: _refreshController),
-              onLoading: () =>
-                  controller.getPostList(refreshController: _refreshController),
-              child: CustomScrollView(
-                physics: const ClampingScrollPhysics(),
-                slivers: [
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 4),
-                            child: Column(
-                              children: [
-                                PostItemWidget(
-                                  postData: controller.postList[index],
-                                ),
-                                const Divider(
-                                  color: Colors.black,
-                                )
-                              ],
-                            ));
-                      },
-                      childCount: controller.postList.length,
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: AppDimens.MARGIN_MEDIUM_2,
-                    ),
-                  ),
-                ],
-              ),
-            ))
-          ],
-        ));
+              ))
+            ],
+          )
+        : const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primaryColor,
+            ),
+          ));
   }
 
 // @override
