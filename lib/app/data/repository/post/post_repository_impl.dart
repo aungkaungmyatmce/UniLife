@@ -9,6 +9,7 @@ import 'package:blog_post_flutter/app/data/network/services/dio_provider.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 
 class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   var endpoint = DioProvider.baseUrl;
@@ -16,7 +17,9 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   @override
   Future<BaseApiResponse<PostListOb>> getPostList(
       {int? page, String? searchText = ""}) {
-    var dioCall = dioClient.get("$endpoint/posts/?q=$searchText&page=$page");
+    var dioCall = dioClient.get("$endpoint/posts/?q=$searchText&page=$page",
+        options:
+            buildCacheOptions(const Duration(days: 7), forceRefresh: true));
     try {
       return callApiWithErrorParser(dioCall).then(
         (response) => _parsePostListResponse(response),
@@ -33,7 +36,9 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
 
   @override
   Future<BaseApiResponse<PostListOb>> getSavePostList({int? page}) {
-    var dioCall = dioClient.get("$endpoint/posts/?saved&page=$page");
+    var dioCall = dioClient.get("$endpoint/posts/?saved&page=$page",
+        options:
+            buildCacheOptions(const Duration(days: 7), forceRefresh: true));
     try {
       return callApiWithErrorParser(dioCall).then(
         (response) => _parseSavePostListResponse(response),
@@ -52,7 +57,9 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   Future<BaseApiResponse<PostData>> getPostDetail(postId) {
     var endpoint = "${DioProvider.baseUrl}/posts/$postId/";
 
-    var dioCall = dioClient.get(endpoint);
+    var dioCall = dioClient.get(endpoint,
+        options:
+            buildCacheOptions(const Duration(days: 7), forceRefresh: true));
     try {
       return callApiWithErrorParser(dioCall)
           .then((response) => _parsePostDetailResponse(response));
@@ -141,7 +148,9 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   Future<BaseApiResponse<ProfileOb>> getProfileDetail(profileId) {
     var endpoint = "${DioProvider.baseUrl}/accounts/$profileId/";
 
-    var dioCall = dioClient.get(endpoint);
+    var dioCall = dioClient.get(endpoint,
+        options:
+            buildCacheOptions(const Duration(days: 7), forceRefresh: true));
     try {
       return callApiWithErrorParser(dioCall)
           .then((response) => _parseProfileDetailResponse(response));

@@ -66,27 +66,38 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return Scaffold(
       body: Obx(() => _pageNumber[mainHomeScreenController.selectedPage.value]),
       bottomNavigationBar: Obx(() => ConvexAppBar(
-            items: const [
-              TabItem(
+            items: [
+              const TabItem(
                 title: "Home",
                 icon: Icons.home,
               ),
-              TabItem(
+              const TabItem(
                 title: "Favourite",
                 icon: Icons.bookmarks_outlined,
               ),
-              TabItem(
+              const TabItem(
                 title: "Add",
                 icon: Icons.add_circle_outline,
               ),
-              TabItem(
+              const TabItem(
                 title: "Noti",
                 icon: Icons.notification_important_rounded,
               ),
-              TabItem(
-                title: "Profile",
-                icon: Icons.person,
-              ),
+              mainHomeScreenController.loginResponse.value.user != null
+                  ? mainHomeScreenController
+                              .loginResponse.value.user!.profileImage !=
+                          null
+                      ? TabItem(
+                          title: "You",
+                          icon: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: AppColors.secondaryTextColor,
+                            backgroundImage: NetworkImage(
+                                "https://pyaephyokyaw.pythonanywhere.com${mainHomeScreenController.loginResponse.value.user!.profileImage}"),
+                          ))
+                      : const TabItem(
+                          title: "You", icon: Icons.account_circle)
+                  : const TabItem(title: "Profile", icon: Icons.account_circle),
             ],
             backgroundColor: AppColors.primaryColor,
             activeColor: const Color(0xFF000000),

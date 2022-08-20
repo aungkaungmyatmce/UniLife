@@ -26,7 +26,6 @@ class PostDetailController extends BaseController {
       Get.find<CreatePostController>();
   final CommentController commentController = Get.find<CommentController>();
   var postDetail = PostData().obs;
-
   late PaginationUtils postPagination = PaginationUtils();
   RxInt likeCount = 0.obs;
   RxBool isLikeAdded = false.obs;
