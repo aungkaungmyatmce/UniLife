@@ -71,9 +71,10 @@ class DateUtil {
     } else if (difference.inMinutes >= 1) {
       return (numericDates) ? '1 minute ago' : 'A minute ago';
     } else if (difference.inSeconds >= 3) {
-      return '${difference.inSeconds} seconds ago';
+      //return '${difference.inSeconds} seconds ago';
+      return 'Just Now';
     } else {
-      return 'Just now';
+      return 'Just Now';
     }
   }
 }

@@ -12,4 +12,6 @@ class Paths {
   static const FAVOURITE = '/favorite';
   static const PROFILE = '/profile';
   static const OTHER_PROFILE = '/other-profile';
+  static const COMMENT = '/Comment';
+  static const COMMENT_EDIT = '/Comment-Edit';
 }

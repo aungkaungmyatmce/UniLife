@@ -122,10 +122,11 @@ class CreatePostController extends BaseController {
     callAPIService(repoService, onSuccess: (dynamic response) {
       if (response != null) {
         Get.back();
+        print('Get Back');
         BaseApiResponse<String?> _baseApiResponse = response;
         PostHomeController controller = Get.put(PostHomeController());
         controller.resetAndGetPostList();
-        Get.offNamed(Paths.MAIN_HOME,arguments: 0);
+        Get.offAllNamed(Paths.MAIN_HOME);
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }
     }, onError: (Exception exception) {
@@ -134,3 +135,8 @@ class CreatePostController extends BaseController {
     });
   }
 }
+
+// Get.back();
+// BaseApiResponse<String?> _baseApiResponse = response;
+// Get.offAllNamed(Paths.MAIN_HOME);
+// AppUtils.showToast(" ${_baseApiResponse.message}");

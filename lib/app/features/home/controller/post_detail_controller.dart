@@ -4,12 +4,17 @@ import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
+import 'package:blog_post_flutter/app/data/model/post/comment_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:blog_post_flutter/app/features/favourite/controller/favourite_controller.dart';
+import 'package:blog_post_flutter/app/features/home/controller/comment_controller.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_create_controller.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../constant/enum_image_type.dart';
 import '../../../core/utils/dialog_utils.dart';
@@ -19,7 +24,9 @@ class PostDetailController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
   final CreatePostController postCreateController =
       Get.find<CreatePostController>();
+  final CommentController commentController = Get.find<CommentController>();
   var postDetail = PostData().obs;
+
   late PaginationUtils postPagination = PaginationUtils();
   RxInt likeCount = 0.obs;
   RxBool isLikeAdded = false.obs;
@@ -188,5 +195,11 @@ class PostDetailController extends BaseController {
       Get.back();
       AppUtils.showToast(errorMessage);
     });
+  }
+
+  void onCmtTap() {
+    commentController.commentList = postDetail.value.comments!;
+    commentController.postId = postDetail.value.id!;
+    Get.toNamed(Paths.COMMENT)?.then((value) => getPostDetail(postId!));
   }
 }

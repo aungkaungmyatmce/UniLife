@@ -10,6 +10,8 @@ import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../data/model/post/comment_ob.dart';
+
 class DialogUtils {
   static final DialogUtils _instance = DialogUtils.internal();
 
@@ -230,5 +232,60 @@ class DialogUtils {
         );
       },
     );
+  }
+
+  static Future<dynamic> showEditAndDeleteBottomSheet(
+      {required CommentData cmtData,
+      required Function onEdit,
+      required Function onDelete}) {
+    return Get.bottomSheet(
+        Container(
+          padding: EdgeInsets.all(20),
+          height: 150,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    onEdit();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        color: Colors.green,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Edit',
+                        style: TextStyle(color: Colors.black),
+                      )
+                    ],
+                  )),
+              TextButton(
+                  onPressed: () {
+                    onDelete();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.black),
+                      )
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ));
   }
 }

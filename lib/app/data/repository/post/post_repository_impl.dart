@@ -1,11 +1,14 @@
 import 'package:blog_post_flutter/app/core/base/base_remote_source.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
+import 'package:blog_post_flutter/app/data/model/post/comment_ob.dart';
+import 'package:blog_post_flutter/app/data/model/post/comment_request_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/network/services/dio_provider.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   var endpoint = DioProvider.baseUrl;
@@ -150,5 +153,79 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   BaseApiResponse<ProfileOb> _parseProfileDetailResponse(Response response) {
     return BaseApiResponse<ProfileOb>.fromObjectJson(response.data,
         createObject: (data) => ProfileOb.fromJson(data));
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> createComment(
+      CreateCommentRequestOb commentRequestOb) {
+    try {
+      return callApiWithErrorParser(dioClient.post(endpoint + "/comments/",
+              data: commentRequestOb.toJson()))
+          .then((response) {
+        return BaseApiResponse<String?>.fromStringJson(
+          response.data,
+        );
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BaseApiResponse<CommentListOb>> getComments({int? page, int? postId}) {
+    var endpoint =
+        "${DioProvider.baseUrl}/comments/?post_id=$postId&page=$page";
+
+    var dioCall = dioClient.get(endpoint);
+    try {
+      return callApiWithErrorParser(dioCall)
+          .then((response) => _parseCommentListResponse(response));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // BaseApiResponse<List<CommentData>> _parseCommentListResponse(
+  //     Response response) {
+  //   return BaseApiResponse<List<CommentData>>.fromListJson(response.data,
+  //       createList: (data) {
+  //     return CommentData.fromJson(data);
+  //   });
+  // }
+
+  BaseApiResponse<CommentListOb> _parseCommentListResponse(Response response) {
+    return BaseApiResponse<CommentListOb>.fromObjectJson(response.data,
+        createObject: (data) => CommentListOb.fromJson(data));
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> updateComment(
+      {int? commentId, String? comment}) {
+    try {
+      return callApiWithErrorParser(dioClient.patch(
+          endpoint + "/comments/$commentId/",
+          data: {'comment': comment})).then((response) {
+        return BaseApiResponse<String?>.fromStringJson(
+          response.data,
+        );
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BaseApiResponse<String?>> deleteComment({int? commentId}) {
+    try {
+      return callApiWithErrorParser(
+              dioClient.delete(endpoint + "/comments/$commentId/"))
+          .then((response) {
+        return BaseApiResponse<String?>.fromStringJson(
+          response.data,
+        );
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 }

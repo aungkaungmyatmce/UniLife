@@ -217,7 +217,9 @@ class PostDetailWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 15),
                   InkWell(
-                    onTap: onTapCmt(),
+                    onTap: () {
+                      onTapCmt();
+                    },
                     child: Row(
                       children: [
                         const Icon(

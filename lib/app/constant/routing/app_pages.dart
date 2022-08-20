@@ -1,6 +1,8 @@
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/features/authentication/binding/authentication_binding.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/login_screen.dart';
+import 'package:blog_post_flutter/app/features/home/screen/comment_edit_screen.dart';
+import 'package:blog_post_flutter/app/features/home/screen/comment_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/other_profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
@@ -60,6 +62,14 @@ class AppPages {
     GetPage(
         name: Paths.POST_EDIT,
         page: () => EditPostScreen(),
+        binding: HomeBinding()),
+    GetPage(
+        name: Paths.COMMENT,
+        page: () => CommentScreen(),
+        binding: HomeBinding()),
+    GetPage(
+        name: Paths.COMMENT_EDIT,
+        page: () => CommentEditScreen(),
         binding: HomeBinding()),
     GetPage(
         name: Paths.FAVOURITE,

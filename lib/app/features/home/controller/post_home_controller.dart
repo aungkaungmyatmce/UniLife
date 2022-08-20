@@ -29,7 +29,7 @@ class PostHomeController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    print('Init');
+
     getPostList();
   }
 
