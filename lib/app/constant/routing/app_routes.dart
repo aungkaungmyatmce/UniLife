@@ -14,4 +14,7 @@ class Paths {
   static const OTHER_PROFILE = '/other-profile';
   static const COMMENT = '/Comment';
   static const COMMENT_EDIT = '/Comment-Edit';
+  static const FOLLOW = '/Follow';
+  static const SEARCH = '/Search';
+  static const PROFILE_EDIT = '/Profile-Edit';
 }

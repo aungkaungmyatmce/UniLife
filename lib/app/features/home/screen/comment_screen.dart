@@ -1,4 +1,5 @@
 import 'package:blog_post_flutter/app/features/home/controller/comment_controller.dart';
+import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/preferred_size.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../constant/app_colors.dart';
+import '../../../constant/app_dimens.dart';
 import '../../../core/base/base_view.dart';
 import '../../../widget/parent_view_smart_refresher.dart';
 import '../controller/post_detail_controller.dart';
@@ -22,11 +24,11 @@ class CommentScreen extends BaseView<CommentController> {
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       elevation: 1,
-      title: Text(
+      title: TextViewWidget(
         'Comments',
-        style: TextStyle(
-          color: Colors.black,
-        ),
+        textColor: AppColors.primaryTextColor,
+        fontWeight: FontWeight.w500,
+        textSize: 16,
       ),
       actions: [
         IconButton(
@@ -35,7 +37,7 @@ class CommentScreen extends BaseView<CommentController> {
             },
             icon: Icon(
               Icons.close,
-              color: Colors.black,
+              color: AppColors.primaryTextColor,
             )),
       ],
     );
@@ -87,24 +89,23 @@ class CommentScreen extends BaseView<CommentController> {
                                     ),
                                   ),
                             const SizedBox(width: 10),
-                            Text(
+                            TextViewWidget(
                               '${controller.commentList[index].owner!.firstName} ${controller.commentList[index].owner!.lastName}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
+                              textSize: 14,
+                              fontWeight: FontWeight.w600,
+                              textColor: AppColors.primaryTextColor,
                               textAlign: TextAlign.justify,
                             ),
                             const SizedBox(width: 10),
-                            Text(
-                              DateUtil.convertTimeAgoFromTimestamp(
-                                  controller.commentList[index].createdDate!),
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey.shade500,
-                              ),
+                            TextViewWidget(
+                              controller.commentList[index].createdDate != null
+                                  ? DateUtil.convertTimeAgoFromTimestamp(
+                                      controller
+                                          .commentList[index].createdDate!)
+                                  : 'Posting...',
+                              textSize: 12,
+                              fontWeight: FontWeight.w600,
+                              textColor: Colors.grey.shade500,
                               textAlign: TextAlign.justify,
                             ),
                           ],
@@ -123,12 +124,11 @@ class CommentScreen extends BaseView<CommentController> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   color: Colors.grey.shade200),
-                              child: Text(
+                              child: TextViewWidget(
                                 controller.commentList[index].comment!,
                                 textAlign: TextAlign.justify,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
+                                maxLine: null,
+                                textColor: AppColors.primaryTextColor,
                               ),
                             ),
                           ),
@@ -148,7 +148,14 @@ class CommentScreen extends BaseView<CommentController> {
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: AppColors.primaryColor.withOpacity(0.9),
+                          width: 2),
+                    ),
                     hintText: 'Type your comment here',
                     suffixIcon: IconButton(
                       onPressed: controller.commentString.value != ''
@@ -160,7 +167,7 @@ class CommentScreen extends BaseView<CommentController> {
                       icon: Icon(
                         Icons.send,
                         color: controller.commentString.value != ''
-                            ? Colors.lightBlue
+                            ? AppColors.primaryColor
                             : Colors.grey,
                       ),
                     ),

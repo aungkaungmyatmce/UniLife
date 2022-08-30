@@ -1,12 +1,16 @@
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/constant/app_dimens.dart';
+import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
+import 'package:blog_post_flutter/app/core/utils/shimmer_utils.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
 import 'package:blog_post_flutter/app/features/home/controller/other_profile_controller.dart';
 import 'package:blog_post_flutter/app/widget/post_item_widget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../widget/profile_container.dart';
 
 class OtherProfileScreen extends BaseView<OtherProfileController> {
   OtherProfileScreen({Key? key}) : super(key: key);
@@ -18,8 +22,17 @@ class OtherProfileScreen extends BaseView<OtherProfileController> {
       backgroundColor: AppColors.primaryColor,
       title: const TextViewWidget(
         'Profile',
-        textSize: AppDimens.TEXT_REGULAR_2X,
-        textColor: AppColors.whiteColor,
+        textSize: AppDimens.TEXT_HEADING_1X,
+        textColor: Colors.black,
+      ),
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          Get.back();
+        },
       ),
     );
   }
@@ -33,21 +46,39 @@ class OtherProfileScreen extends BaseView<OtherProfileController> {
               children: [
                 ProfileContainer(
                   profileOb: controller.profileDetail.value,
+                  onTapFollowers: () => controller.onTapFollow(0),
+                  onTapFollow: () => controller.onTapFollow(1),
+                  followButton: controller.notLogin.value
+                      ? Container()
+                      : ElevatedButton(
+                          onPressed: controller.toggleFollow,
+                          child: TextViewWidget(
+                            controller.isFollow.value ? 'Unfollow' : 'Follow',
+                            fontWeight: FontWeight.w500,
+                            textColor: Colors.white,
+                            textSize: 14,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: AppColors.secondaryColor,
+                              fixedSize: const Size(100, 30),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 3),
                 Container(
                   color: const Color(0xffF2F2F2),
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'My Stories',
-                        style: TextStyle(
-                            fontSize: 20,
-                            height: 1.3,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w700),
+                      Center(
+                        child: const TextViewWidget(
+                          'Stories',
+                          textSize: 18,
+                          textAlign: TextAlign.center,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       const SizedBox(height: 5),
                       const Divider(thickness: 1, color: Colors.black),
@@ -65,6 +96,10 @@ class OtherProfileScreen extends BaseView<OtherProfileController> {
                                       PostItemWidget(
                                         postData: controller
                                             .profileDetail.value.posts![index],
+                                        onTapSeeMore: () => Get.toNamed(
+                                            Paths.POST_DETAIL,
+                                            arguments: controller.profileDetail
+                                                .value.posts![index]),
                                       ),
                                       const Divider(
                                         color: Colors.black,
@@ -78,52 +113,6 @@ class OtherProfileScreen extends BaseView<OtherProfileController> {
               ],
             ),
           )
-        : const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.primaryColor,
-            ),
-          ));
-  }
-}
-
-class ProfileContainer extends StatelessWidget {
-  const ProfileContainer({Key? key, required this.profileOb}) : super(key: key);
-
-  final ProfileOb profileOb;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xffF2F2F2),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(10),
-        leading: profileOb.profilePicture != null
-            ? CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(
-                  profileOb.profilePicture,
-                ),
-              )
-            : null,
-        title: Text(
-          "${profileOb.firstName} ${profileOb.lastName}",
-          style: const TextStyle(
-              fontSize: 16,
-              height: 1.3,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400),
-        ),
-        subtitle: Text(
-          profileOb.university ?? "",
-          style: const TextStyle(
-              color: Color(0xff41872C),
-              fontSize: 16,
-              height: 1.3,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400),
-        ),
-      ),
-    );
+        : ShimmerUtils.profile);
   }
 }

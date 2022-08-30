@@ -78,4 +78,21 @@ class AuthRepositoryImpl extends BaseRemoteSource implements AuthRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<BaseApiResponse<String?>> updateProfile(
+      RegisterRequestOb registerRequestOb,
+      {required int profileId}) {
+    var endpoint = "${DioProvider.baseUrl}/accounts/$profileId/";
+
+    var dioCall = dioClient.put(endpoint, data: registerRequestOb.toJson());
+    try {
+      return callApiWithErrorParser(dioCall)
+          .then((response) => BaseApiResponse<String?>.fromStringJson(
+                response.data,
+              ));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

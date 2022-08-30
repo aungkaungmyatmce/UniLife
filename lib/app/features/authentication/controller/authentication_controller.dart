@@ -7,6 +7,7 @@ import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
+import 'package:blog_post_flutter/app/core/utils/shimmer_utils.dart';
 import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_request_ob.dart';
@@ -18,6 +19,7 @@ import 'package:blog_post_flutter/app/data/network/exception/base_exception.dart
 import 'package:blog_post_flutter/app/data/repository/authentication/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AuthenticationController extends BaseController {
   final AuthRepository _repository = Get.find(tag: (AuthRepository).toString());
@@ -104,10 +106,10 @@ class AuthenticationController extends BaseController {
   }
 
   void doRegister() {
-    // if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
-    //   AppUtils.showToast("Please Choose Profile Image");
-    //   return;
-    // }
+    if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
+      AppUtils.showToast("Please Choose Profile Image");
+      return;
+    }
     if (userNameController.value.text.trim().isEmpty) {
       AppUtils.showToast("Please Enter User Name");
       return;
@@ -199,11 +201,13 @@ class AuthenticationController extends BaseController {
     }
   }
 
-  void fetchProfile(int profileId) async {
+  void fetchProfile(int? profileId) async {
     final repoService = _repository.getProfileDetail(profileId);
-
     await callAPIService(
       repoService,
+      onStart: profileDetail.value.id == null
+          ? () => showLoading(shimmerEffect: ShimmerUtils.profile)
+          : null,
       onSuccess: _handleResponseSuccess,
       onError: _handleResponseError,
     );
@@ -235,11 +239,24 @@ class AuthenticationController extends BaseController {
   void onSuccessLogout(response) {
     if (response != null) {
       BaseApiResponse<String?> baseApiResponse = response;
-      print("Base API Rsponse Message is ${baseApiResponse.statusCode} and ${baseApiResponse.message}");
+      print(
+          "Base API Rsponse Message is ${baseApiResponse.statusCode} and ${baseApiResponse.message}");
       clearAllData();
       GlobalVariable.token = null;
       Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
       AppUtils.showToast(" ${baseApiResponse.message}");
     }
+  }
+
+  void onTapFollow(int index) {
+    Get.toNamed(Paths.FOLLOW, arguments: {
+      'myProfile': profileDetail.value,
+      'tabIndex': index,
+    })?.then((result) {
+      if (result == "updated") {
+        Future.delayed(Duration(milliseconds: 100))
+            .then((value) => fetchProfile(loginResponse.value.user!.id!));
+      }
+    });
   }
 }

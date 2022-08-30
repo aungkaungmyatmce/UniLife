@@ -1,4 +1,3 @@
-
 import 'package:blog_post_flutter/app/constant/view_state.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:blog_post_flutter/app/data/network/exception/base_exception.dart';
@@ -33,27 +32,30 @@ abstract class BaseController extends GetxController
         printEmojis: true,
         // Print an emoji for each log message
         printTime: false // Should each log print contain a timestamp
-    ),
+        ),
   );
 
   //Reload the page
   RefreshController _refreshController = RefreshController();
 
-
   //Controls page state
   final Rx<PageStateHandler> _pageSateController =
-      PageStateHandler(ViewState.DEFAULT, () => {}).obs;
+      PageStateHandler(ViewState.DEFAULT, () => {}, '', null).obs;
 
   PageStateHandler get pageState => _pageSateController.value;
 
-  updatePageState(ViewState state, {Function? onClickTryAgain}) =>
-      _pageSateController(PageStateHandler(state, onClickTryAgain));
+  updatePageState(ViewState state,
+          {Function? onClickTryAgain,
+          String? message,
+          Widget? shimmerEffect}) =>
+      _pageSateController(
+          PageStateHandler(state, onClickTryAgain, message, shimmerEffect));
 
-  resetPageState() =>
-      _pageSateController(PageStateHandler(ViewState.DEFAULT, () => {}));
+  resetPageState() => _pageSateController(
+      PageStateHandler(ViewState.DEFAULT, () => {}, null, null));
 
-  showLoading() =>
-      updatePageState(ViewState.LOADING, onClickTryAgain: () => {});
+  showLoading({Widget? shimmerEffect}) => updatePageState(ViewState.LOADING,
+      onClickTryAgain: () => {}, shimmerEffect: shimmerEffect);
 
   showEmptyData() =>
       updatePageState(ViewState.EMPTYLIST, onClickTryAgain: () => {});
@@ -147,9 +149,13 @@ abstract class BaseController extends GetxController
 class PageStateHandler {
   final ViewState viewState;
   final Function? onClickTryAgain;
+  final String? message;
+  final Widget? shimmerEffect;
 
   PageStateHandler(
     this.viewState,
     this.onClickTryAgain,
+    this.message,
+    this.shimmerEffect,
   );
 }

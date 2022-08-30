@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-const DAY_MONTH_YEAR = "dd-MM-yyyy";
+const DAY_MONTH_YEAR = "dd/MM/yyyy";
 const DAY_MONTH_YEAR_2 = "dd MMM yyyy";
 const DAY_MONTH_YEAR_HH_MM_SS = "dd-MMM-yyyy HH:mm aa";
 const YEAR_MONTH_DAY = "yyyy-MM-dd";

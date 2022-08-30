@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/core/utils/image_picker.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_create_controller.dart';
+import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,8 +20,6 @@ class CreatePostScreen extends BaseView<CreatePostController> {
     final FormState? form = formKey.currentState;
     if (form!.validate()) {
       controller.uploadPost();
-    } else {
-      print('Form is invalid');
     }
   }
 
@@ -45,27 +45,23 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                           onPressed: () {
                             Get.back();
                           },
-                          child: const Text(
+                          child: const TextViewWidget(
                             'Cancel',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
+                            textColor: AppColors.primaryTextColor,
                           ),
                         ),
                       ElevatedButton(
                         onPressed: validate,
-                        child: const Text(
+                        child: const TextViewWidget(
                           'Publish',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          textColor: AppColors.secondaryTextColor,
                         ),
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18))),
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xff818181))),
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColors.primaryColor)),
                       ),
                     ],
                   ),
@@ -77,17 +73,29 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                     controller: controller.titleController,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    style: const TextStyle(fontSize: 20),
-                    decoration: const InputDecoration(
+                    style: const TextStyle(
+                        fontSize: 20, color: AppColors.primaryTextColor),
+                    decoration: InputDecoration(
                       hintText: 'Title :',
                       prefixIcon: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(
-                            'https://picsum.photos/200',
-                          ),
-                        ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: controller
+                                    .loginResponse!.value.user!.profileImage !=
+                                null
+                            ? CircleAvatar(
+                                backgroundColor: AppColors.primaryColor,
+                                radius: 20,
+                                backgroundImage: NetworkImage(
+                                    "https://pyaephyokyaw.pythonanywhere.com${controller.loginResponse.value.user!.profileImage}"),
+                              )
+                            : const CircleAvatar(
+                                radius: 15,
+                                backgroundColor: AppColors.primaryColor,
+                                child: Icon(
+                                  Icons.person,
+                                  color: AppColors.whiteColor,
+                                ),
+                              ),
                       ),
                       border: InputBorder.none,
                     ),
@@ -138,7 +146,8 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                     controller: controller.descriptionController,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(
+                        fontSize: 16, color: AppColors.primaryTextColor),
                     decoration: const InputDecoration(
                       hintText: 'Share your stories.....',
                       border: InputBorder.none,
@@ -152,7 +161,7 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                       if (value!.isEmpty) {
                         return 'Your story cannot be empty ';
                       }
-                      if (value.length < 5) {
+                      if (value.length < 20) {
                         return 'Your story must be at least 20 words long';
                       }
                       return null;

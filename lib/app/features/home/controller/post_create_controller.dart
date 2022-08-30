@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:blog_post_flutter/app/constant/enum_image_type.dart';
@@ -9,15 +10,19 @@ import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_home_controller.dart';
+import 'package:blog_post_flutter/app/features/home/controller/post_home_tab_controller.dart';
 import 'package:blog_post_flutter/app/widget/post_file_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../data/local/cache_manager.dart';
+import '../../../data/model/authentication/login_response.dart';
 
 class CreatePostController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-
+  var loginResponse = LoginResponse().obs;
   Rx<CustomImagePhaserOb?> postImage = CustomImagePhaserOb().obs;
   CreatePostRequestOb createPostRequestOb = CreatePostRequestOb();
   RxInt titleCount = 0.obs;
@@ -26,6 +31,12 @@ class CreatePostController extends BaseController {
 
   @override
   void onInit() {
+    if (getString(CacheManagerKey.loginResponseData) != null) {
+      Map<String, dynamic> authenticationResponse =
+          jsonDecode(getString(CacheManagerKey.loginResponseData)!);
+      loginResponse.value = LoginResponse.fromJson(authenticationResponse);
+      print("Login Response is ${loginResponse.value.user!.profileImage}");
+    }
     super.onInit();
   }
 
@@ -111,7 +122,6 @@ class CreatePostController extends BaseController {
 
     late Future<BaseApiResponse<String?>> repoService;
     print("Create Post is ${createPostRequestOb.toJson()}");
-    print(postId);
     AppUtils.showLoaderDialog();
     if (postId != null) {
       repoService = _repository.updatePost(createPostRequestOb, postId);
@@ -123,10 +133,15 @@ class CreatePostController extends BaseController {
       if (response != null) {
         Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
-        final PostHomeController postHomeController =
-            Get.put(PostHomeController());
-        postHomeController.resetAndGetPostList();
-        Get.offAllNamed(Paths.MAIN_HOME,);
+        // final PostHomeController postHomeController =
+        //     Get.put(PostHomeController());
+        // postHomeController.resetAndGetPostList(isFollowing: false);
+        //Get.put(() => PostHomeTabController());
+        Get.offAllNamed(
+          Paths.MAIN_HOME,
+          arguments: 0,
+        );
+        //Get.back();
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }
     }, onError: (Exception exception) {

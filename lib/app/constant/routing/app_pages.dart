@@ -1,6 +1,9 @@
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/features/authentication/binding/authentication_binding.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/login_screen.dart';
+import 'package:blog_post_flutter/app/features/authentication/screen/profile_edit_screen.dart';
+import 'package:blog_post_flutter/app/features/follow/binding/follow_binding.dart';
+import 'package:blog_post_flutter/app/features/follow/screen/follow_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/comment_edit_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/comment_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/other_profile_screen.dart';
@@ -15,7 +18,11 @@ import 'package:blog_post_flutter/app/features/home/screen/post_edit_screen.dart
 import 'package:blog_post_flutter/app/features/home/screen/post_home_screen.dart';
 import 'package:blog_post_flutter/app/features/main_home/binding/main_home_binding.dart';
 import 'package:blog_post_flutter/app/features/main_home/screen/main_home_screen.dart';
+import 'package:blog_post_flutter/app/features/search/binding/search_binding.dart';
+import 'package:blog_post_flutter/app/features/search/screen/search_screen.dart';
 import 'package:get/get.dart';
+
+import '../../features/authentication/controller/profile_edit_controller.dart';
 
 class AppPages {
   AppPages._();
@@ -75,5 +82,17 @@ class AppPages {
         name: Paths.FAVOURITE,
         page: () => FavouriteScreen(),
         binding: FavouriteBinding()),
+    GetPage(
+        name: Paths.FOLLOW,
+        page: () => FollowScreen(),
+        binding: FollowBinding()),
+    GetPage(
+        name: Paths.SEARCH,
+        page: () => SearchScreen(),
+        binding: SearchBinding()),
+    GetPage(
+        name: Paths.PROFILE_EDIT,
+        page: () => ProfileEditScreen(),
+        binding: AuthenticationBinding()),
   ];
 }

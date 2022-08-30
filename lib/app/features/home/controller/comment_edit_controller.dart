@@ -1,5 +1,6 @@
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/data/model/post/comment_ob.dart';
+import 'package:blog_post_flutter/app/data/repository/comment/comment_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +9,8 @@ import '../../../data/network/base_response/base_api_response.dart';
 import '../../../data/repository/post/post_repository.dart';
 
 class CommentEditController extends BaseController {
-  final PostRepository _repository = Get.find(tag: (PostRepository).toString());
+  final CommentRepository _repository =
+      Get.find(tag: (CommentRepository).toString());
   TextEditingController commentEditController = TextEditingController();
   int commentId = 0;
 

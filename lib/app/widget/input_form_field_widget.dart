@@ -93,6 +93,7 @@ class InputFormFieldWidget extends StatelessWidget {
             width: formBorderWidth,
           ),
         ),
+
         errorStyle: const TextStyle(
           color: Colors.red,
           fontSize: 16,
@@ -125,12 +126,13 @@ class InputFormFieldWidget extends StatelessWidget {
         filled: true,
         hintText: hintText,
         hintStyle: const TextStyle(
-          color: AppColors.textColor,
+          color: AppColors.secondaryTextColor,
           fontSize: 12,
         ),
         //fillColor: Colors.grey.shade400,
         contentPadding: EdgeInsets.all(contentPadding),
       ),
+      style: const TextStyle(color: AppColors.secondaryTextColor),
     );
   }
 }

@@ -12,13 +12,12 @@ class ImagePickerHelper {
       required Function(File file) onImagePickCallBack}) async {
     try {
       final pickedFile =
-          await _picker.pickImage(
-              source: source, imageQuality: 20);
+          await _picker.pickImage(source: source, imageQuality: 20);
 
       onImagePickCallBack(File(pickedFile!.path));
-    } catch (e,s) {
+    } catch (e, s) {
       print('Error ${e.toString()} and $s');
-      AppUtils.showToast(e.toString());
+      //AppUtils.showToast(e.toString());
     }
   }
 
@@ -36,7 +35,4 @@ class ImagePickerHelper {
       AppUtils.showToast(e.toString());
     }
   }
-
-
-
 }

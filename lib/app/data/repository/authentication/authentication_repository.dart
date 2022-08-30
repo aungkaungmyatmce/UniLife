@@ -18,4 +18,9 @@ abstract class AuthRepository {
 
   //Logout
   Future<BaseApiResponse<String?>> logoutUser();
+
+  //Register
+  Future<BaseApiResponse<String?>> updateProfile(
+      RegisterRequestOb registerRequestOb,
+      {required int profileId});
 }

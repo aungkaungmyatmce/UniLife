@@ -5,12 +5,14 @@ import 'package:blog_post_flutter/app/constant/app_dimens.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_response.dart';
+import 'package:blog_post_flutter/app/features/authentication/screen/direct_to_signin_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/profile_screen.dart';
 import 'package:blog_post_flutter/app/features/authentication/screen/sign_up_screen.dart';
 import 'package:blog_post_flutter/app/features/favourite/screen/favourite_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_create_screen.dart';
 import 'package:blog_post_flutter/app/features/home/screen/post_home_screen.dart';
 import 'package:blog_post_flutter/app/features/main_home/controller/main_home_controller.dart';
+import 'package:blog_post_flutter/app/features/notification/screen/notification_screen.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,8 +31,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   List<Widget> _pageNumber = [
     PostHomeScreen(),
     FavouriteScreen(),
-    CreatePostScreen(),
-    SignUpScreen(),
+    DirectToSignInScreen(),
+    NotificationScreen(),
     SignUpScreen(),
   ];
 
@@ -53,7 +55,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         PostHomeScreen(),
         FavouriteScreen(),
         CreatePostScreen(),
-        SignUpScreen(),
+        NotificationScreen(),
         ProfileScreen(),
       ];
     }
@@ -72,7 +74,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                 icon: Icons.home,
               ),
               const TabItem(
-                title: "Favourite",
+                title: "Bookmark",
                 icon: Icons.bookmarks_outlined,
               ),
               const TabItem(
@@ -90,18 +92,18 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       ? TabItem(
                           title: "You",
                           icon: CircleAvatar(
-                            radius: 30,
-                            backgroundColor: AppColors.secondaryTextColor,
+                            radius: 35,
+                            backgroundColor:
+                                AppColors.secondaryTextColor.withOpacity(0.6),
                             backgroundImage: NetworkImage(
                                 "https://pyaephyokyaw.pythonanywhere.com${mainHomeScreenController.loginResponse.value.user!.profileImage}"),
                           ))
-                      : const TabItem(
-                          title: "You", icon: Icons.account_circle)
+                      : const TabItem(title: "You", icon: Icons.account_circle)
                   : const TabItem(title: "Profile", icon: Icons.account_circle),
             ],
             backgroundColor: AppColors.primaryColor,
-            activeColor: const Color(0xFF000000),
-            color: const Color(0xFF818181),
+            activeColor: AppColors.secondaryTextColor,
+            color: AppColors.secondaryTextColor.withOpacity(0.6),
             initialActiveIndex: mainHomeScreenController.selectedPage.value,
             style: TabStyle.fixed,
             cornerRadius: AppDimens.MARGIN_MEDIUM_2X,

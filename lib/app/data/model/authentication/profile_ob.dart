@@ -18,6 +18,9 @@ class ProfileOb {
     this.university,
     this.profilePicture,
     this.posts,
+    this.followers,
+    this.following,
+    this.isFollowing,
     this.selfProfile,
   });
 
@@ -28,13 +31,27 @@ class ProfileOb {
     lastName = json['last_name'];
     university = json['university'];
     profilePicture = json['profile_picture'];
+    isFollowing = json['is_following'];
     if (json['posts'] != null) {
       posts = [];
       json['posts'].forEach((v) {
         posts?.add(PostData.fromJson(v));
       });
     }
-    selfProfile = json['self_profile'];
+    if (json['followers'] != null && json['followers'].isNotEmpty) {
+      followers = [];
+      json['followers'].forEach((v) {
+        followers?.add(Owner.fromJson(v));
+      });
+    }
+
+    if (json['following'] != null && json['following'].isNotEmpty) {
+      following = [];
+      json['following'].forEach((v) {
+        following?.add(Owner.fromJson(v));
+      });
+    }
+    selfProfile = json['is_self_profile'];
   }
 
   int? id;
@@ -44,6 +61,9 @@ class ProfileOb {
   String? university;
   dynamic profilePicture;
   List<PostData>? posts;
+  List<Owner>? followers;
+  List<Owner>? following;
+  bool? isFollowing;
   bool? selfProfile;
 
   Map<String, dynamic> toJson() {
@@ -54,10 +74,17 @@ class ProfileOb {
     map['last_name'] = lastName;
     map['university'] = university;
     map['profile_picture'] = profilePicture;
+    map['is_following'] = isFollowing;
     if (posts != null) {
       map['posts'] = posts?.map((v) => v.toJson()).toList();
     }
-    map['self_profile'] = selfProfile;
+    if (followers != null) {
+      map['followers'] = followers?.map((v) => v.toJson()).toList();
+    }
+    if (following != null) {
+      map['following'] = following?.map((v) => v.toJson()).toList();
+    }
+    map['is_self_profile'] = selfProfile;
     return map;
   }
 }
@@ -79,6 +106,7 @@ class Owner {
     this.university,
     this.profilePicture,
     this.selfProfile,
+    this.isFollowing,
   });
 
   Owner.fromJson(dynamic json) {
@@ -89,6 +117,7 @@ class Owner {
     university = json['university'];
     profilePicture = json['profile_picture'];
     selfProfile = json['self_profile'];
+    isFollowing = json['is_following'];
   }
 
   int? id;
@@ -98,6 +127,7 @@ class Owner {
   String? university;
   dynamic profilePicture;
   bool? selfProfile;
+  bool? isFollowing;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -108,6 +138,7 @@ class Owner {
     map['university'] = university;
     map['profile_picture'] = profilePicture;
     map['self_profile'] = selfProfile;
+    map['is_following'] = isFollowing;
     return map;
   }
 }

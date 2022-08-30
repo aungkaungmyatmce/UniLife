@@ -1,5 +1,7 @@
+import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/features/home/controller/comment_edit_controller.dart';
+import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/preferred_size.dart';
@@ -11,13 +13,13 @@ class CommentEditScreen extends BaseView<CommentEditController> {
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.primaryColor,
       elevation: 1,
-      title: Text(
+      title: TextViewWidget(
         'Edit',
-        style: TextStyle(
-          color: Colors.black,
-        ),
+        textColor: AppColors.secondaryTextColor,
+        fontWeight: FontWeight.w500,
+        textSize: 16,
       ),
       actions: [
         IconButton(
@@ -26,7 +28,7 @@ class CommentEditScreen extends BaseView<CommentEditController> {
             },
             icon: Icon(
               Icons.close,
-              color: Colors.black,
+              color: AppColors.secondaryTextColor,
             )),
       ],
     );
@@ -45,25 +47,25 @@ class CommentEditScreen extends BaseView<CommentEditController> {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(
-                      'https://picsum.photos/200/300',
-                    ),
-                  ),
-                  const SizedBox(width: 10),
+                  //const SizedBox(width: 5),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: TextField(
                         controller: controller.commentEditController,
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                            filled: true,
-                            border: OutlineInputBorder(),
-                            fillColor: Colors.grey.shade200),
+                          border: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.primaryColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.primaryColor.withOpacity(0.9),
+                                width: 2),
+                          ),
+                        ),
                         onChanged: (value) {
                           //controller.commentString.value = value;
                         },
@@ -72,13 +74,13 @@ class CommentEditScreen extends BaseView<CommentEditController> {
                   ),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Spacer(),
                   ElevatedButton(
                     onPressed: controller.onTapCancel,
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.grey,
                         textStyle: const TextStyle(
@@ -87,9 +89,9 @@ class CommentEditScreen extends BaseView<CommentEditController> {
                   const SizedBox(width: 40),
                   ElevatedButton(
                     onPressed: controller.onTapUpdate,
-                    child: Text('Update'),
+                    child: const Text('Update'),
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
+                        primary: AppColors.primaryColor,
                         textStyle: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                   ),

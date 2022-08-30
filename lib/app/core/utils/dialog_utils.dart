@@ -24,13 +24,26 @@ class DialogUtils {
     required Function deleteButtonOnclick,
   }) {
     Widget editText = SimpleDialogOption(
-        child: const Text('Edit'), onPressed: () => editButtonOnClick());
+        child: const TextViewWidget(
+          'Edit',
+          textColor: AppColors.primaryTextColor,
+        ),
+        onPressed: () => editButtonOnClick());
 
     Widget deleteText = SimpleDialogOption(
-        child: const Text('Delete'), onPressed: () => deleteButtonOnclick());
+        child: const TextViewWidget(
+          'Delete',
+          textColor: AppColors.primaryTextColor,
+        ),
+        onPressed: () => deleteButtonOnclick());
 
     SimpleDialog dialog = SimpleDialog(
-      title: const Text('Choose Options'),
+      title: const TextViewWidget(
+        'Choose Options',
+        textSize: 16,
+        fontWeight: FontWeight.w500,
+        textColor: AppColors.primaryTextColor,
+      ),
       children: <Widget>[
         editText,
         deleteText,
@@ -251,14 +264,11 @@ class DialogUtils {
                   },
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.edit,
-                        color: Colors.green,
-                      ),
+                      Icon(Icons.edit, color: AppColors.primaryColor),
                       SizedBox(width: 10),
                       Text(
                         'Edit',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: AppColors.primaryTextColor),
                       )
                     ],
                   )),
@@ -270,12 +280,12 @@ class DialogUtils {
                     children: [
                       Icon(
                         Icons.delete,
-                        color: Colors.red,
+                        color: AppColors.primaryColor,
                       ),
                       SizedBox(width: 10),
                       Text(
                         'Delete',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: AppColors.primaryTextColor),
                       )
                     ],
                   ))

@@ -54,7 +54,7 @@ class PostFileImageWidget extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: RoundedIconWidget(
-                  backgroundColor: AppColors.textColor,
+                  backgroundColor: AppColors.secondaryTextColor,
                   icon: const Icon(
                     Icons.close,
                     size: 16,

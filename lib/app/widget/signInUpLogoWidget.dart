@@ -25,13 +25,13 @@ class RPSCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint0 = Paint()
-      ..color = const Color.fromARGB(255, 212, 214, 215)
+      ..color = const Color.fromARGB(255, 43, 86, 110)
       ..style = PaintingStyle.fill
       ..strokeWidth = 1;
     paint0.shader = ui.Gradient.linear(
         Offset(size.width * 0.50, 0),
         Offset(size.width, size.height * 0.98),
-        [Color(0xffffffff), Color(0xffcecece)],
+        [Color(0x6F2b566e), Color(0xFF2b566e)],
         [0.00, 1.00]);
 
     Path path0 = Path();
@@ -48,13 +48,14 @@ class RPSCustomPainter extends CustomPainter {
     canvas.drawPath(path0, paint0);
 
     Paint paint1 = Paint()
-      ..color = const Color.fromARGB(255, 212, 214, 215)
+      ..color = const Color.fromARGB(
+          255, 43, 86, 110) //Color.fromARGB(255, 212, 214, 215)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
     paint1.shader = ui.Gradient.linear(
         Offset(0, size.height * 0.79),
         Offset(size.width, size.height * 0.79),
-        [Color(0xfffafafa), Color(0xedd7d7d7)],
+        [Color(0x2F2b566e), Color(0xFF2b566e)],
         [0.00, 1.00]);
 
     Path path1 = Path();

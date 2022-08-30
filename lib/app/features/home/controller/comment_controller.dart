@@ -1,8 +1,10 @@
 import 'dart:convert';
-
+import 'package:blog_post_flutter/app/core/utils/date_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/dialog_utils.dart';
+import 'package:blog_post_flutter/app/core/utils/shimmer_utils.dart';
+import 'package:blog_post_flutter/app/data/repository/comment/comment_repository.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../../constant/routing/app_routes.dart';
 import '../../../constant/view_state.dart';
 import '../../../core/base/base_controller.dart';
@@ -10,17 +12,16 @@ import '../../../core/utils/app_utils.dart';
 import '../../../core/utils/pagination_utils.dart';
 import '../../../data/local/cache_manager.dart';
 import '../../../data/model/authentication/login_response.dart';
+import '../../../data/model/authentication/profile_ob.dart';
 import '../../../data/model/post/comment_ob.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-
 import '../../../data/model/post/comment_request_ob.dart';
 import '../../../data/network/base_response/base_api_response.dart';
-import '../../../data/repository/authentication/authentication_repository.dart';
-import '../../../data/repository/post/post_repository.dart';
 
 class CommentController extends BaseController {
-  final PostRepository _repository = Get.find(tag: (PostRepository).toString());
+  final CommentRepository _repository =
+      Get.find(tag: (CommentRepository).toString());
   CreateCommentRequestOb createCommentRequestOb = CreateCommentRequestOb();
 
   late final RxList<CommentData> _commentList = RxList.empty();
@@ -46,6 +47,12 @@ class CommentController extends BaseController {
         isLogin.value = false;
       }
     }
+    postId = Get.arguments['postId'];
+    if (Get.arguments['commentList'].isNotEmpty) {
+      _commentList.value = Get.arguments['commentList'];
+    } else {
+      resetAndGetCommentList();
+    }
     super.onInit();
   }
 
@@ -54,19 +61,22 @@ class CommentController extends BaseController {
       AppUtils.showToast("Please Enter comment");
       return;
     }
+
+    putVirtualObj();
     createCommentRequestOb.comment = commentController.text;
     createCommentRequestOb.post = postId;
     commentController.clear();
     commentString.value = '';
     late Future<BaseApiResponse<String?>> repoService;
     print("Create Comment is ${createCommentRequestOb.toJson()}");
-    AppUtils.showLoaderDialog();
+
+    //AppUtils.showLoaderDialog();
 
     repoService = _repository.createComment(createCommentRequestOb);
 
     callAPIService(repoService, onSuccess: (dynamic response) {
       if (response != null) {
-        Get.back();
+        //Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
         resetAndGetCommentList();
         AppUtils.showToast(" ${_baseApiResponse.message}");
@@ -114,9 +124,7 @@ class CommentController extends BaseController {
       if (data.data!.isEmpty) {
         Future.delayed(const Duration(microseconds: 500), () {
           _commentList.clear();
-          updatePageState(ViewState.EMPTYLIST, onClickTryAgain: () {
-            //resetAndGetPostList();
-          });
+          updatePageState(ViewState.EMPTYLIST, message: 'No comments here!');
         });
       }
       commentPagination.setCurrentPage(
@@ -151,11 +159,6 @@ class CommentController extends BaseController {
             if (response != null) {
               Get.back();
               BaseApiResponse<String?> _baseApiResponse = response;
-              // PostHomeController controller = Get.put(PostHomeController());
-              // controller.resetAndGetPostList();
-              // Get.offNamed(Paths.POST_DETAIL);
-              //Get.back();
-              //postDetailController.getPostDetail(postId);
               resetAndGetCommentList();
               AppUtils.showToast(" ${_baseApiResponse.message}");
             }
@@ -183,5 +186,16 @@ class CommentController extends BaseController {
             deleteComment(commentId: cmtData.id!);
           });
     }
+  }
+
+  void putVirtualObj() {
+    Owner? owner = Owner(firstName: 'You', lastName: '');
+
+    CommentData cmt = CommentData(
+      comment: commentController.text,
+      isOwner: false,
+      owner: owner,
+    );
+    _commentList.insert(0, cmt);
   }
 }

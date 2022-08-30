@@ -10,12 +10,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../constant/app_colors.dart';
+
 class PostItemWidget extends StatefulWidget {
   final PostData postData;
+  final Function onTapSeeMore;
 
   PostItemWidget({
     Key? key,
     required this.postData,
+    required this.onTapSeeMore,
   }) : super(key: key);
 
   @override
@@ -23,12 +27,12 @@ class PostItemWidget extends StatefulWidget {
 }
 
 class _PostItemWidgetState extends State<PostItemWidget> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return (Column(
@@ -44,27 +48,25 @@ class _PostItemWidgetState extends State<PostItemWidget> {
                 children: [
                   TextViewWidget(
                     widget.postData.title ?? "",
-                    textSize: 18,
-                    fontWeight: FontWeight.w600,
+                    textSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                   const SizedBox(height: 5),
                   TextViewWidget(
                     widget.postData.content ?? "",
                     textSize: 15,
-                    lineHeight: 1.3,
                     textAlign: TextAlign.justify,
                     fontWeight: FontWeight.w400,
                   ),
                   InkWell(
-                    onTap: () {
-                      Get.toNamed(Paths.POST_DETAIL, arguments: widget.postData.id);
-                    },
-                    child: const TextViewWidget(
+                    onTap: () => widget.onTapSeeMore(),
+                    child: TextViewWidget(
                       "See More",
                       textSize: 14,
                       lineHeight: 1.3,
                       textAlign: TextAlign.justify,
                       fontWeight: FontWeight.w600,
+                      textColor: AppColors.primaryTextColor.withOpacity(0.7),
                     ),
                   ),
                 ],
@@ -85,72 +87,80 @@ class _PostItemWidgetState extends State<PostItemWidget> {
               ),
           ],
         ),
-        const SizedBox(height: 5),
-        Row(
+        const SizedBox(height: 15),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            widget.postData.owner!.profilePicture != null
-                ? InkWell(
-                    onTap: () => DialogUtils.showPreviewImageDialog(
-                        context, widget.postData.owner!.profilePicture),
-                    child: Container(
-                      width: 25,
-                      height: 25,
-                      decoration: BoxDecoration(border: Border.all(width: 2)),
-                      child: CachedNetworkImageWidget(
-                        imageUrl: widget.postData.owner!.profilePicture,
-                        width: 25,
-                        height: 25,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () => Get.toNamed(Paths.OTHER_PROFILE,
+                      arguments: widget.postData.owner!.id!),
+                  child: Row(
+                    children: [
+                      widget.postData.owner!.profilePicture != null
+                          ? CircleAvatar(
+                              backgroundColor: AppColors.primaryColor,
+                              radius: 15,
+                              backgroundImage: NetworkImage(
+                                widget.postData.owner!.profilePicture,
+                              ),
+                            )
+                          : const CircleAvatar(
+                              radius: 15,
+                              backgroundColor: AppColors.primaryColor,
+                              child: Icon(
+                                Icons.person,
+                                color: AppColors.whiteColor,
+                              ),
+                            ),
+                      const SizedBox(width: 10),
+                      TextViewWidget(
+                        "${widget.postData.owner!.firstName} ${widget.postData.owner!.lastName}",
+                        textSize: 15,
+                        textAlign: TextAlign.justify,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  )
-                : const SizedBox(),
-            widget.postData.owner!.profilePicture != null
-                ? const SizedBox(width: 10)
-                : const SizedBox(),
-            Expanded(
-              child: RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w500,
+                    ],
                   ),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text:
-                            "${widget.postData.owner!.firstName} ${widget.postData.owner!.lastName}"),
-                    if (widget.postData.owner!.university != null)
-                      const TextSpan(
-                          text: ' in ',
-                          style: TextStyle(color: Color(0XFFA9A9A9))),
-                    TextSpan(text: widget.postData.owner!.university),
-                  ],
+                ),
+                Expanded(
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                      style: const TextStyle(
+                        color: AppColors.primaryTextColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      children: <TextSpan>[
+                        if (widget.postData.owner!.university != null)
+                          TextSpan(
+                              text: ' at ',
+                              style: TextStyle(
+                                  color: AppColors.primaryTextColor
+                                      .withOpacity(0.7))),
+                        TextSpan(text: widget.postData.owner!.university),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (widget.postData.createdDate != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 40),
+                child: TextViewWidget(
+                  DateUtil.convertDateFormat(
+                      widget.postData.createdDate!, DAY_MONTH_YEAR_2),
+                  textColor: AppColors.primaryTextColor.withOpacity(0.8),
+                  textSize: 12,
                 ),
               ),
-            ),
-            // Obx(() => IconButton(
-            //   icon: Icon(Icons.bookmark_border,
-            //       size: 28,
-            //       color: postHomeController.isFavourite.value == true
-            //           ? Colors.red
-            //           : Color(0xffA9A9A9)),
-            //   onPressed: () {
-            //     if(GlobalVariable.token == null){
-            //       Get.offAllNamed(Paths.MAIN_HOME,arguments: 4);
-            //     }else{
-            //       postHomeController.savePost(postHomeController.isFavourite.value);
-            //     }
-            //   },
-            // ),
           ],
         ),
-        if (widget.postData.createdDate != null)
-          TextViewWidget(
-            DateUtil.convertDateFormat(widget.postData.createdDate!, DAY_MONTH_YEAR),
-            textColor: Color(0xffA9A9A9),
-            textSize: 12,
-          )
+        const SizedBox(height: 5),
       ],
     ));
   }

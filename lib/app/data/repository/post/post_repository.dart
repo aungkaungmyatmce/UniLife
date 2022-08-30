@@ -9,7 +9,7 @@ import '../../model/post/comment_request_ob.dart';
 abstract class PostRepository {
   //Get Post List
   Future<BaseApiResponse<PostListOb>> getPostList(
-      {int? page, String? searchText});
+      {int? page, String? searchText, required bool isFollowing});
 
   //Get Save Post List
   Future<BaseApiResponse<PostListOb>> getSavePostList({int? page});
@@ -36,18 +36,4 @@ abstract class PostRepository {
 
   //Get Profile
   Future<BaseApiResponse<ProfileOb>> getProfileDetail(profileId);
-
-  //Get Comments
-  Future<BaseApiResponse<CommentListOb>> getComments({int? page, int? postId});
-
-  //Create Comment
-  Future<BaseApiResponse<String?>> createComment(
-      CreateCommentRequestOb createCommentRequestOb);
-
-  //Update Comment
-  Future<BaseApiResponse<String?>> updateComment(
-      {int commentId, String comment});
-
-  //Delete Comment
-  Future<BaseApiResponse<String?>> deleteComment({int commentId});
 }

@@ -4,40 +4,71 @@ import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/pagination_utils.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
-import 'package:blog_post_flutter/app/data/model/post/comment_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
-import 'package:blog_post_flutter/app/features/favourite/controller/favourite_controller.dart';
 import 'package:blog_post_flutter/app/features/home/controller/comment_controller.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_create_controller.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
 import '../../../constant/enum_image_type.dart';
 import '../../../core/utils/dialog_utils.dart';
+import '../../../core/utils/shimmer_utils.dart';
 import '../../../data/custom_image_phaser_ob.dart';
+import 'package:async/async.dart';
 
 class PostDetailController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
   final CreatePostController postCreateController =
       Get.find<CreatePostController>();
-  final CommentController commentController = Get.find<CommentController>();
+
   var postDetail = PostData().obs;
+  var virtualPostDetail = PostData();
   late PaginationUtils postPagination = PaginationUtils();
   RxInt likeCount = 0.obs;
   RxBool isLikeAdded = false.obs;
   RxBool isSaved = false.obs;
   int? postId;
   var profileDetail = ProfileOb().obs;
+  RestartableTimer _toggleLikeTimer =
+      RestartableTimer(Duration.zero, () => null);
+  RestartableTimer _toggleSaveTimer =
+      RestartableTimer(Duration.zero, () => null);
+  late ScrollController buttonController;
+  var isVisible = true.obs;
 
   @override
   void onInit() {
     super.onInit();
-    postId = Get.arguments;
+    var post = Get.arguments;
+    postId = post.id;
+    // isLikeAdded.value = postDetail.value.isLiked!;
+    // isSaved.value = postDetail.value.isSaved!;
+    // likeCount.value = postDetail.value.likeCounts!;
     if (postId != null) getPostDetail(postId!);
+
+    isVisible.value = true;
+    buttonController = ScrollController();
+    buttonController.addListener(() {
+      if (buttonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (isVisible.value == true) {
+          isVisible.value = false;
+        }
+      } else {
+        if (buttonController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          if (isVisible.value == false) {
+            isVisible.value = true;
+          }
+        }
+      }
+
+      if (buttonController.position.pixels == 0) {
+        isVisible.value = true;
+      }
+    });
   }
 
   //Get Post Detail
@@ -47,6 +78,9 @@ class PostDetailController extends BaseController {
 
     await callAPIService(
       repoService,
+      onStart: postDetail.value.id == null
+          ? () => showLoading(shimmerEffect: ShimmerUtils.postDetail)
+          : null,
       onSuccess: _handleResponseSuccess,
       onError: _handleResponseError,
     );
@@ -77,57 +111,86 @@ class PostDetailController extends BaseController {
 
   //Toggle Like Post
   void toggleLikePost() {
-    if (GlobalVariable.token != null) {
-      late Future<BaseApiResponse<String?>> repoService;
-      repoService = _repository.toggleLikePost(postDetail.value.id);
-      callAPIService(repoService, onSuccess: (dynamic response) {
-        if (response != null) {
-          BaseApiResponse<String?> _baseApiResponse = response;
-          //AppUtils.showToast(" ${_baseApiResponse.message}");
+    isLikeAdded.value = !isLikeAdded.value;
+    if (isLikeAdded.value) {
+      likeCount = likeCount + 1;
+    } else {
+      likeCount = likeCount - 1;
+    }
+    if (isLikeAdded.value != postDetail.value.isLiked!) {
+      toggleLikeTimer(() {
+        if (GlobalVariable.token != null) {
+          late Future<BaseApiResponse<String?>> repoService;
+          repoService = _repository.toggleLikePost(postDetail.value.id);
+          callAPIService(repoService, onSuccess: (dynamic response) {
+            if (response != null) {
+              BaseApiResponse<String?> _baseApiResponse = response;
+              //AppUtils.showToast(" ${_baseApiResponse.message}");
+              postDetail.value.isLiked = isLikeAdded.value;
+            }
+          }, onError: (Exception exception) {
+            AppUtils.showToast(errorMessage);
+          });
+        } else {
+          Get.toNamed(Paths.LOGIN);
         }
-      }, onError: (Exception exception) {
-        AppUtils.showToast(errorMessage);
       });
     } else {
-      Get.toNamed(Paths.LOGIN);
+      _toggleLikeTimer.cancel();
     }
   }
 
-  void addLikeCount(int i, bool isLike) {
-    if (isLike) {
-      likeCount.value = i - 1;
-      isLikeAdded.value = false;
-    } else {
-      likeCount.value = i + 1;
-      isLikeAdded.value = true;
-    }
+  void toggleLikeTimer(Function onTimerStart) {
+    _toggleLikeTimer.cancel();
+    Duration _timerDuration = const Duration(seconds: 3);
+    _toggleLikeTimer = RestartableTimer(
+      _timerDuration,
+      () {
+        onTimerStart();
+      },
+    );
+    _toggleLikeTimer.reset();
   }
 
-  void removeLikeCount() {
-    likeCount.value = likeCount.value - 1;
-    isLikeAdded.value = false;
+  void toggleSaveTimer(Function onTimerStart) {
+    _toggleSaveTimer.cancel();
+    Duration _timerDuration = const Duration(seconds: 3);
+    _toggleSaveTimer = RestartableTimer(
+      _timerDuration,
+      () {
+        onTimerStart();
+      },
+    );
+    _toggleSaveTimer.reset();
   }
 
   //Toggle Save Post
   void toggleSavePost() {
-    if (GlobalVariable.token != null) {
-      late Future<BaseApiResponse<String?>> repoService;
-      repoService = _repository.toggleSavePost(postDetail.value.id);
-      callAPIService(repoService, onSuccess: (dynamic response) {
-        if (response != null) {
-          BaseApiResponse<String?> _baseApiResponse = response;
-          AppUtils.showToast(" ${_baseApiResponse.message}");
+    isSaved.value = !isSaved.value;
+    if (isSaved.value != postDetail.value.isSaved!) {
+      toggleSaveTimer(() {
+        if (GlobalVariable.token != null) {
+          late Future<BaseApiResponse<String?>> repoService;
+          repoService = _repository.toggleSavePost(postDetail.value.id);
+          callAPIService(repoService, onSuccess: (dynamic response) {
+            if (response != null) {
+              BaseApiResponse<String?> _baseApiResponse = response;
+              AppUtils.showToast(" ${_baseApiResponse.message}");
+              postDetail.value.isSaved = isSaved.value;
+            }
+          }, onError: (Exception exception) {
+            AppUtils.showToast(errorMessage);
+          });
+        } else {
+          Get.toNamed(Paths.LOGIN);
         }
-      }, onError: (Exception exception) {
-        AppUtils.showToast(errorMessage);
       });
     } else {
-      Get.toNamed(Paths.LOGIN);
+      _toggleSaveTimer.cancel();
     }
   }
 
   //Fetch Profile
-
   void fetchProfile(int profileId) async {
     Get.toNamed(Paths.OTHER_PROFILE);
     final repoService = _repository.getProfileDetail(profileId);
@@ -197,8 +260,9 @@ class PostDetailController extends BaseController {
   }
 
   void onCmtTap() {
-    commentController.commentList = postDetail.value.comments!;
-    commentController.postId = postDetail.value.id!;
-    Get.toNamed(Paths.COMMENT)?.then((value) => getPostDetail(postId!));
+    Get.toNamed(Paths.COMMENT, arguments: {
+      'commentList': postDetail.value.comments!,
+      'postId': postDetail.value.id!,
+    })?.then((result) => getPostDetail(postId!));
   }
 }

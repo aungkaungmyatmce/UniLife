@@ -16,8 +16,12 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
 
   @override
   Future<BaseApiResponse<PostListOb>> getPostList(
-      {int? page, String? searchText = ""}) {
-    var dioCall = dioClient.get("$endpoint/posts/?q=$searchText&page=$page",
+      {int? page, String? searchText = "", required bool isFollowing}) {
+    var url = "$endpoint/posts/?q=$searchText&page=$page";
+    if (isFollowing) {
+      url = "$endpoint/posts/?q=$searchText&page=$page&is_following=true";
+    }
+    var dioCall = dioClient.get(url,
         options:
             buildCacheOptions(const Duration(days: 7), forceRefresh: true));
     try {
@@ -36,7 +40,7 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
 
   @override
   Future<BaseApiResponse<PostListOb>> getSavePostList({int? page}) {
-    var dioCall = dioClient.get("$endpoint/posts/?saved&page=$page",
+    var dioCall = dioClient.get("$endpoint/posts/?is_saved=true&page=$page",
         options:
             buildCacheOptions(const Duration(days: 7), forceRefresh: true));
     try {
@@ -80,8 +84,6 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
       return callApiWithErrorParser(dioClient.post(endpoint + "/posts/",
               data: postRequestOb.toJson()))
           .then((response) {
-        print('Response Dataaaaaaaaa');
-        print(response.data);
         return BaseApiResponse<String?>.fromStringJson(
           response.data,
         );
@@ -162,79 +164,5 @@ class PostRepositoryImpl extends BaseRemoteSource implements PostRepository {
   BaseApiResponse<ProfileOb> _parseProfileDetailResponse(Response response) {
     return BaseApiResponse<ProfileOb>.fromObjectJson(response.data,
         createObject: (data) => ProfileOb.fromJson(data));
-  }
-
-  @override
-  Future<BaseApiResponse<String?>> createComment(
-      CreateCommentRequestOb commentRequestOb) {
-    try {
-      return callApiWithErrorParser(dioClient.post(endpoint + "/comments/",
-              data: commentRequestOb.toJson()))
-          .then((response) {
-        return BaseApiResponse<String?>.fromStringJson(
-          response.data,
-        );
-      });
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<BaseApiResponse<CommentListOb>> getComments({int? page, int? postId}) {
-    var endpoint =
-        "${DioProvider.baseUrl}/comments/?post_id=$postId&page=$page";
-
-    var dioCall = dioClient.get(endpoint);
-    try {
-      return callApiWithErrorParser(dioCall)
-          .then((response) => _parseCommentListResponse(response));
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // BaseApiResponse<List<CommentData>> _parseCommentListResponse(
-  //     Response response) {
-  //   return BaseApiResponse<List<CommentData>>.fromListJson(response.data,
-  //       createList: (data) {
-  //     return CommentData.fromJson(data);
-  //   });
-  // }
-
-  BaseApiResponse<CommentListOb> _parseCommentListResponse(Response response) {
-    return BaseApiResponse<CommentListOb>.fromObjectJson(response.data,
-        createObject: (data) => CommentListOb.fromJson(data));
-  }
-
-  @override
-  Future<BaseApiResponse<String?>> updateComment(
-      {int? commentId, String? comment}) {
-    try {
-      return callApiWithErrorParser(dioClient.patch(
-          endpoint + "/comments/$commentId/",
-          data: {'comment': comment})).then((response) {
-        return BaseApiResponse<String?>.fromStringJson(
-          response.data,
-        );
-      });
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<BaseApiResponse<String?>> deleteComment({int? commentId}) {
-    try {
-      return callApiWithErrorParser(
-              dioClient.delete(endpoint + "/comments/$commentId/"))
-          .then((response) {
-        return BaseApiResponse<String?>.fromStringJson(
-          response.data,
-        );
-      });
-    } catch (e) {
-      rethrow;
-    }
   }
 }

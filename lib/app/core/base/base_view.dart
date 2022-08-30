@@ -96,8 +96,8 @@ abstract class BaseView<Controller extends BaseController>
     return null;
   }
 
-  Widget showLoading() {
-    return const Loading();
+  Widget showLoading(Widget? shimmer) {
+    return Loading(shimmerEffect: shimmer);
   }
 
   Widget getErrorHandlingView(PageStateHandler pageState) {
@@ -105,13 +105,13 @@ abstract class BaseView<Controller extends BaseController>
     switch (pageState.viewState) {
       case ViewState.EMPTYLIST:
         return ErrorHandlingWidget(
-          message: "No Data Found",
+          message: pageState.message ?? "No Data Found",
           onClickTryAgain: pageState.onClickTryAgain,
         );
       case ViewState.DEFAULT:
         return const SizedBox();
       case ViewState.LOADING:
-        return showLoading();
+        return showLoading(pageState.shimmerEffect);
       case ViewState.SUCCESS:
         return const SizedBox();
       case ViewState.FAILED:
