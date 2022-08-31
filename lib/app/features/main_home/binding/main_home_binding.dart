@@ -14,6 +14,8 @@ import 'package:blog_post_flutter/app/features/main_home/controller/main_home_co
 import 'package:get/get.dart';
 
 import '../../home/controller/comment_controller.dart';
+import '../../home/controller/following_postList_controller.dart';
+import '../../home/controller/foryou_postList_controller.dart';
 import '../../home/controller/post_home_tab_controller.dart';
 
 class MainHomeBinding extends Bindings {
@@ -24,8 +26,8 @@ class MainHomeBinding extends Bindings {
     Get.lazyPut(() => EditPostController());
     Get.lazyPut(() => CommentController());
     Get.lazyPut(() => CommentEditController());
-    Get.lazyPut(() => PostHomeTabController());
-
+    Get.lazyPut(() => ForYouPostListController(), fenix: true);
+    Get.lazyPut(() => FollowingPostListController(), fenix: true);
     Get.lazyPut<AuthRepository>(
       () => AuthRepositoryImpl(),
       tag: (AuthRepository).toString(),

@@ -27,7 +27,7 @@ class HomeBinding extends Bindings {
     Get.lazyPut(() => OtherProfileController(), fenix: true);
     Get.lazyPut(() => CommentController(), fenix: true);
     Get.lazyPut(() => CommentEditController(), fenix: true);
-    Get.lazyPut(() => PostHomeTabController(), fenix: true);
+    //Get.lazyPut(() => PostHomeTabController(), fenix: true);
     Get.lazyPut(() => ForYouPostListController(), fenix: true);
     Get.lazyPut(() => FollowingPostListController(), fenix: true);
     Get.lazyPut<AuthRepository>(

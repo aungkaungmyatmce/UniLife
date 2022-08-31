@@ -17,6 +17,8 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/network/services/dio_provider.dart';
+
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({Key? key}) : super(key: key);
 
@@ -96,7 +98,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                             backgroundColor:
                                 AppColors.secondaryTextColor.withOpacity(0.6),
                             backgroundImage: NetworkImage(
-                                "https://pyaephyokyaw.pythonanywhere.com${mainHomeScreenController.loginResponse.value.user!.profileImage}"),
+                                "${DioProvider.serverUrl}${mainHomeScreenController.loginResponse.value.user!.profileImage}"),
                           ))
                       : const TabItem(title: "You", icon: Icons.account_circle)
                   : const TabItem(title: "Profile", icon: Icons.account_circle),

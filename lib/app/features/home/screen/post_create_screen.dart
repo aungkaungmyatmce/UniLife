@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:blog_post_flutter/app/constant/app_colors.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/core/utils/image_picker.dart';
+import 'package:blog_post_flutter/app/data/network/services/dio_provider.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_create_controller.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,7 @@ class CreatePostScreen extends BaseView<CreatePostController> {
                                 backgroundColor: AppColors.primaryColor,
                                 radius: 20,
                                 backgroundImage: NetworkImage(
-                                    "https://pyaephyokyaw.pythonanywhere.com${controller.loginResponse.value.user!.profileImage}"),
+                                    "${DioProvider.serverUrl}${controller.loginResponse.value.user!.profileImage}"),
                               )
                             : const CircleAvatar(
                                 radius: 15,

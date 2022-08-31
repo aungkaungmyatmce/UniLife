@@ -64,7 +64,7 @@ class ProfileContainer extends StatelessWidget {
                           ? profileOb.followers!.length.toString()
                           : '0',
                       fontWeight: FontWeight.w500,
-                      textColor: AppColors.primaryTextColor,
+                      textColor: AppColors.primaryColor,
                     ),
                     const TextViewWidget(
                       'Followers',
@@ -86,7 +86,7 @@ class ProfileContainer extends StatelessWidget {
                           ? profileOb.following!.length.toString()
                           : '0',
                       fontWeight: FontWeight.w500,
-                      textColor: AppColors.primaryTextColor,
+                      textColor: AppColors.primaryColor,
                     ),
                     const TextViewWidget(
                       'Following',

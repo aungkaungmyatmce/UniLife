@@ -1,10 +1,13 @@
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_view.dart';
 import 'package:blog_post_flutter/app/features/follow/controller/follow_controller.dart';
+import 'package:blog_post_flutter/app/features/home/controller/other_profile_controller.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constant/app_colors.dart';
+import '../../../data/repository/comment/comment_repository.dart';
+import '../../../data/repository/comment/comment_repository_impl.dart';
 
 class FollowScreen extends BaseView<FollowController> {
   PreferredSizeWidget? appBar(BuildContext context) {
@@ -54,29 +57,24 @@ class FollowScreen extends BaseView<FollowController> {
               child: ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(height: 10),
                 itemCount: controller.followers.length,
-                itemBuilder: (context, index) => Row(
-                  children: [
-                    controller.followers[index].profilePicture != null
-                        ? InkWell(
-                            onTap: () {
-                              print(controller.followers[index].id!);
-                              Get.toNamed(Paths.OTHER_PROFILE,
-                                  arguments: controller.followers[index].id!);
-                            },
-                            child: CircleAvatar(
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () {
+                    Get.back();
+                    Get.back();
+                    Get.delete<OtherProfileController>();
+                    Get.toNamed(Paths.OTHER_PROFILE,
+                        arguments: controller.followers[index].id!);
+                  },
+                  child: Row(
+                    children: [
+                      controller.followers[index].profilePicture != null
+                          ? CircleAvatar(
                               radius: 20,
                               backgroundImage: NetworkImage(
                                 controller.followers[index].profilePicture,
                               ),
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              print(controller.followers[index].id!);
-                              Get.toNamed(Paths.OTHER_PROFILE,
-                                  arguments: controller.followers[index].id!);
-                            },
-                            child: const CircleAvatar(
+                            )
+                          : const CircleAvatar(
                               radius: 20,
                               backgroundColor: AppColors.primaryColor,
                               child: Icon(
@@ -84,14 +82,14 @@ class FollowScreen extends BaseView<FollowController> {
                                 color: AppColors.whiteColor,
                               ),
                             ),
-                          ),
-                    SizedBox(width: 30),
-                    TextViewWidget(
-                      '${controller.followers[index].firstName} ${controller.followers[index].lastName}',
-                      fontWeight: FontWeight.w500,
-                    ),
-                    Spacer(),
-                  ],
+                      SizedBox(width: 30),
+                      TextViewWidget(
+                        '${controller.followers[index].firstName} ${controller.followers[index].lastName}',
+                        fontWeight: FontWeight.w500,
+                      ),
+                      Spacer(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -100,23 +98,24 @@ class FollowScreen extends BaseView<FollowController> {
               child: ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(height: 10),
                 itemCount: controller.following.length,
-                itemBuilder: (context, index) => Row(
-                  children: [
-                    controller.following[index].profilePicture != null
-                        ? InkWell(
-                            onTap: () => Get.toNamed(Paths.OTHER_PROFILE,
-                                arguments: controller.following[index].id!),
-                            child: CircleAvatar(
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () {
+                    Get.back();
+                    Get.back();
+                    Get.delete<OtherProfileController>();
+                    Get.toNamed(Paths.OTHER_PROFILE,
+                        arguments: controller.following[index].id!);
+                  },
+                  child: Row(
+                    children: [
+                      controller.following[index].profilePicture != null
+                          ? CircleAvatar(
                               radius: 20,
                               backgroundImage: NetworkImage(
                                 controller.following[index].profilePicture,
                               ),
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () => Get.toNamed(Paths.OTHER_PROFILE,
-                                arguments: controller.following[index].id!),
-                            child: const CircleAvatar(
+                            )
+                          : const CircleAvatar(
                               radius: 20,
                               backgroundColor: AppColors.primaryColor,
                               child: Icon(
@@ -124,14 +123,14 @@ class FollowScreen extends BaseView<FollowController> {
                                 color: AppColors.whiteColor,
                               ),
                             ),
-                          ),
-                    const SizedBox(width: 30),
-                    TextViewWidget(
-                      '${controller.following[index].firstName} ${controller.following[index].lastName}',
-                      fontWeight: FontWeight.w500,
-                    ),
-                    const Spacer(),
-                  ],
+                      const SizedBox(width: 30),
+                      TextViewWidget(
+                        '${controller.following[index].firstName} ${controller.following[index].lastName}',
+                        fontWeight: FontWeight.w500,
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -21,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../constant/view_state.dart';
+
 class AuthenticationController extends BaseController {
   final AuthRepository _repository = Get.find(tag: (AuthRepository).toString());
 
@@ -139,13 +141,17 @@ class AuthenticationController extends BaseController {
       AppUtils.showToast("Passwords do not match");
       return;
     }
+
+    String? base64Image = "";
+    File? file = chooseProfileImage.value?.image;
+    base64Image = AppUtils.doEncoding(file?.path);
     var requestOb = RegisterRequestOb(
         username: userNameController.value.text.trim(),
         firstName: firstNameController.value.text.trim(),
         lastName: lastNameController.value.text.trim(),
         university: universityController.value.text.trim(),
         password: passwordController.value.text,
-        profilePicture: null);
+        profilePicture: base64Image);
     logger.i("Register Request Ob is ${requestOb.toJson()}");
     final repoService = _repository.registerUser(requestOb);
     AppUtils.showLoaderDialog();
@@ -202,12 +208,13 @@ class AuthenticationController extends BaseController {
   }
 
   void fetchProfile(int? profileId) async {
+    print('fetch!!!!!');
     final repoService = _repository.getProfileDetail(profileId);
     await callAPIService(
       repoService,
-      onStart: profileDetail.value.id == null
-          ? () => showLoading(shimmerEffect: ShimmerUtils.profile)
-          : null,
+      // onStart: profileDetail.value.id == null
+      //     ? () => showLoading(shimmerEffect: ShimmerUtils.profile)
+      //     : null,
       onSuccess: _handleResponseSuccess,
       onError: _handleResponseError,
     );
@@ -218,6 +225,7 @@ class AuthenticationController extends BaseController {
       BaseApiResponse<ProfileOb?> _profileDetailData = response;
       ProfileOb data = _profileDetailData.objectResult;
       profileDetail.value = data;
+      updatePageState(ViewState.DEFAULT);
     }
   }
 

@@ -38,14 +38,14 @@ class ProfileOb {
         posts?.add(PostData.fromJson(v));
       });
     }
-    if (json['followers'] != null && json['followers'].isNotEmpty) {
+    if (json['followers'] != null) {
       followers = [];
       json['followers'].forEach((v) {
         followers?.add(Owner.fromJson(v));
       });
     }
 
-    if (json['following'] != null && json['following'].isNotEmpty) {
+    if (json['following'] != null) {
       following = [];
       json['following'].forEach((v) {
         following?.add(Owner.fromJson(v));

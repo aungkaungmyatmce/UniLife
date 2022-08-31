@@ -1,31 +1,40 @@
+import 'dart:convert';
+
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/profile_ob.dart';
-import 'package:blog_post_flutter/app/data/model/post/post_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
+import 'package:blog_post_flutter/app/data/repository/comment/comment_repository_impl.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
 import 'package:get/get.dart';
 import 'package:async/async.dart';
-
+import '../../../data/local/cache_manager.dart';
+import '../../../data/model/authentication/login_response.dart';
 import '../../../data/repository/comment/comment_repository.dart';
 
 class OtherProfileController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
-  final CommentRepository _followRepository =
-      Get.find(tag: (CommentRepository).toString());
+  // final CommentRepository _followRepository =
+  //     Get.find(tag: (CommentRepository).toString());
+  final CommentRepository _followRepository = CommentRepositoryImpl();
   int? profileId;
   var profileDetail = ProfileOb().obs;
   RxBool isFollow = false.obs;
   RxBool notLogin = false.obs;
+  Rx<LoginResponse> loginResponse = LoginResponse().obs;
 
   RestartableTimer _toggleSaveTimer =
       RestartableTimer(Duration.zero, () => null);
 
   @override
   void onInit() {
+    if (getString(CacheManagerKey.loginResponseData) != null) {
+      Map<String, dynamic> authenticationResponse =
+          jsonDecode(getString(CacheManagerKey.loginResponseData)!);
+      loginResponse.value = LoginResponse.fromJson(authenticationResponse);
+    }
     super.onInit();
-
     profileId = Get.arguments;
     if (profileId != null) fetchProfile(profileId!);
   }
@@ -81,6 +90,20 @@ class OtherProfileController extends BaseController {
   //Toggle Save Post
   void toggleFollow() {
     isFollow.value = !isFollow.value;
+    if (isFollow.value) {
+      // if (profileDetail.value.followers == null) {
+      //   profileDetail.value.followers = [];
+      // }
+      profileDetail.value.followers!.add(Owner(
+        id: loginResponse.value.user!.id,
+        firstName: loginResponse.value.user!.firstName,
+        lastName: loginResponse.value.user!.lastName,
+        profilePicture: loginResponse.value.user!.profileImage,
+      ));
+    } else {
+      profileDetail.value.followers!
+          .removeWhere((owner) => owner.id == loginResponse.value.user!.id);
+    }
     if (isFollow.value != profileDetail.value.isFollowing!) {
       toggleFollowTimer(() {
         updateFollowApi();

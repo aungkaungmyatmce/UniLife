@@ -88,7 +88,7 @@ class _PostHomeScreenState extends State<PostHomeScreen>
             ),
 
             SizedBox(
-              width: 200,
+              width: 220,
               height: 40,
               child: TabBar(
                 controller: controller,

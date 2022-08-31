@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class PostHomeController extends BaseController {
-  final PostHomeTabController tab = Get.find<PostHomeTabController>();
+  //final PostHomeTabController tab = Get.find<PostHomeTabController>();
 
   @override
   void onInit() {

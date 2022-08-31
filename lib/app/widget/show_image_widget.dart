@@ -27,16 +27,16 @@ class ShowImageWidget extends StatelessWidget {
       this.width = 100,
       this.height = 100,
       this.fit = BoxFit.cover,
-      this.imageType = ImageType.networkImage, this.fileImageBorderRadius = 0})
+      this.imageType = ImageType.networkImage,
+      this.fileImageBorderRadius = 0})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     switch (imageType) {
       case ImageType.networkImage:
-        return SizedBox(
-          width: width,
-          height: height,
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(fileImageBorderRadius!),
           child: CachedNetworkImage(
             imageUrl: imagePath,
             width: width,
@@ -57,7 +57,7 @@ class ShowImageWidget extends StatelessWidget {
         break;
       case ImageType.fileImage:
         return ClipRRect(
-              borderRadius: BorderRadius.circular(fileImageBorderRadius!),
+          borderRadius: BorderRadius.circular(fileImageBorderRadius!),
           child: Image.file(
             imageFile!,
             width: width,

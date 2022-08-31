@@ -6,8 +6,8 @@ class ShimmerUtils {
     separatorBuilder: (context, index) => Divider(),
     itemBuilder: (context, index) => Container(
       child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
+        baseColor: Color(0x7F2b566e), //Colors.grey.shade300,
+        highlightColor: Color(0x2F2b566e), //Colors.grey.shade100,
         //enabled: _enabled,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -93,8 +93,8 @@ class ShimmerUtils {
           separatorBuilder: (context, index) => Divider(),
           itemBuilder: (context, index) => Container(
             child: Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
+              baseColor: Color(0x7F2b566e), //Colors.grey.shade300,
+              highlightColor: Color(0x2F2b566e), //Colors.grey.shade100,
               //enabled: _enabled,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -180,8 +180,8 @@ class ShimmerUtils {
     children: [
       const SizedBox(height: 50),
       Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
+        baseColor: Color(0x7F2b566e), //Colors.grey.shade300,
+        highlightColor: Color(0x2F2b566e), //Colors.grey.shade100,
         //enabled: _enabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,8 +250,8 @@ class ShimmerUtils {
   static Widget profile = Padding(
       padding: EdgeInsets.only(top: 15),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
+        baseColor: Color(0x7F2b566e), //Colors.grey.shade300,
+        highlightColor: Color(0x2F2b566e), //Colors.grey.shade100,
         //enabled: _enabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,7 +25,7 @@ class ProfileScreen extends BaseView<AuthenticationController> {
   Widget body(BuildContext context) {
     return Obx(
       () => controller.profileDetail.value.id == null
-          ? Container()
+          ? ShimmerUtils.profile
           : SafeArea(
               child: Container(
                 height: double.infinity,
@@ -69,7 +69,8 @@ class ProfileScreen extends BaseView<AuthenticationController> {
                                     Get.back();
                                     controller.doLogout();
                                   },
-                                  backgroundColor: AppColors.primaryColor);
+                                  backgroundColor:
+                                      AppColors.secondaryTextColor);
                             },
                             icon: const Icon(
                               Icons.logout,

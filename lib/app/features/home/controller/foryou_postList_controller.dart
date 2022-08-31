@@ -1,5 +1,7 @@
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/shimmer_utils.dart';
+import 'package:blog_post_flutter/app/data/network/services/dio_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../constant/routing/app_routes.dart';
@@ -23,7 +25,7 @@ class ForYouPostListController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    getPostList(isFollowing: false);
+    resetAndGetPostList(isFollowing: false);
   }
 
   void navigateToSearchScreen() {
@@ -40,8 +42,6 @@ class ForYouPostListController extends BaseController {
       isFollowing: isFollowing,
     );
   }
-
-  //Fetch Post List
 
   void resetAndGetPostList({
     RefreshController? refreshController,
@@ -67,9 +67,9 @@ class ForYouPostListController extends BaseController {
 
       await callAPIService(
         repoService,
-        onStart: _postList.isEmpty
-            ? () => showLoading(shimmerEffect: ShimmerUtils.postList)
-            : () => null,
+        // onStart: _postList.isEmpty
+        //     ? () => showLoading(shimmerEffect: ShimmerUtils.postList)
+        //     : () => Container(),
         onSuccess: _handlePostListResponseSuccess,
         onError: _handleAllListResponseError,
       );

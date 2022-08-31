@@ -6,11 +6,15 @@ import 'package:blog_post_flutter/app/core/utils/dialog_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/global_key_utils.dart';
 import 'package:blog_post_flutter/app/core/utils/shimmer_utils.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_detail_controller.dart';
+import 'package:blog_post_flutter/app/features/main_home/controller/main_home_controller.dart';
 import 'package:blog_post_flutter/app/widget/post_detail_widget.dart';
 import 'package:blog_post_flutter/app/widget/text_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../../data/local/cache_manager.dart';
+import '../../../data/repository/post/post_repository.dart';
 
 class PostDetailScreen extends BaseView<PostDetailController> {
   @override
@@ -104,7 +108,15 @@ class PostDetailScreen extends BaseView<PostDetailController> {
                           color: AppColors.primaryColor,
                         ),
                         onPressed: () {
-                          Get.back();
+                          // Get.deleteAll();
+                          // Get.put(CacheManager());
+                          // Get.put(GetMaterialController());
+
+                          Get.offAllNamed(
+                            Paths.MAIN_HOME,
+                            arguments: 0,
+                          );
+                          //Get.back();
                         },
                       ),
                       Row(
@@ -135,7 +147,8 @@ class PostDetailScreen extends BaseView<PostDetailController> {
                                 Icons.bookmark,
                                 color: controller.isSaved.value == true
                                     ? AppColors.primaryColor
-                                    : Colors.grey.shade500,
+                                    : AppColors.primaryColor.withOpacity(
+                                        0.5), //Colors.grey.shade500,
                                 size: 28,
                               ),
                             ),

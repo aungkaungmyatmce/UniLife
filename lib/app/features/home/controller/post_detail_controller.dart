@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blog_post_flutter/app/constant/routing/app_routes.dart';
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:blog_post_flutter/app/core/utils/app_utils.dart';
@@ -18,6 +20,9 @@ import '../../../core/utils/shimmer_utils.dart';
 import '../../../data/custom_image_phaser_ob.dart';
 import 'package:async/async.dart';
 
+import '../../../data/local/cache_manager.dart';
+import '../../../data/model/authentication/login_response.dart';
+
 class PostDetailController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
   final CreatePostController postCreateController =
@@ -37,16 +42,29 @@ class PostDetailController extends BaseController {
       RestartableTimer(Duration.zero, () => null);
   late ScrollController buttonController;
   var isVisible = true.obs;
+  Rx<LoginResponse> loginResponse = LoginResponse().obs;
+  Rx<bool> isLogin = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+
+    if (getString(CacheManagerKey.loginResponseData) != null) {
+      Map<String, dynamic> authenticationResponse =
+          jsonDecode(getString(CacheManagerKey.loginResponseData)!);
+      loginResponse.value = LoginResponse.fromJson(authenticationResponse);
+      if (loginResponse.value.user!.id != null) {
+        isLogin.value = true;
+      } else {
+        isLogin.value = false;
+      }
+    }
+
     var post = Get.arguments;
-    postId = post.id;
-    // isLikeAdded.value = postDetail.value.isLiked!;
-    // isSaved.value = postDetail.value.isSaved!;
-    // likeCount.value = postDetail.value.likeCounts!;
-    if (postId != null) getPostDetail(postId!);
+    if (post != null) {
+      postId = post.id;
+      getPostDetail(postId!);
+    }
 
     isVisible.value = true;
     buttonController = ScrollController();
@@ -111,6 +129,10 @@ class PostDetailController extends BaseController {
 
   //Toggle Like Post
   void toggleLikePost() {
+    if (!isLogin.value) {
+      Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
+      return;
+    }
     isLikeAdded.value = !isLikeAdded.value;
     if (isLikeAdded.value) {
       likeCount = likeCount + 1;
@@ -166,6 +188,10 @@ class PostDetailController extends BaseController {
 
   //Toggle Save Post
   void toggleSavePost() {
+    if (!isLogin.value) {
+      Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
+      return;
+    }
     isSaved.value = !isSaved.value;
     if (isSaved.value != postDetail.value.isSaved!) {
       toggleSaveTimer(() {
@@ -250,7 +276,7 @@ class PostDetailController extends BaseController {
       if (response != null) {
         Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
-        Get.offAllNamed(Paths.MAIN_HOME);
+        Get.offAllNamed(Paths.MAIN_HOME, arguments: 0);
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }
     }, onError: (Exception exception) {

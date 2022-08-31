@@ -67,12 +67,16 @@ class PostDetailWidget extends StatelessWidget {
                                 ),
                               ),
                             )
-                          : const CircleAvatar(
-                              radius: 25,
-                              backgroundColor: AppColors.primaryColor,
-                              child: Icon(
-                                Icons.person,
-                                color: AppColors.whiteColor,
+                          : InkWell(
+                              onTap: () => Get.toNamed(Paths.OTHER_PROFILE,
+                                  arguments: postData.owner?.id),
+                              child: const CircleAvatar(
+                                radius: 25,
+                                backgroundColor: AppColors.primaryColor,
+                                child: Icon(
+                                  Icons.person,
+                                  color: AppColors.whiteColor,
+                                ),
                               ),
                             ),
                       const SizedBox(width: 10),
@@ -83,12 +87,16 @@ class PostDetailWidget extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                TextViewWidget(
-                                  '${postData.owner?.firstName!} ${postData.owner?.lastName!}',
-                                  textSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  textColor: AppColors.primaryTextColor,
-                                  textAlign: TextAlign.justify,
+                                InkWell(
+                                  onTap: () => Get.toNamed(Paths.OTHER_PROFILE,
+                                      arguments: postData.owner?.id),
+                                  child: TextViewWidget(
+                                    '${postData.owner?.firstName!} ${postData.owner?.lastName!}',
+                                    textSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    textColor: AppColors.primaryTextColor,
+                                    textAlign: TextAlign.justify,
+                                  ),
                                 ),
                                 TextViewWidget(
                                   DateFormat.yMMMd().format(

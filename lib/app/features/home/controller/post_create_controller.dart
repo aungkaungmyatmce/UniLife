@@ -9,6 +9,7 @@ import 'package:blog_post_flutter/app/data/custom_image_phaser_ob.dart';
 import 'package:blog_post_flutter/app/data/model/post/post_request_ob.dart';
 import 'package:blog_post_flutter/app/data/network/base_response/base_api_response.dart';
 import 'package:blog_post_flutter/app/data/repository/post/post_repository.dart';
+import 'package:blog_post_flutter/app/features/home/controller/foryou_postList_controller.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_home_controller.dart';
 import 'package:blog_post_flutter/app/features/home/controller/post_home_tab_controller.dart';
 import 'package:blog_post_flutter/app/widget/post_file_image_widget.dart';
@@ -131,16 +132,20 @@ class CreatePostController extends BaseController {
 
     callAPIService(repoService, onSuccess: (dynamic response) {
       if (response != null) {
-        Get.back();
+        //Get.back();
         BaseApiResponse<String?> _baseApiResponse = response;
-        // final PostHomeController postHomeController =
-        //     Get.put(PostHomeController());
+        // final ForYouPostListController postHomeController =
+        //     Get.put(ForYouPostListController());
         // postHomeController.resetAndGetPostList(isFollowing: false);
-        //Get.put(() => PostHomeTabController());
+
         Get.offAllNamed(
           Paths.MAIN_HOME,
           arguments: 0,
         );
+        // MainHomeController mainHomeScreenController =
+        // Get.find<MainHomeController>();
+        //
+        // mainHomeScreenController.selectedPage.value = 0;
         //Get.back();
         AppUtils.showToast(" ${_baseApiResponse.message}");
       }

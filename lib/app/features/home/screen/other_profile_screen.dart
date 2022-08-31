@@ -23,12 +23,12 @@ class OtherProfileScreen extends BaseView<OtherProfileController> {
       title: const TextViewWidget(
         'Profile',
         textSize: AppDimens.TEXT_HEADING_1X,
-        textColor: Colors.black,
+        textColor: AppColors.secondaryTextColor,
       ),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios,
-          color: Colors.black,
+          color: AppColors.secondaryTextColor,
         ),
         onPressed: () {
           Get.back();
@@ -55,11 +55,11 @@ class OtherProfileScreen extends BaseView<OtherProfileController> {
                           child: TextViewWidget(
                             controller.isFollow.value ? 'Unfollow' : 'Follow',
                             fontWeight: FontWeight.w500,
-                            textColor: Colors.white,
+                            textColor: AppColors.secondaryTextColor,
                             textSize: 14,
                           ),
                           style: ElevatedButton.styleFrom(
-                              primary: AppColors.secondaryColor,
+                              primary: AppColors.primaryColor,
                               fixedSize: const Size(100, 30),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
@@ -67,13 +67,12 @@ class OtherProfileScreen extends BaseView<OtherProfileController> {
                 ),
                 const SizedBox(height: 3),
                 Container(
-                  color: const Color(0xffF2F2F2),
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(
-                        child: const TextViewWidget(
+                      const Center(
+                        child: TextViewWidget(
                           'Stories',
                           textSize: 18,
                           textAlign: TextAlign.center,

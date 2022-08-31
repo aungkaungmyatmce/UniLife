@@ -122,6 +122,16 @@ class ProfileEditScreen extends BaseView<ProfileEditController> {
                         child: TextFormField(
                           controller: controller.userNameController.value,
                           decoration: InputDecoration(
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.primaryColor),
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.primaryColor),
+                              ),
+                              labelStyle: const TextStyle(
+                                  color: AppColors.primaryTextColor),
                               enabled: false,
                               labelText: 'Username',
                               suffixIcon: controller.userName.value.isNotEmpty
@@ -145,6 +155,16 @@ class ProfileEditScreen extends BaseView<ProfileEditController> {
                       child: TextFormField(
                         controller: controller.firstNameController.value,
                         decoration: InputDecoration(
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.primaryColor),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.primaryColor),
+                          ),
+                          labelStyle: const TextStyle(
+                              color: AppColors.primaryTextColor),
                           labelText: 'First Name',
                           suffixIcon: controller.firstName.value.isNotEmpty
                               ? const Icon(
@@ -163,6 +183,16 @@ class ProfileEditScreen extends BaseView<ProfileEditController> {
                       child: TextFormField(
                         controller: controller.lastNameController.value,
                         decoration: InputDecoration(
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.primaryColor),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.primaryColor),
+                          ),
+                          labelStyle: const TextStyle(
+                              color: AppColors.primaryTextColor),
                           labelText: 'Last Name',
                           suffixIcon: controller.lastName.value.isNotEmpty
                               ? const Icon(
@@ -181,6 +211,16 @@ class ProfileEditScreen extends BaseView<ProfileEditController> {
                       child: TextFormField(
                         controller: controller.universityController.value,
                         decoration: InputDecoration(
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.primaryColor),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.primaryColor),
+                          ),
+                          labelStyle: const TextStyle(
+                              color: AppColors.primaryTextColor),
                           labelText: 'University Name',
                           suffixIcon: controller.universityName.value.isNotEmpty
                               ? const Icon(
@@ -213,12 +253,13 @@ class ProfileEditScreen extends BaseView<ProfileEditController> {
                         children: const [
                           Text(
                             'Update',
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            style: TextStyle(
+                                color: AppColors.primaryColor, fontSize: 18),
                           ),
                           Icon(
                             Icons.done,
                             size: 35,
-                            color: Colors.black87,
+                            color: AppColors.primaryColor,
                           ),
                         ],
                       ),

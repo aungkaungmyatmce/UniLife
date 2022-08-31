@@ -19,7 +19,7 @@ class MainHomeController extends GetxController with CacheManager {
     super.onInit();
     if (getString(CacheManagerKey.loginResponseData) != null) {
       Map<String, dynamic> authenticationResponse =
-      jsonDecode(getString(CacheManagerKey.loginResponseData)!);
+          jsonDecode(getString(CacheManagerKey.loginResponseData)!);
       loginResponse.value = LoginResponse.fromJson(authenticationResponse);
       print("Login Response is ${loginResponse.value.user!.profileImage}");
     }
