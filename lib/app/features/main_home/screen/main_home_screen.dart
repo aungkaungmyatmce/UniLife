@@ -31,10 +31,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       Get.put(MainHomeController(), permanent: false);
 
   List<Widget> _pageNumber = [
-    PostHomeScreen(),
+    const PostHomeScreen(),
     FavouriteScreen(),
-    DirectToSignInScreen(),
-    NotificationScreen(),
+    const DirectToSignInScreen(),
+    const NotificationScreen(),
     SignUpScreen(),
   ];
 

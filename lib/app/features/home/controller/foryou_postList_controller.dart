@@ -1,7 +1,5 @@
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
-import 'package:blog_post_flutter/app/core/utils/shimmer_utils.dart';
-import 'package:blog_post_flutter/app/data/network/services/dio_provider.dart';
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../constant/routing/app_routes.dart';
@@ -11,7 +9,6 @@ import '../../../core/utils/pagination_utils.dart';
 import '../../../data/model/post/post_ob.dart';
 import '../../../data/network/base_response/base_api_response.dart';
 import '../../../data/repository/post/post_repository.dart';
-import 'package:get/get.dart';
 
 class ForYouPostListController extends BaseController {
   final PostRepository _repository = Get.find(tag: (PostRepository).toString());
@@ -25,7 +22,7 @@ class ForYouPostListController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    resetAndGetPostList(isFollowing: false);
+    getPostList(isFollowing: false);
   }
 
   void navigateToSearchScreen() {
