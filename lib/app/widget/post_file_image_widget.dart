@@ -58,7 +58,7 @@ class PostFileImageWidget extends StatelessWidget {
                   icon: const Icon(
                     Icons.close,
                     size: 16,
-                    color: AppColors.whiteColor,
+                    color: AppColors.blackColor,
                   ),
                   onClickIcon: onDeleteCallBack,
                   contentPadding: 4,
