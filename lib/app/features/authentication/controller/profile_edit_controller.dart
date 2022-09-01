@@ -91,10 +91,10 @@ class ProfileEditController extends BaseController {
       base64Image = AppUtils.doEncoding(file?.path);
       logger.i("Base64 String is ${AppUtils.doEncoding(file?.path)}");
     }
-    if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
-      AppUtils.showToast("Please Choose Profile Image");
-      return;
-    }
+    // if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
+    //   AppUtils.showToast("Please Choose Profile Image");
+    //   return;
+    // }
     if (userNameController.value.text.trim().isEmpty) {
       AppUtils.showToast("Please Enter User Name");
       return;
