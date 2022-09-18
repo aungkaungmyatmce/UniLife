@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../data/network/exception/api_exception.dart';
 import '../../data/network/exception/app_exception.dart';
 import '../../data/network/exception/json_format_exception.dart';
@@ -141,7 +140,7 @@ abstract class BaseController extends GetxController
   void onClose() {
     _messageController.close();
     //_refreshController.close();
-    _pageSateController.close();
+    //_pageSateController.close();
     super.onClose();
   }
 }

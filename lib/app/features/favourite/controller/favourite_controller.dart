@@ -69,9 +69,6 @@ class FavouriteController extends BaseController {
         Future.delayed(
           const Duration(milliseconds: 100),
           () => updatePageState(ViewState.EMPTYLIST,
-              onClickTryAgain: () => {
-                    resetAndGetSavePostList(),
-                  },
               message: 'You have no bookmark!'),
         );
       }

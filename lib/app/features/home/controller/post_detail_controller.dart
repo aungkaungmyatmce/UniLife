@@ -201,7 +201,7 @@ class PostDetailController extends BaseController {
           callAPIService(repoService, onSuccess: (dynamic response) {
             if (response != null) {
               BaseApiResponse<String?> _baseApiResponse = response;
-              AppUtils.showToast(" ${_baseApiResponse.message}");
+              //AppUtils.showToast(" ${_baseApiResponse.message}");
               postDetail.value.isSaved = isSaved.value;
             }
           }, onError: (Exception exception) {

@@ -18,10 +18,11 @@ class PostHomeScreen extends StatefulWidget {
 
 class _PostHomeScreenState extends State<PostHomeScreen>
     with SingleTickerProviderStateMixin {
-  late TabController controller;
+  TabController? _controller;
   @override
   void initState() {
-    controller = TabController(vsync: this, length: 2);
+    _controller = TabController(vsync: this, length: 2);
+    _controller!.index = 0;
     super.initState();
   }
 
@@ -91,7 +92,7 @@ class _PostHomeScreenState extends State<PostHomeScreen>
               width: 220,
               height: 40,
               child: TabBar(
-                controller: controller,
+                controller: _controller,
                 indicatorColor: AppColors.primaryTextColor,
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorPadding: const EdgeInsets.symmetric(horizontal: 10),
@@ -116,7 +117,7 @@ class _PostHomeScreenState extends State<PostHomeScreen>
             /// PostItems
             Expanded(
               child: TabBarView(
-                controller: controller,
+                controller: _controller,
                 children: [
                   ForYouPostListScreen(),
                   FollowingPostListScreen(),

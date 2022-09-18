@@ -11,12 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../main_home/controller/main_home_controller.dart';
+
 class FavouriteScreen extends BaseView<FavouriteController> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   FavouriteScreen({Key? key}) : super(key: key);
-
+  MainHomeController homeController = Get.find<MainHomeController>();
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     // return AppBar(
@@ -33,64 +35,72 @@ class FavouriteScreen extends BaseView<FavouriteController> {
 
   @override
   Widget body(BuildContext context) {
-    return Obx(() => SafeArea(
-          child: Container(
-            height: double.infinity,
-            width: double.infinity,
-            child: Column(
-              children: [
-                SizedBox(height: 5),
-                TextViewWidget(
-                  'Bookmark',
-                  textSize: AppDimens.TEXT_HEADING_1X,
-                  textColor: AppColors.primaryColor,
-                ),
-                Expanded(
-                  child: SmartRefresherParentView(
-                    refreshController: _refreshController,
-                    enablePullUp: true,
-                    onRefresh: () => controller.resetAndGetSavePostList(
-                        refreshController: _refreshController),
-                    onLoading: () => controller.getSavePostList(
-                        refreshController: _refreshController),
-                    child: CustomScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      slivers: [
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 10),
-                                  child: Column(
-                                    children: [
-                                      PostItemWidget(
-                                          postData:
-                                              controller.savePostList[index],
-                                          onTapSeeMore: () => Get.toNamed(
-                                                Paths.POST_DETAIL,
-                                                arguments: controller
-                                                    .savePostList[index],
-                                              )),
-                                      const Divider(
-                                        color: Colors.black,
-                                      )
-                                    ],
-                                  ));
-                            },
-                            childCount: controller.savePostList.length,
+    return Obx(() => WillPopScope(
+          onWillPop: () async {
+            //Get.offAllNamed(Paths.MAIN_HOME, arguments: 0);
+            homeController.setSelectedIndex(0);
+
+            return false;
+          },
+          child: SafeArea(
+            child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: Column(
+                children: [
+                  SizedBox(height: 5),
+                  TextViewWidget(
+                    'Bookmark',
+                    textSize: AppDimens.TEXT_HEADING_1X,
+                    textColor: AppColors.primaryColor,
+                  ),
+                  Expanded(
+                    child: SmartRefresherParentView(
+                      refreshController: _refreshController,
+                      enablePullUp: true,
+                      onRefresh: () => controller.resetAndGetSavePostList(
+                          refreshController: _refreshController),
+                      onLoading: () => controller.getSavePostList(
+                          refreshController: _refreshController),
+                      child: CustomScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 10),
+                                    child: Column(
+                                      children: [
+                                        PostItemWidget(
+                                            postData:
+                                                controller.savePostList[index],
+                                            onTapSeeMore: () => Get.toNamed(
+                                                  Paths.POST_DETAIL,
+                                                  arguments: controller
+                                                      .savePostList[index],
+                                                )),
+                                        const Divider(
+                                          color: Colors.black,
+                                        )
+                                      ],
+                                    ));
+                              },
+                              childCount: controller.savePostList.length,
+                            ),
                           ),
-                        ),
-                        const SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: AppDimens.MARGIN_MEDIUM_2,
+                          const SliverToBoxAdapter(
+                            child: SizedBox(
+                              height: AppDimens.MARGIN_MEDIUM_2,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ));

@@ -108,10 +108,10 @@ class AuthenticationController extends BaseController {
   }
 
   void doRegister() {
-    if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
-      AppUtils.showToast("Please Choose Profile Image");
-      return;
-    }
+    // if (base64ProfileImage.value.isEmpty || base64ProfileImage.value == "") {
+    //   AppUtils.showToast("Please Choose Profile Image");
+    //   return;
+    // }
     if (userNameController.value.text.trim().isEmpty) {
       AppUtils.showToast("Please Enter User Name");
       return;
@@ -193,7 +193,7 @@ class AuthenticationController extends BaseController {
         if (_loginData.statusCode! == 200) {
           Get.back();
           savingData(_loginResponse);
-          AppUtils.showToast("Successfully Login");
+          //AppUtils.showToast("Successfully Login");
           Get.offAllNamed(Paths.MAIN_HOME, arguments: 4);
         } else {
           AppUtils.showToast("Invalid Credentials");
@@ -208,7 +208,6 @@ class AuthenticationController extends BaseController {
   }
 
   void fetchProfile(int? profileId) async {
-    print('fetch!!!!!');
     final repoService = _repository.getProfileDetail(profileId);
     await callAPIService(
       repoService,

@@ -16,7 +16,7 @@ import '../controller/comment_controller.dart';
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => PostHomeController());
+    //Get.lazyPut(() => PostHomeController());
     Get.lazyPut(() => CreatePostController(), fenix: true);
     Get.lazyPut(() => AuthenticationController(), fenix: true);
     Get.lazyPut(() => PostDetailController(), fenix: true);

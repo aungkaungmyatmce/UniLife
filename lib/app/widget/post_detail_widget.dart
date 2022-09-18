@@ -46,7 +46,6 @@ class PostDetailWidget extends StatelessWidget {
                     postData.title!,
                     textSize: 18,
                     fontWeight: FontWeight.w700,
-                    textAlign: TextAlign.justify,
                     textColor: AppColors.primaryTextColor,
                   ),
                 ),
@@ -134,14 +133,15 @@ class PostDetailWidget extends StatelessWidget {
                     ),
                   ),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
                   child: TextViewWidget(
                     postData.content!,
-                    textSize: 16,
+                    textSize: 15.5,
                     textColor: AppColors.primaryTextColor,
-                    textAlign: TextAlign.justify,
                     textOverflow: TextOverflow.visible,
                     maxLine: null,
+                    lineHeight: 1.5,
                   ),
                 ),
               ],

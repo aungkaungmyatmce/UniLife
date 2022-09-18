@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:blog_post_flutter/app/data/model/authentication/login_response.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MainHomeController extends GetxController with CacheManager {
+class MainHomeController extends GetxController
+    with CacheManager, GetSingleTickerProviderStateMixin {
   RxInt selectedPage = 0.obs;
   Rx<LoginResponse> loginResponse = LoginResponse().obs;
 

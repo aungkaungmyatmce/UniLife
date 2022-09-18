@@ -1,11 +1,11 @@
 import 'package:blog_post_flutter/app/core/base/base_controller.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../../constant/routing/app_routes.dart';
 import '../../../constant/view_state.dart';
 import '../../../core/utils/app_utils.dart';
 import '../../../core/utils/pagination_utils.dart';
+import '../../../core/utils/shimmer_utils.dart';
 import '../../../data/model/post/post_ob.dart';
 import '../../../data/network/base_response/base_api_response.dart';
 import '../../../data/repository/post/post_repository.dart';
@@ -64,9 +64,9 @@ class ForYouPostListController extends BaseController {
 
       await callAPIService(
         repoService,
-        // onStart: _postList.isEmpty
-        //     ? () => showLoading(shimmerEffect: ShimmerUtils.postList)
-        //     : () => Container(),
+        onStart: _postList.isEmpty
+            ? () => showLoading(shimmerEffect: ShimmerUtils.postList)
+            : () => null,
         onSuccess: _handlePostListResponseSuccess,
         onError: _handleAllListResponseError,
       );
@@ -75,23 +75,22 @@ class ForYouPostListController extends BaseController {
 
   void _handlePostListResponseSuccess(response) async {
     resetRefreshController(_postList);
-    if (response != null) {
-      BaseApiResponse<PostListOb> _postData = response;
-      PostListOb data = _postData.objectResult;
-      _postList.addAll(data.data!.toList());
 
-      if (data.data!.isEmpty) {
-        Future.delayed(const Duration(microseconds: 500), () {
-          _postList.clear();
-          updatePageState(ViewState.EMPTYLIST, onClickTryAgain: () {
-            resetAndGetPostList(isFollowing: false);
-          });
+    BaseApiResponse<PostListOb> _postData = response;
+    PostListOb data = _postData.objectResult;
+    _postList.addAll(data.data!.toList());
+
+    if (data.data!.isEmpty) {
+      Future.delayed(const Duration(microseconds: 500), () {
+        _postList.clear();
+        updatePageState(ViewState.EMPTYLIST, onClickTryAgain: () {
+          resetAndGetPostList(isFollowing: false);
         });
-      }
-      postPagination.setCurrentPage(
-        totalPage: data.pagination?.totalPages,
-      );
+      });
     }
+    postPagination.setCurrentPage(
+      totalPage: data.pagination?.totalPages,
+    );
   }
 
   void _handleAllListResponseError(Exception exception) {

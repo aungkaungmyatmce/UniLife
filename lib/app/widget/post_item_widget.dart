@@ -43,24 +43,25 @@ class _PostItemWidgetState extends State<PostItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextViewWidget(
-                    widget.postData.title ?? "",
-                    textSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  const SizedBox(height: 5),
-                  TextViewWidget(
-                    widget.postData.content ?? "",
-                    textSize: 15,
-                    textAlign: TextAlign.justify,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  InkWell(
-                    onTap: () => widget.onTapSeeMore(),
-                    child: TextViewWidget(
+              child: InkWell(
+                onTap: () => widget.onTapSeeMore(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextViewWidget(
+                      widget.postData.title ?? "",
+                      textSize: 16,
+                      fontWeight: FontWeight.w600,
+                      lineHeight: 1.5,
+                    ),
+                    const SizedBox(height: 7),
+                    TextViewWidget(
+                      widget.postData.content ?? "",
+                      textSize: 15,
+                      fontWeight: FontWeight.w400,
+                      lineHeight: 1.6,
+                    ),
+                    TextViewWidget(
                       "See More",
                       textSize: 14,
                       lineHeight: 1.3,
@@ -68,8 +69,8 @@ class _PostItemWidgetState extends State<PostItemWidget> {
                       fontWeight: FontWeight.w600,
                       textColor: AppColors.primaryTextColor.withOpacity(0.7),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(width: 20),
