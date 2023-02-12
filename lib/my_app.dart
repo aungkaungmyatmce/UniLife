@@ -4,7 +4,6 @@ import 'package:blog_post_flutter/app/core/base/binding/initial_binding.dart';
 import 'package:blog_post_flutter/app/data/local/cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'app/core/config/size_config.dart';
 
 class MyApp extends StatefulWidget {
